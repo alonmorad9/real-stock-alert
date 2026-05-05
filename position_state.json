@@ -1,8 +1,8 @@
 {
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "manual_scan",
-  "last_action_at": "2026-05-05T19:42:03.020352+00:00",
+  "last_action": "weekly_scan",
+  "last_action_at": "2026-05-05T19:45:06.588796+00:00",
   "last_scan_date": "2026-05-05",
   "latest_candidates": [
     "INTC",
