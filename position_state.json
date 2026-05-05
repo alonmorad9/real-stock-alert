@@ -1,0 +1,18 @@
+{
+  "strategy": "weekly_top_2_real_stock_momentum",
+  "allocated_cash": 1000.0,
+  "cash": 1000.0,
+  "positions": [],
+  "realized_pnl": 0.0,
+  "last_scan_date": null,
+  "last_action": null,
+  "last_action_at": null,
+  "settings": {
+    "max_positions": 2,
+    "qqq_below_sma200_action": "sell_all",
+    "weekly_buy_scan": true,
+    "daily_exit_check": true,
+    "manual_trade_confirmation_required": true
+  }
+}
+

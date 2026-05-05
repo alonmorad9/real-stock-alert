@@ -1,0 +1,7 @@
+name = "real-stock-alert-scheduler"
+main = "worker.js"
+compatibility_date = "2026-05-05"
+
+[triggers]
+crons = ["30 21 * * 1-5"]
+
