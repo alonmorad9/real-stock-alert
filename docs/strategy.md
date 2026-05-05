@@ -27,12 +27,26 @@ If `QQQ` closes below SMA200:
 - open positions are flagged for sale,
 - new buys are blocked.
 
+## Active Profile
+
+The live profile is now `turbo` with max 2 positions.
+
+The historical variant pack favored `turbo` max 2 for the user's requested high-risk, high-reward swing mode:
+
+- final: `21.8x`
+- CAGR: `44.8%`
+- max drawdown: `-37.5%`
+- trades: `282`
+
+This is still research, not a guarantee.
+
 ## Buy Rules
 
 Candidates must satisfy:
 
 - close above SMA50,
-- SMA50 above SMA200,
+- close above EMA21,
+- positive 20-day and 63-day momentum,
 - 63-day relative strength better than QQQ,
 - average dollar volume above `$50M/day`.
 
@@ -56,7 +70,6 @@ Default pilot sizing:
 Positions are flagged for sale if:
 
 - QQQ closes below SMA200,
-- the stock closes below EMA21,
 - the stock closes below SMA50,
 - the trailing stop is hit,
 - the stock drops out of the weekly top list on a weekly rebalance.
@@ -69,11 +82,10 @@ Initial stop:
 
 Trailing stop:
 
-- ratchets to the higher of 15% below highest high since entry, or highest high minus 3x ATR14.
+- ratchets to the higher of 18% below highest high since entry, or highest high minus 3.5x ATR14.
 
 ## Manual Confirmation
 
 The bot does not mark a candidate as owned. It only tracks a real position after `manual_bought` records the actual ticker, shares, fill price, and fill date.
 
 The same applies to sells: cash and realized P&L only update after `manual_sold`.
-

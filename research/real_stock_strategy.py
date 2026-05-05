@@ -168,22 +168,19 @@ def variant_trailing_stop(highest_high, atr14, variant):
     return trailing_stop(highest_high, atr14)
 
 
-def candidate_for(data, qqq, ticker, date):
+def candidate_for(data, qqq, ticker, date, variant="base"):
     if ticker not in data or date not in data[ticker].index or date not in qqq.index:
         return None
 
     row = data[ticker].loc[date]
     qrow = qqq.loc[date]
-    market_ok = qrow["Close"] > qrow["SMA200"]
-    trend_ok = row["Close"] > row["SMA50"] > row["SMA200"]
-    liquid = row["Close"] * row["VOL20"] > 50_000_000
     rs63 = row["RET63"] - qrow["RET63"]
     above_sma50 = row["Close"] / row["SMA50"] - 1
 
-    if not (market_ok and trend_ok and liquid and rs63 > 0):
+    if not qualifies_for_variant(row, qrow, variant):
         return None
 
-    score = rs63 * 100 + row["RET20"] * 35 + above_sma50 * 20
+    score = score_candidate(row, qrow, variant)
     close = float(row["Close"])
     atr14 = float(row["ATR14"])
     return {
@@ -197,15 +194,15 @@ def candidate_for(data, qqq, ticker, date):
         "sma50": float(row["SMA50"]),
         "sma200": float(row["SMA200"]),
         "atr14": atr14,
-        "initial_stop": float(initial_stop(close, atr14)),
+        "initial_stop": float(variant_initial_stop(close, atr14, variant)),
         "avg_dollar_volume": float(row["Close"] * row["VOL20"]),
     }
 
 
-def scan_candidates(data, qqq, date, max_positions=2):
+def scan_candidates(data, qqq, date, max_positions=2, variant="base"):
     candidates = []
     for ticker in data:
-        signal = candidate_for(data, qqq, ticker, date)
+        signal = candidate_for(data, qqq, ticker, date, variant)
         if signal:
             candidates.append(signal)
     return sorted(candidates, key=lambda item: item["score"], reverse=True)[:max_positions]
@@ -423,7 +420,7 @@ def write_variant_outputs(results):
     return summary
 
 
-def position_exit_status(position, data, qqq, date, top_tickers):
+def position_exit_status(position, data, qqq, date, top_tickers, variant="base"):
     ticker = position["ticker"]
     if ticker not in data or date not in data[ticker].index:
         return None
@@ -431,11 +428,11 @@ def position_exit_status(position, data, qqq, date, top_tickers):
     row = data[ticker].loc[date]
     qrow = qqq.loc[date]
     highest_high = max(float(position.get("highest_high_since_entry", position["entry_price"])), float(row["High"]))
-    new_stop = max(float(position.get("stop", 0.0)), trailing_stop(highest_high, float(row["ATR14"])))
+    new_stop = max(float(position.get("stop", 0.0)), variant_trailing_stop(highest_high, float(row["ATR14"]), variant))
     reasons = []
     if qrow["Close"] <= qrow["SMA200"]:
         reasons.append("QQQ below SMA200")
-    if row["Close"] < row["EMA21"]:
+    if variant != "turbo" and row["Close"] < row["EMA21"]:
         reasons.append("close below EMA21")
     if row["Close"] < row["SMA50"]:
         reasons.append("close below SMA50")

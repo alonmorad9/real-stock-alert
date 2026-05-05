@@ -9,13 +9,13 @@ import requests
 
 from research.real_stock_strategy import (
     UNIVERSE,
-    initial_stop,
     latest_common_date,
     load_prices,
     load_universe,
     market_filter,
     position_exit_status,
     scan_candidates,
+    variant_initial_stop,
 )
 
 
@@ -76,6 +76,10 @@ def get_latest_price(ticker):
     return df.index[-1], float(row["Close"]), float(row["High"]), float(row["ATR14"])
 
 
+def strategy_profile(state):
+    return state.get("settings", {}).get("profile", "base")
+
+
 def manual_bought(args):
     state = load_state()
     ticker = args.ticker.upper()
@@ -93,7 +97,7 @@ def manual_bought(args):
 
     try:
         _, _, high, atr14 = get_latest_price(ticker)
-        stop = initial_stop(fill_price, atr14)
+        stop = variant_initial_stop(fill_price, atr14, strategy_profile(state))
         highest_high = max(fill_price, high)
     except Exception:
         stop = fill_price * 0.88
@@ -152,15 +156,17 @@ def build_report(mode):
     state = load_state()
     data, qqq, errors = load_universe(UNIVERSE)
     asof = latest_common_date(data, qqq)
-    max_positions = int(state.get("settings", {}).get("max_positions", 2))
-    candidates = scan_candidates(data, qqq, asof, max_positions)
+    settings = state.get("settings", {})
+    max_positions = int(settings.get("max_positions", 2))
+    profile = strategy_profile(state)
+    candidates = scan_candidates(data, qqq, asof, max_positions, profile)
     top_tickers = [item["ticker"] for item in candidates] if mode == "weekly" else []
     market = market_filter(qqq, asof)
 
     exit_statuses = []
     portfolio_value = float(state.get("cash", 0.0))
     for position in state.get("positions", []):
-        status = position_exit_status(position, data, qqq, asof, top_tickers)
+        status = position_exit_status(position, data, qqq, asof, top_tickers, profile)
         if status:
             position["highest_high_since_entry"] = round(status["highest_high_since_entry"], 4)
             position["stop"] = round(status["stop"], 4)
@@ -173,6 +179,7 @@ def build_report(mode):
     state["latest_portfolio_value"] = round(portfolio_value, 2)
     state["latest_unrealized_pnl"] = round(portfolio_value - float(state.get("allocated_cash", 0.0)), 2)
     state["latest_candidates"] = [candidate["ticker"] for candidate in candidates]
+    state["active_profile"] = profile
     state["last_action"] = f"{mode}_scan"
     save_state(state)
 
@@ -185,6 +192,8 @@ def build_report(mode):
         f"# {SYSTEM_LABEL} Report - {asof}",
         "",
         f"Mode: `{mode}`",
+        f"Profile: `{profile}`",
+        f"Max positions: `{max_positions}`",
         "",
         "## Market Filter",
         "",
@@ -308,4 +317,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

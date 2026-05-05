@@ -1,8 +1,9 @@
 {
+  "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
   "last_action": "weekly_scan",
-  "last_action_at": "2026-05-05T19:45:06.588796+00:00",
+  "last_action_at": "2026-05-05T20:01:43.872194+00:00",
   "last_scan_date": "2026-05-05",
   "latest_candidates": [
     "INTC",
@@ -16,8 +17,9 @@
     "daily_exit_check": true,
     "manual_trade_confirmation_required": true,
     "max_positions": 2,
+    "profile": "turbo",
     "qqq_below_sma200_action": "sell_all",
     "weekly_buy_scan": true
   },
-  "strategy": "weekly_top_2_real_stock_momentum"
+  "strategy": "turbo_top_2_real_stock_momentum"
 }

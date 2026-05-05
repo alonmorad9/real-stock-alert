@@ -11,7 +11,7 @@ The bot sends candidate and exit instructions, but it never assumes a trade happ
 
 ## Strategy
 
-Default first version:
+Active live profile: `turbo` max 2.
 
 - Trade liquid large-cap and growth stocks.
 - Hold at most 2 stocks.
@@ -19,7 +19,7 @@ Default first version:
 - If `QQQ` closes below SMA200, flag all open positions for sale.
 - Run a daily close exit check for confirmed positions.
 - Run a weekly full buy scan after Friday close.
-- Sell when trend breaks, stop is hit, or a holding drops out of the weekly top list.
+- Sell when price closes below SMA50, the trailing stop is hit, or a holding drops out of the weekly top list.
 
 The initial state uses a small pilot allocation of `$1,000`. Edit `position_state.json` before going live if the real allocation is different.
 
