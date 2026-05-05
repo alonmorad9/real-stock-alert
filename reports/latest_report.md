@@ -1,12 +1,12 @@
 # REAL STOCK SYSTEM Report - 2026-05-05
 
-Mode: `weekly`
+Mode: `daily`
 Profile: `turbo`
 Max positions: `2`
 
 ## Market Filter
 
-- QQQ close: $681.58
+- QQQ close: $681.61
 - QQQ SMA200: $604.04
 - Market filter: ON
 
@@ -23,9 +23,4 @@ No confirmed real positions are currently tracked.
 
 ## Buy Candidates
 
-| Rank | Ticker | Close | Suggested Allocation | Initial Stop | 63d RS | 20d Return |
-| ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 1 | INTC | $108.17 | $500.00 | $95.19 | 108.9% | 104.4% |
-| 2 | MRVL | $168.50 | $500.00 | $148.28 | 112.5% | 54.1% |
-
-These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.
+Weekly buy scan was not requested on this run.
