@@ -4,7 +4,7 @@ Mode: `manual`
 
 ## Market Filter
 
-- QQQ close: $681.47
+- QQQ close: $682.02
 - QQQ SMA200: $604.04
 - Market filter: ON
 
