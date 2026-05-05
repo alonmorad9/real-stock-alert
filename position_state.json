@@ -1,18 +1,23 @@
 {
-  "strategy": "weekly_top_2_real_stock_momentum",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
+  "last_action": "manual_scan",
+  "last_action_at": "2026-05-05T15:55:05.560017+00:00",
+  "last_scan_date": "2026-05-05",
+  "latest_candidates": [
+    "INTC",
+    "MRVL"
+  ],
+  "latest_portfolio_value": 1000.0,
+  "latest_unrealized_pnl": 0.0,
   "positions": [],
   "realized_pnl": 0.0,
-  "last_scan_date": null,
-  "last_action": null,
-  "last_action_at": null,
   "settings": {
+    "daily_exit_check": true,
+    "manual_trade_confirmation_required": true,
     "max_positions": 2,
     "qqq_below_sma200_action": "sell_all",
-    "weekly_buy_scan": true,
-    "daily_exit_check": true,
-    "manual_trade_confirmation_required": true
-  }
+    "weekly_buy_scan": true
+  },
+  "strategy": "weekly_top_2_real_stock_momentum"
 }
-
