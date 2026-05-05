@@ -73,7 +73,18 @@ It tracks:
 
 See [docs/automation.md](docs/automation.md).
 
+## Aggressive Research
+
+Higher-risk swing variants are documented in [docs/aggressive-research.md](docs/aggressive-research.md).
+
+Run locally:
+
+```bash
+python3 research/real_stock_strategy.py --research --start 2018-01-01
+```
+
+Or run the `Real Stock Research` workflow in GitHub Actions.
+
 ## Caveats
 
 This is research and tooling, not financial advice. The human makes every final trade decision and executes trades manually.
-

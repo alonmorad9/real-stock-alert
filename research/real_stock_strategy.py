@@ -4,8 +4,10 @@
 import argparse
 import json
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -22,6 +24,16 @@ UNIVERSE = [
     "SNPS", "INTU", "ISRG", "BKNG", "MELI", "VRTX", "REGN", "AMGN", "GILD", "ADP",
     "MAR", "SBUX", "PEP", "LIN", "WMT",
 ]
+
+
+@dataclass
+class BacktestPosition:
+    ticker: str
+    shares: float
+    entry_price: float
+    entry_date: object
+    highest_high: float
+    stop: float
 
 
 def fetch_yahoo_chart(ticker):
@@ -140,6 +152,22 @@ def trailing_stop(highest_high, atr14):
     return max(highest_high * 0.85, highest_high - 3.0 * atr14)
 
 
+def variant_initial_stop(close, atr14, variant):
+    if variant == "aggressive":
+        return max(close * 0.90, close - 2.0 * atr14)
+    if variant == "turbo":
+        return max(close * 0.88, close - 2.5 * atr14)
+    return initial_stop(close, atr14)
+
+
+def variant_trailing_stop(highest_high, atr14, variant):
+    if variant == "aggressive":
+        return max(highest_high * 0.88, highest_high - 2.5 * atr14)
+    if variant == "turbo":
+        return max(highest_high * 0.82, highest_high - 3.5 * atr14)
+    return trailing_stop(highest_high, atr14)
+
+
 def candidate_for(data, qqq, ticker, date):
     if ticker not in data or date not in data[ticker].index or date not in qqq.index:
         return None
@@ -183,6 +211,218 @@ def scan_candidates(data, qqq, date, max_positions=2):
     return sorted(candidates, key=lambda item: item["score"], reverse=True)[:max_positions]
 
 
+def common_dates(data, qqq, start):
+    first = pd.Timestamp(start).date()
+    usable = set(qqq.index)
+    for df in data.values():
+        usable |= set(df.index)
+    return sorted(date for date in usable if date >= first and date in qqq.index)
+
+
+def max_drawdown(values):
+    series = pd.Series(values, dtype=float)
+    peaks = series.cummax()
+    return float((series / peaks - 1).min())
+
+
+def cagr(final_value, start_date, end_date):
+    years = (pd.Timestamp(end_date) - pd.Timestamp(start_date)).days / 365.25
+    if years <= 0:
+        return 0.0
+    return float(final_value ** (1 / years) - 1)
+
+
+def score_candidate(row, qrow, variant):
+    rs63 = row["RET63"] - qrow["RET63"]
+    above_sma50 = row["Close"] / row["SMA50"] - 1
+    if variant == "aggressive":
+        return rs63 * 120 + row["RET20"] * 55 + above_sma50 * 25
+    if variant == "turbo":
+        return rs63 * 90 + row["RET20"] * 80 + above_sma50 * 35
+    return rs63 * 100 + row["RET20"] * 35 + above_sma50 * 20
+
+
+def qualifies_for_variant(row, qrow, variant):
+    market_ok = qrow["Close"] > qrow["SMA200"]
+    liquid = row["Close"] * row["VOL20"] > 50_000_000
+    relative_strength = row["RET63"] > qrow["RET63"]
+    if variant == "turbo":
+        trend_ok = row["Close"] > row["EMA21"] and row["Close"] > row["SMA50"]
+        momentum_ok = row["RET20"] > 0 and row["RET63"] > 0
+    else:
+        trend_ok = row["Close"] > row["SMA50"] > row["SMA200"]
+        momentum_ok = True
+    return bool(market_ok and liquid and relative_strength and trend_ok and momentum_ok)
+
+
+def rank_for_date(data, qqq, date, positions, variant):
+    if date not in qqq.index:
+        return []
+    qrow = qqq.loc[date]
+    ranked = []
+    for ticker, df in data.items():
+        if ticker in positions or date not in df.index:
+            continue
+        row = df.loc[date]
+        if qualifies_for_variant(row, qrow, variant):
+            ranked.append((float(score_candidate(row, qrow, variant)), ticker))
+    ranked.sort(reverse=True)
+    return [ticker for _, ticker in ranked]
+
+
+def run_rotation_backtest(data, qqq, start="2018-01-01", max_positions=2, variant="base"):
+    dates = common_dates(data, qqq, start)
+    cash = 1.0
+    positions = {}
+    values = []
+    trades = []
+    target_tickers = []
+    rebalance_next_open = False
+
+    for idx, date in enumerate(dates):
+        qrow = qqq.loc[date]
+        market_ok = qrow["Close"] > qrow["SMA200"]
+
+        if rebalance_next_open:
+            desired = set(target_tickers if market_ok else [])
+            for ticker in list(positions):
+                if ticker not in desired and date in data[ticker].index:
+                    row = data[ticker].loc[date]
+                    pos = positions.pop(ticker)
+                    cash += pos.shares * row["Open"]
+                    trades.append((date, ticker, "sell", row["Open"], "weekly_rotation"))
+
+            equity = cash + sum(
+                pos.shares * data[ticker].loc[date]["Open"]
+                for ticker, pos in positions.items()
+                if date in data[ticker].index
+            )
+
+            for ticker in target_tickers:
+                if not market_ok or ticker in positions or ticker not in data or date not in data[ticker].index:
+                    continue
+                if len(positions) >= max_positions:
+                    break
+                row = data[ticker].loc[date]
+                slots_left = max_positions - len(positions)
+                target_value = equity / max_positions
+                allocation = min(cash, target_value if slots_left > 1 else cash)
+                if allocation <= 0:
+                    continue
+                shares = allocation / row["Open"]
+                cash -= allocation
+                stop = variant_initial_stop(float(row["Open"]), float(row["ATR14"]), variant)
+                positions[ticker] = BacktestPosition(ticker, shares, row["Open"], date, row["High"], stop)
+                trades.append((date, ticker, "buy", row["Open"], f"{variant}_momentum"))
+            rebalance_next_open = False
+
+        for ticker in list(positions):
+            if date not in data[ticker].index:
+                continue
+            row = data[ticker].loc[date]
+            pos = positions[ticker]
+            pos.highest_high = max(pos.highest_high, row["High"])
+            pos.stop = max(pos.stop, variant_trailing_stop(float(pos.highest_high), float(row["ATR14"]), variant))
+            if row["Low"] <= pos.stop:
+                cash += pos.shares * pos.stop
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", pos.stop, "stop"))
+            elif variant in {"base", "aggressive"} and row["Close"] < row["EMA21"]:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "ema21_exit"))
+            elif variant == "turbo" and row["Close"] < row["SMA50"]:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "sma50_exit"))
+
+        value = cash + sum(
+            pos.shares * data[ticker].loc[date]["Close"]
+            for ticker, pos in positions.items()
+            if date in data[ticker].index
+        )
+        values.append((date, float(value)))
+
+        is_week_end = idx == len(dates) - 1 or pd.Timestamp(dates[idx + 1]).isocalendar().week != pd.Timestamp(date).isocalendar().week
+        if is_week_end:
+            held = [ticker for ticker in positions if ticker in data and date in data[ticker].index]
+            target_tickers = (held + rank_for_date(data, qqq, date, positions, variant))[:max_positions]
+            rebalance_next_open = True
+
+    final = values[-1][1]
+    series = [value for _, value in values]
+    wins = []
+    buys = {}
+    for trade_date, ticker, side, price, reason in trades:
+        if side == "buy":
+            buys.setdefault(ticker, []).append(price)
+        elif side == "sell" and buys.get(ticker):
+            entry = buys[ticker].pop(0)
+            wins.append(price / entry - 1)
+
+    annual = cagr(final, values[0][0], values[-1][0])
+    dd = max_drawdown(series)
+    return {
+        "variant": variant,
+        "max_positions": max_positions,
+        "start": values[0][0],
+        "end": values[-1][0],
+        "final": final,
+        "cagr": annual,
+        "maxdd": dd,
+        "calmar": annual / abs(dd) if dd else np.nan,
+        "trades": len(trades),
+        "round_trips": len(wins),
+        "win_rate": float(np.mean([win > 0 for win in wins])) if wins else np.nan,
+        "avg_trade": float(np.mean(wins)) if wins else np.nan,
+        "values": values,
+        "trades_list": trades,
+    }
+
+
+def run_variant_pack(data, qqq, start="2018-01-01"):
+    specs = [
+        ("base", 2),
+        ("aggressive", 1),
+        ("aggressive", 2),
+        ("aggressive", 3),
+        ("turbo", 1),
+        ("turbo", 2),
+    ]
+    return [run_rotation_backtest(data, qqq, start, max_positions, variant) for variant, max_positions in specs]
+
+
+def write_variant_outputs(results):
+    out_dir = Path("research/out")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for result in results:
+        name = f"{result['variant']}_max{result['max_positions']}"
+        pd.DataFrame(result["values"], columns=["Date", "Value"]).to_csv(out_dir / f"{name}_equity_curve.csv", index=False)
+        pd.DataFrame(result["trades_list"], columns=["Date", "Ticker", "Side", "Price", "Reason"]).to_csv(
+            out_dir / f"{name}_trades.csv", index=False
+        )
+        rows.append(
+            {
+                "variant": result["variant"],
+                "max_positions": result["max_positions"],
+                "start": result["start"],
+                "end": result["end"],
+                "final": result["final"],
+                "cagr": result["cagr"],
+                "maxdd": result["maxdd"],
+                "calmar": result["calmar"],
+                "trades": result["trades"],
+                "round_trips": result["round_trips"],
+                "win_rate": result["win_rate"],
+                "avg_trade": result["avg_trade"],
+            }
+        )
+    summary = pd.DataFrame(rows).sort_values(["cagr", "calmar"], ascending=False)
+    summary.to_csv(out_dir / "aggressive_variant_summary.csv", index=False)
+    return summary
+
+
 def position_exit_status(position, data, qqq, date, top_tickers):
     ticker = position["ticker"]
     if ticker not in data or date not in data[ticker].index:
@@ -220,8 +460,23 @@ def position_exit_status(position, data, qqq, date, top_tickers):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-positions", type=int, default=2)
+    parser.add_argument("--start", default="2018-01-01")
+    parser.add_argument("--research", action="store_true", help="Run aggressive variant backtests.")
     args = parser.parse_args()
     data, qqq, errors = load_universe(UNIVERSE)
+    if args.research:
+        results = run_variant_pack(data, qqq, args.start)
+        summary = write_variant_outputs(results)
+        print(f"Loaded stocks: {len(data)} | data errors: {len(errors)}")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     date = latest_common_date(data, qqq)
     candidates = scan_candidates(data, qqq, date, args.max_positions)
     print(f"Scan date: {date}")
@@ -235,4 +490,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
