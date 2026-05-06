@@ -11,6 +11,14 @@ Recommended first version:
 
 The Cloudflare Worker dispatches the GitHub Action with either `daily` or `weekly` mode. GitHub Actions can also be run manually.
 
+Cloudflare schedule:
+
+```toml
+"30 21 * * MON-FRI"
+```
+
+The Worker maps Monday through Thursday to `daily` and Friday to `weekly`.
+
 ## GitHub Action
 
 Workflow:
@@ -57,4 +65,3 @@ The token needs permission to dispatch workflows in `alonmorad9/real-stock-alert
 - The bot never assumes a buy or sell happened.
 - Manual trade confirmations should be committed after each real fill.
 - Telegram messages are labeled `REAL STOCK SYSTEM`.
-
