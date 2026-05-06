@@ -14,6 +14,7 @@ on:
         type: choice
         options:
           - risk
+          - entry
           - aggressive
 
 permissions:
@@ -36,6 +37,8 @@ jobs:
         run: |
           if [ "${{ inputs.kind }}" = "risk" ]; then
             python research/real_stock_strategy.py --risk-research --start "${{ inputs.start }}"
+          elif [ "${{ inputs.kind }}" = "entry" ]; then
+            python research/real_stock_strategy.py --entry-research --start "${{ inputs.start }}"
           else
             python research/real_stock_strategy.py --research --start "${{ inputs.start }}"
           fi

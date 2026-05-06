@@ -393,6 +393,10 @@ def extension_warning(row):
     return "OK"
 
 
+def is_stretched(row):
+    return extension_warning(row) != "OK"
+
+
 def candidate_for(data, qqq, ticker, date, variant="base"):
     if ticker not in data or date not in data[ticker].index or date not in qqq.index:
         return None
@@ -505,6 +509,17 @@ def risk_multiplier(risk_score, config, policy):
     return 1.0
 
 
+def extension_multiplier(row, policy):
+    if policy in {None, "none", "full"}:
+        return 1.0
+    stretched = is_stretched(row)
+    if policy == "half_stretched" and stretched:
+        return 0.5
+    if policy == "skip_stretched" and stretched:
+        return 0.0
+    return 1.0
+
+
 def run_rotation_backtest(
     data,
     qqq,
@@ -513,6 +528,8 @@ def run_rotation_backtest(
     variant="base",
     risk_config=None,
     risk_policy="none",
+    extension_policy="none",
+    entry_limit=None,
 ):
     dates = common_dates(data, qqq, start)
     cash = 1.0
@@ -554,24 +571,28 @@ def run_rotation_backtest(
                 if date in data[ticker].index
             )
 
+            buys_this_rebalance = 0
             for ticker in target_tickers:
                 if not market_ok or ticker in positions or ticker not in data or date not in data[ticker].index:
                     continue
                 if len(positions) >= max_positions:
                     break
+                if entry_limit and buys_this_rebalance >= entry_limit:
+                    break
                 row = data[ticker].loc[date]
                 slots_left = max_positions - len(positions)
                 target_value = equity / max_positions
-                multiplier = risk_multiplier(risk_score, risk_config, risk_policy)
+                multiplier = risk_multiplier(risk_score, risk_config, risk_policy) * extension_multiplier(row, extension_policy)
                 allocation = min(cash, target_value * multiplier if slots_left > 1 else cash * multiplier)
                 if allocation <= 0:
-                    trades.append((date, ticker, "skip", row["Open"], f"{risk_policy}_risk_score_{risk_score}"))
+                    trades.append((date, ticker, "skip", row["Open"], f"{risk_policy}_{extension_policy}_risk_score_{risk_score}"))
                     continue
                 shares = allocation / row["Open"]
                 cash -= allocation
                 stop = variant_initial_stop(float(row["Open"]), float(row["ATR14"]), variant)
                 positions[ticker] = BacktestPosition(ticker, shares, row["Open"], date, row["High"], stop)
                 trades.append((date, ticker, "buy", row["Open"], f"{variant}_momentum"))
+                buys_this_rebalance += 1
             rebalance_next_open = False
 
         for ticker in list(positions):
@@ -635,6 +656,8 @@ def run_rotation_backtest(
         "avg_trade": float(np.mean(wins)) if wins else np.nan,
         "risk_policy": risk_policy,
         "risk_config": risk_config["name"] if risk_config else "none",
+        "extension_policy": extension_policy,
+        "entry_limit": entry_limit or "none",
         "risk_events": risk_events,
         "values": values,
         "trades_list": trades,
@@ -661,13 +684,44 @@ def run_risk_overlay_pack(data, qqq, start="2018-01-01"):
     return results
 
 
+def run_entry_decision_pack(data, qqq, start="2018-01-01"):
+    config = next(item for item in RISK_CONFIGS if item["name"] == "risk_balanced")
+    specs = [
+        ("full_two", "none", None),
+        ("half_stretched_two", "half_stretched", None),
+        ("skip_stretched_two", "skip_stretched", None),
+        ("full_top_one", "none", 1),
+        ("half_stretched_top_one", "half_stretched", 1),
+        ("skip_stretched_top_one", "skip_stretched", 1),
+    ]
+    results = []
+    for label, extension_policy, entry_limit in specs:
+        result = run_rotation_backtest(
+            data,
+            qqq,
+            start,
+            2,
+            "turbo",
+            config,
+            "half_elevated",
+            extension_policy,
+            entry_limit,
+        )
+        result["entry_decision"] = label
+        results.append(result)
+    return results
+
+
 def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv", prefix=""):
     out_dir = Path("research/out")
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = []
     for result in results:
         risk_suffix = "" if result.get("risk_config") in {None, "none"} else f"_{result['risk_config']}_{result['risk_policy']}"
-        name = f"{prefix}{result['variant']}_max{result['max_positions']}{risk_suffix}"
+        extension_suffix = "" if result.get("extension_policy") in {None, "none"} else f"_{result['extension_policy']}"
+        entry_suffix = "" if result.get("entry_limit") in {None, "none"} else f"_top{result['entry_limit']}"
+        decision_suffix = "" if not result.get("entry_decision") else f"_{result['entry_decision']}"
+        name = f"{prefix}{result['variant']}_max{result['max_positions']}{risk_suffix}{extension_suffix}{entry_suffix}{decision_suffix}"
         pd.DataFrame(result["values"], columns=["Date", "Value"]).to_csv(out_dir / f"{name}_equity_curve.csv", index=False)
         pd.DataFrame(result["trades_list"], columns=["Date", "Ticker", "Side", "Price", "Reason"]).to_csv(
             out_dir / f"{name}_trades.csv", index=False
@@ -682,6 +736,9 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "max_positions": result["max_positions"],
                 "risk_config": result.get("risk_config", "none"),
                 "risk_policy": result.get("risk_policy", "none"),
+                "extension_policy": result.get("extension_policy", "none"),
+                "entry_limit": result.get("entry_limit", "none"),
+                "entry_decision": result.get("entry_decision", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
                 "final": result["final"],
@@ -740,8 +797,22 @@ def main():
     parser.add_argument("--start", default="2018-01-01")
     parser.add_argument("--research", action="store_true", help="Run aggressive variant backtests.")
     parser.add_argument("--risk-research", action="store_true", help="Run predictive risk overlay backtests.")
+    parser.add_argument("--entry-research", action="store_true", help="Run buy-decision and overextension backtests.")
     args = parser.parse_args()
     data, qqq, errors = load_universe(UNIVERSE)
+    if args.entry_research:
+        results = run_entry_decision_pack(data, qqq, args.start)
+        summary = write_variant_outputs(results, "entry_decision_summary.csv", "entry_")
+        print(f"Loaded stocks: {len(data)} | data errors: {len(errors)}")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     if args.risk_research:
         results = run_risk_overlay_pack(data, qqq, args.start)
         summary = write_variant_outputs(results, "risk_overlay_summary.csv", "risk_")

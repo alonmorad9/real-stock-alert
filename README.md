@@ -84,12 +84,14 @@ See [docs/automation.md](docs/automation.md).
 
 Higher-risk swing variants are documented in [docs/aggressive-research.md](docs/aggressive-research.md).
 Predictive risk-overlay tests are documented in [docs/risk-overlay-research.md](docs/risk-overlay-research.md).
+Entry-decision tests are documented in [docs/entry-decision-research.md](docs/entry-decision-research.md).
 
 Run locally:
 
 ```bash
 python3 research/real_stock_strategy.py --research --start 2018-01-01
 python3 research/real_stock_strategy.py --risk-research --start 2018-01-01
+python3 research/real_stock_strategy.py --entry-research --start 2018-01-01
 ```
 
 Or run the `Real Stock Research` workflow in GitHub Actions.
