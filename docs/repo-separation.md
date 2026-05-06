@@ -18,3 +18,4 @@ Month-end review should inspect each repo's own state file:
 - `swing-stock-alert/pilot_state.json`
 - `real-stock-alert/position_state.json`
 
+The detailed month-end checklist is in [month-end-alignment.md](month-end-alignment.md).
