@@ -499,6 +499,52 @@ def rank_for_date(data, qqq, date, positions, variant):
     return [ticker for _, ticker in ranked]
 
 
+def dip_candidate_for(data, qqq, ticker, date, config):
+    if ticker not in data or date not in data[ticker].index or date not in qqq.index:
+        return None
+
+    row = data[ticker].loc[date]
+    qrow = qqq.loc[date]
+    intraday_drop = row["Close"] / row["PREV_CLOSE"] - 1 if row["PREV_CLOSE"] else 0.0
+    qqq_drop = qrow["Close"] / qrow["PREV_CLOSE"] - 1 if qrow["PREV_CLOSE"] else 0.0
+    liquid = row["Close"] * row["VOL20"] > 50_000_000
+    market_ok = qrow["Close"] > qrow["SMA200"]
+    trend_ok = row["Close"] > row["SMA50"] and row["Close"] > row["SMA200"]
+    momentum_ok = row["RET20"] > 0 and row["RET63"] > 0
+    relative_strength = row["RET63"] > qrow["RET63"]
+    dip_ok = intraday_drop <= -float(config["min_drop"])
+    if config.get("must_drop_more_than_qqq", False):
+        dip_ok = dip_ok and intraday_drop < qqq_drop
+
+    if not all([liquid, market_ok, trend_ok, momentum_ok, relative_strength, dip_ok]):
+        return None
+
+    rs63 = row["RET63"] - qrow["RET63"]
+    score = abs(intraday_drop) * 90 + rs63 * 60 + row["RET20"] * 25
+    return {
+        "ticker": ticker,
+        "score": float(score),
+        "drop": float(intraday_drop),
+        "qqq_drop": float(qqq_drop),
+        "ret20": float(row["RET20"]),
+        "ret63": float(row["RET63"]),
+        "rs63": float(rs63),
+    }
+
+
+def rank_dip_for_date(data, qqq, date, positions, config):
+    if date not in qqq.index:
+        return []
+    ranked = []
+    for ticker in data:
+        if ticker in positions:
+            continue
+        signal = dip_candidate_for(data, qqq, ticker, date, config)
+        if signal:
+            ranked.append(signal)
+    return [item["ticker"] for item in sorted(ranked, key=lambda item: item["score"], reverse=True)]
+
+
 def risk_multiplier(risk_score, config, policy):
     if not policy or policy == "none":
         return 1.0
@@ -507,6 +553,41 @@ def risk_multiplier(risk_score, config, policy):
     if policy == "half_elevated" and risk_score >= config["elevated_threshold"]:
         return 0.5
     return 1.0
+
+
+def summarize_backtest_result(result, values, trades, positions, data, final_date, risk_events=None):
+    final = values[-1][1]
+    series = [value for _, value in values]
+    wins = []
+    buys = {}
+    for trade_date, ticker, side, price, reason in trades:
+        if side == "buy":
+            buys.setdefault(ticker, []).append(price)
+        elif side == "sell" and buys.get(ticker):
+            entry = buys[ticker].pop(0)
+            wins.append(price / entry - 1)
+
+    annual = cagr(final, values[0][0], values[-1][0])
+    dd = max_drawdown(series)
+    result.update(
+        {
+            "start": values[0][0],
+            "end": final_date,
+            "final": final,
+            "cagr": annual,
+            "maxdd": dd,
+            "calmar": annual / abs(dd) if dd else np.nan,
+            "trades": len(trades),
+            "round_trips": len(wins),
+            "win_rate": float(np.mean([win > 0 for win in wins])) if wins else np.nan,
+            "avg_trade": float(np.mean(wins)) if wins else np.nan,
+            "risk_events": risk_events or [],
+            "values": values,
+            "trades_list": trades,
+            "open_positions": sorted(positions),
+        }
+    )
+    return result
 
 
 def extension_multiplier(row, policy):
@@ -628,40 +709,126 @@ def run_rotation_backtest(
             target_tickers = (held + rank_for_date(data, qqq, date, positions, variant))[:max_positions]
             rebalance_next_open = True
 
-    final = values[-1][1]
-    series = [value for _, value in values]
-    wins = []
-    buys = {}
-    for trade_date, ticker, side, price, reason in trades:
-        if side == "buy":
-            buys.setdefault(ticker, []).append(price)
-        elif side == "sell" and buys.get(ticker):
-            entry = buys[ticker].pop(0)
-            wins.append(price / entry - 1)
-
-    annual = cagr(final, values[0][0], values[-1][0])
-    dd = max_drawdown(series)
-    return {
+    return summarize_backtest_result(
+        {
         "variant": variant,
         "max_positions": max_positions,
-        "start": values[0][0],
-        "end": values[-1][0],
-        "final": final,
-        "cagr": annual,
-        "maxdd": dd,
-        "calmar": annual / abs(dd) if dd else np.nan,
-        "trades": len(trades),
-        "round_trips": len(wins),
-        "win_rate": float(np.mean([win > 0 for win in wins])) if wins else np.nan,
-        "avg_trade": float(np.mean(wins)) if wins else np.nan,
         "risk_policy": risk_policy,
         "risk_config": risk_config["name"] if risk_config else "none",
         "extension_policy": extension_policy,
         "entry_limit": entry_limit or "none",
-        "risk_events": risk_events,
-        "values": values,
-        "trades_list": trades,
-    }
+        "entry_system": "momentum",
+        },
+        values,
+        trades,
+        positions,
+        data,
+        values[-1][0],
+        risk_events,
+    )
+
+
+def run_dip_entry_backtest(data, qqq, start="2018-01-01", max_positions=2, config=None):
+    config = config or {}
+    dates = common_dates(data, qqq, start)
+    cash = 1.0
+    positions = {}
+    values = []
+    trades = []
+    pending_tickers = []
+    risk_config = next(item for item in RISK_CONFIGS if item["name"] == "risk_balanced")
+    qqq_risk = add_market_risk_indicators(qqq)
+
+    for idx, date in enumerate(dates):
+        qrow = qqq.loc[date]
+        market_ok = qrow["Close"] > qrow["SMA200"]
+        risk_score, _ = market_risk_score(qqq_risk, date, risk_config)
+
+        if pending_tickers:
+            equity = cash + sum(
+                pos.shares * data[ticker].loc[date]["Open"]
+                for ticker, pos in positions.items()
+                if date in data[ticker].index
+            )
+            buys_today = 0
+            for ticker in pending_tickers:
+                if not market_ok or ticker in positions or ticker not in data or date not in data[ticker].index:
+                    continue
+                if len(positions) >= max_positions or buys_today >= int(config.get("entry_limit", max_positions)):
+                    break
+                row = data[ticker].loc[date]
+                target_value = equity / max_positions
+                multiplier = risk_multiplier(risk_score, risk_config, "half_elevated")
+                allocation = min(cash, target_value * multiplier)
+                if allocation <= 0:
+                    trades.append((date, ticker, "skip", row["Open"], f"dip_risk_score_{risk_score}"))
+                    continue
+                shares = allocation / row["Open"]
+                cash -= allocation
+                stop = variant_initial_stop(float(row["Open"]), float(row["ATR14"]), "turbo")
+                positions[ticker] = BacktestPosition(ticker, shares, row["Open"], date, row["High"], stop)
+                trades.append((date, ticker, "buy", row["Open"], config["name"]))
+                buys_today += 1
+            pending_tickers = []
+
+        for ticker in list(positions):
+            if date not in data[ticker].index:
+                continue
+            row = data[ticker].loc[date]
+            pos = positions[ticker]
+            pos.highest_high = max(pos.highest_high, row["High"])
+            pos.stop = max(pos.stop, variant_trailing_stop(float(pos.highest_high), float(row["ATR14"]), "turbo"))
+            hold_days = (pd.Timestamp(date) - pd.Timestamp(pos.entry_date)).days
+            target_hit = bool(config.get("profit_target")) and row["High"] >= pos.entry_price * (1 + float(config["profit_target"]))
+            max_hold_hit = bool(config.get("max_hold_days")) and hold_days >= int(config["max_hold_days"])
+            if row["Low"] <= pos.stop:
+                cash += pos.shares * pos.stop
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", pos.stop, "stop"))
+            elif target_hit:
+                exit_price = pos.entry_price * (1 + float(config["profit_target"]))
+                cash += pos.shares * exit_price
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", exit_price, "profit_target"))
+            elif max_hold_hit:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "max_hold"))
+            elif row["Close"] < row["SMA50"]:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "sma50_exit"))
+
+        value = cash + sum(
+            pos.shares * data[ticker].loc[date]["Close"]
+            for ticker, pos in positions.items()
+            if date in data[ticker].index
+        )
+        values.append((date, float(value)))
+
+        if idx < len(dates) - 1 and market_ok:
+            pending_tickers = rank_dip_for_date(data, qqq, date, positions, config)[:max_positions]
+
+    return summarize_backtest_result(
+        {
+            "variant": "dip",
+            "max_positions": max_positions,
+            "risk_policy": "half_elevated",
+            "risk_config": risk_config["name"],
+            "extension_policy": "none",
+            "entry_limit": config.get("entry_limit", max_positions),
+            "entry_decision": config["name"],
+            "entry_system": "dip",
+            "min_drop": config["min_drop"],
+            "profit_target": config.get("profit_target", "none"),
+            "max_hold_days": config.get("max_hold_days", "none"),
+        },
+        values,
+        trades,
+        positions,
+        data,
+        values[-1][0],
+    )
 
 
 def run_variant_pack(data, qqq, start="2018-01-01"):
@@ -712,6 +879,70 @@ def run_entry_decision_pack(data, qqq, start="2018-01-01"):
     return results
 
 
+def run_dip_entry_pack(data, qqq, start="2018-01-01"):
+    specs = [
+        {
+            "name": "dip_3pct_quick_bounce",
+            "min_drop": 0.03,
+            "profit_target": 0.08,
+            "max_hold_days": 15,
+            "entry_limit": 2,
+            "must_drop_more_than_qqq": True,
+        },
+        {
+            "name": "dip_5pct_quick_bounce",
+            "min_drop": 0.05,
+            "profit_target": 0.10,
+            "max_hold_days": 20,
+            "entry_limit": 2,
+            "must_drop_more_than_qqq": True,
+        },
+        {
+            "name": "dip_3pct_ride_trend",
+            "min_drop": 0.03,
+            "profit_target": None,
+            "max_hold_days": None,
+            "entry_limit": 2,
+            "must_drop_more_than_qqq": True,
+        },
+        {
+            "name": "dip_5pct_ride_trend",
+            "min_drop": 0.05,
+            "profit_target": None,
+            "max_hold_days": None,
+            "entry_limit": 2,
+            "must_drop_more_than_qqq": True,
+        },
+        {
+            "name": "dip_3pct_top_one_quick",
+            "min_drop": 0.03,
+            "profit_target": 0.08,
+            "max_hold_days": 15,
+            "entry_limit": 1,
+            "must_drop_more_than_qqq": True,
+        },
+        {
+            "name": "dip_5pct_top_one_quick",
+            "min_drop": 0.05,
+            "profit_target": 0.10,
+            "max_hold_days": 20,
+            "entry_limit": 1,
+            "must_drop_more_than_qqq": True,
+        },
+    ]
+    baseline = run_rotation_backtest(
+        data,
+        qqq,
+        start,
+        2,
+        "turbo",
+        next(item for item in RISK_CONFIGS if item["name"] == "risk_balanced"),
+        "half_elevated",
+    )
+    baseline["entry_decision"] = "turbo_full_two_baseline"
+    return [baseline] + [run_dip_entry_backtest(data, qqq, start, 2, spec) for spec in specs]
+
+
 def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv", prefix=""):
     out_dir = Path("research/out")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -739,6 +970,10 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "extension_policy": result.get("extension_policy", "none"),
                 "entry_limit": result.get("entry_limit", "none"),
                 "entry_decision": result.get("entry_decision", "n/a"),
+                "entry_system": result.get("entry_system", "momentum"),
+                "min_drop": result.get("min_drop", "n/a"),
+                "profit_target": result.get("profit_target", "n/a"),
+                "max_hold_days": result.get("max_hold_days", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
                 "final": result["final"],
@@ -798,8 +1033,22 @@ def main():
     parser.add_argument("--research", action="store_true", help="Run aggressive variant backtests.")
     parser.add_argument("--risk-research", action="store_true", help="Run predictive risk overlay backtests.")
     parser.add_argument("--entry-research", action="store_true", help="Run buy-decision and overextension backtests.")
+    parser.add_argument("--dip-research", action="store_true", help="Run separate buy-the-dip entry backtests.")
     args = parser.parse_args()
     data, qqq, errors = load_universe(UNIVERSE)
+    if args.dip_research:
+        results = run_dip_entry_pack(data, qqq, args.start)
+        summary = write_variant_outputs(results, "dip_entry_summary.csv", "dip_")
+        print(f"Loaded stocks: {len(data)} | data errors: {len(errors)}")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     if args.entry_research:
         results = run_entry_decision_pack(data, qqq, args.start)
         summary = write_variant_outputs(results, "entry_decision_summary.csv", "entry_")
