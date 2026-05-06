@@ -49,3 +49,16 @@ Or run the `Real Stock Research` GitHub Action with:
 - `research/out/dip_entry_summary.csv`
 - `research/out/dip_*_equity_curve.csv`
 - `research/out/dip_*_trades.csv`
+
+## 2026-05-06 Result
+
+The first historical test did not support replacing Turbo with dip buying.
+
+| Strategy | Final | CAGR | Max Drawdown |
+| --- | ---: | ---: | ---: |
+| Turbo baseline | `43.59x` | `57.2%` | `-35.8%` |
+| Best dip variant, 3% dip and ride trend | `14.46x` | `37.8%` | `-34.9%` |
+| 5% dip and ride trend | `9.65x` | `31.2%` | `-29.8%` |
+| Best quick-bounce dip variant | `5.14x` | `21.7%` | `-24.2%` |
+
+Decision: keep buy-the-dip as research/watchlist only. The live stock pilot remains Turbo top-2 momentum.

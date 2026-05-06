@@ -49,6 +49,11 @@ Last updated: 2026-05-06
   - latest candidates: `INTC`, `AMD`
   - latest market risk: `NORMAL`, score `1`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
+- latest research decision:
+  - Turbo remains the live stock strategy.
+  - Buy-the-dip was tested as a separate entry system and did not beat Turbo.
+  - Best dip variant: `14.46x`, `37.8%` CAGR, `-34.9%` max drawdown.
+  - Turbo baseline in the same dip test: `43.59x`, `57.2%` CAGR, `-35.8%` max drawdown.
 - Meaning: no real stock position exists until `manual_bought` is run with actual broker fill details.
 
 ## Month-End Review Plan
@@ -72,12 +77,17 @@ At month end, compare the three systems separately:
    - Confirm real stock cash/shares match the brokerage account.
    - Confirm any real buys/sells were manually confirmed with actual fills.
    - Review turbo profile performance separately from the swing demo.
+   - Keep buy-the-dip as research/watchlist only unless a future test beats Turbo.
 
 ## Known Alignment Notes
 
 - `tqqq-alert` is no longer in an open TQQQ trade as of the inspected state.
 - `tqqq-alert` is currently early-warning cash/re-entry, not manual safety mode.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
+- Strategy choices are currently aligned as:
+  - TQQQ repo: keep the optimized early-warning cash/re-entry TQQQ strategy.
+  - Swing repo: keep as paper/demo weekly stock comparison only.
+  - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.
