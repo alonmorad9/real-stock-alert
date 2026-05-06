@@ -254,6 +254,105 @@ def market_filter(qqq, date):
     }
 
 
+def add_market_risk_indicators(qqq):
+    qqq = qqq.copy()
+    qqq["SMA10"] = qqq["Close"].rolling(10).mean()
+    qqq["SMA20"] = qqq["Close"].rolling(20).mean()
+    qqq["VOL50"] = qqq["Volume"].rolling(50).mean()
+    qqq["RET5"] = qqq["Close"] / qqq["Close"].shift(5) - 1
+    qqq["HIGH20"] = qqq["High"].rolling(20).max()
+    qqq["DRAWDOWN20"] = qqq["Close"] / qqq["HIGH20"] - 1
+    qqq["DIST_SMA20"] = qqq["Close"] / qqq["SMA20"] - 1
+    qqq["DISTRIBUTION"] = ((qqq["Close"] < qqq["PREV_CLOSE"]) & (qqq["Volume"] > qqq["VOL50"] * 1.15)).astype(int)
+    qqq["DISTRIBUTION5"] = qqq["DISTRIBUTION"].rolling(5).sum()
+    return qqq.dropna()
+
+
+def market_risk_score(qqq, date, config):
+    if date not in qqq.index:
+        return 0, []
+    row = qqq.loc[date]
+    score = 0
+    reasons = []
+    if row["Close"] < row["SMA20"]:
+        score += int(config["below_sma20_points"])
+        reasons.append("QQQ below SMA20")
+    if row["Close"] < row["SMA10"]:
+        score += int(config["below_sma10_points"])
+        reasons.append("QQQ below SMA10")
+    if row["RET5"] <= -float(config["ret5_drop"]):
+        score += int(config["ret5_points"])
+        reasons.append("QQQ 5d drop")
+    if row["DISTRIBUTION5"] >= int(config["distribution_days"]):
+        score += int(config["distribution_points"])
+        reasons.append("distribution days")
+    if row["DRAWDOWN20"] <= -float(config["drawdown20"]):
+        score += int(config["drawdown_points"])
+        reasons.append("20d drawdown")
+    if row["RSI14"] >= float(config["rsi_hot"]):
+        score += int(config["hot_rsi_points"])
+        reasons.append("QQQ hot RSI")
+    if row["DIST_SMA20"] >= float(config["hot_dist_sma20"]):
+        score += int(config["hot_dist_points"])
+        reasons.append("QQQ extended above SMA20")
+    return score, reasons
+
+
+RISK_CONFIGS = [
+    {
+        "name": "risk_loose",
+        "below_sma20_points": 2,
+        "below_sma10_points": 1,
+        "ret5_drop": 0.04,
+        "ret5_points": 1,
+        "distribution_days": 3,
+        "distribution_points": 1,
+        "drawdown20": 0.06,
+        "drawdown_points": 1,
+        "rsi_hot": 82,
+        "hot_rsi_points": 1,
+        "hot_dist_sma20": 0.08,
+        "hot_dist_points": 1,
+        "elevated_threshold": 3,
+        "defensive_threshold": 5,
+    },
+    {
+        "name": "risk_balanced",
+        "below_sma20_points": 2,
+        "below_sma10_points": 1,
+        "ret5_drop": 0.03,
+        "ret5_points": 1,
+        "distribution_days": 2,
+        "distribution_points": 1,
+        "drawdown20": 0.05,
+        "drawdown_points": 1,
+        "rsi_hot": 80,
+        "hot_rsi_points": 1,
+        "hot_dist_sma20": 0.07,
+        "hot_dist_points": 1,
+        "elevated_threshold": 3,
+        "defensive_threshold": 5,
+    },
+    {
+        "name": "risk_tight",
+        "below_sma20_points": 2,
+        "below_sma10_points": 1,
+        "ret5_drop": 0.025,
+        "ret5_points": 1,
+        "distribution_days": 2,
+        "distribution_points": 1,
+        "drawdown20": 0.04,
+        "drawdown_points": 1,
+        "rsi_hot": 78,
+        "hot_rsi_points": 1,
+        "hot_dist_sma20": 0.06,
+        "hot_dist_points": 1,
+        "elevated_threshold": 2,
+        "defensive_threshold": 4,
+    },
+]
+
+
 def initial_stop(close, atr14):
     return max(close * 0.88, close - 2.5 * atr14)
 
@@ -396,7 +495,25 @@ def rank_for_date(data, qqq, date, positions, variant):
     return [ticker for _, ticker in ranked]
 
 
-def run_rotation_backtest(data, qqq, start="2018-01-01", max_positions=2, variant="base"):
+def risk_multiplier(risk_score, config, policy):
+    if not policy or policy == "none":
+        return 1.0
+    if policy == "block_elevated" and risk_score >= config["elevated_threshold"]:
+        return 0.0
+    if policy == "half_elevated" and risk_score >= config["elevated_threshold"]:
+        return 0.5
+    return 1.0
+
+
+def run_rotation_backtest(
+    data,
+    qqq,
+    start="2018-01-01",
+    max_positions=2,
+    variant="base",
+    risk_config=None,
+    risk_policy="none",
+):
     dates = common_dates(data, qqq, start)
     cash = 1.0
     positions = {}
@@ -404,10 +521,23 @@ def run_rotation_backtest(data, qqq, start="2018-01-01", max_positions=2, varian
     trades = []
     target_tickers = []
     rebalance_next_open = False
+    risk_events = []
+    qqq_risk = add_market_risk_indicators(qqq)
 
     for idx, date in enumerate(dates):
         qrow = qqq.loc[date]
         market_ok = qrow["Close"] > qrow["SMA200"]
+        risk_score, risk_reasons = market_risk_score(qqq_risk, date, risk_config) if risk_config else (0, [])
+        if risk_config and risk_score >= risk_config["elevated_threshold"]:
+            risk_events.append((date, risk_score, "; ".join(risk_reasons)))
+
+        if risk_policy == "exit_defensive" and risk_config and risk_score >= risk_config["defensive_threshold"]:
+            for ticker in list(positions):
+                if date in data[ticker].index:
+                    row = data[ticker].loc[date]
+                    pos = positions.pop(ticker)
+                    cash += pos.shares * row["Close"]
+                    trades.append((date, ticker, "sell", row["Close"], "risk_defensive_exit"))
 
         if rebalance_next_open:
             desired = set(target_tickers if market_ok else [])
@@ -432,8 +562,10 @@ def run_rotation_backtest(data, qqq, start="2018-01-01", max_positions=2, varian
                 row = data[ticker].loc[date]
                 slots_left = max_positions - len(positions)
                 target_value = equity / max_positions
-                allocation = min(cash, target_value if slots_left > 1 else cash)
+                multiplier = risk_multiplier(risk_score, risk_config, risk_policy)
+                allocation = min(cash, target_value * multiplier if slots_left > 1 else cash * multiplier)
                 if allocation <= 0:
+                    trades.append((date, ticker, "skip", row["Open"], f"{risk_policy}_risk_score_{risk_score}"))
                     continue
                 shares = allocation / row["Open"]
                 cash -= allocation
@@ -501,6 +633,9 @@ def run_rotation_backtest(data, qqq, start="2018-01-01", max_positions=2, varian
         "round_trips": len(wins),
         "win_rate": float(np.mean([win > 0 for win in wins])) if wins else np.nan,
         "avg_trade": float(np.mean(wins)) if wins else np.nan,
+        "risk_policy": risk_policy,
+        "risk_config": risk_config["name"] if risk_config else "none",
+        "risk_events": risk_events,
         "values": values,
         "trades_list": trades,
     }
@@ -518,20 +653,35 @@ def run_variant_pack(data, qqq, start="2018-01-01"):
     return [run_rotation_backtest(data, qqq, start, max_positions, variant) for variant, max_positions in specs]
 
 
-def write_variant_outputs(results):
+def run_risk_overlay_pack(data, qqq, start="2018-01-01"):
+    results = [run_rotation_backtest(data, qqq, start, 2, "turbo")]
+    for config in RISK_CONFIGS:
+        for policy in ["block_elevated", "half_elevated", "exit_defensive"]:
+            results.append(run_rotation_backtest(data, qqq, start, 2, "turbo", config, policy))
+    return results
+
+
+def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv", prefix=""):
     out_dir = Path("research/out")
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = []
     for result in results:
-        name = f"{result['variant']}_max{result['max_positions']}"
+        risk_suffix = "" if result.get("risk_config") in {None, "none"} else f"_{result['risk_config']}_{result['risk_policy']}"
+        name = f"{prefix}{result['variant']}_max{result['max_positions']}{risk_suffix}"
         pd.DataFrame(result["values"], columns=["Date", "Value"]).to_csv(out_dir / f"{name}_equity_curve.csv", index=False)
         pd.DataFrame(result["trades_list"], columns=["Date", "Ticker", "Side", "Price", "Reason"]).to_csv(
             out_dir / f"{name}_trades.csv", index=False
         )
+        if result.get("risk_events"):
+            pd.DataFrame(result["risk_events"], columns=["Date", "RiskScore", "Reasons"]).to_csv(
+                out_dir / f"{name}_risk_events.csv", index=False
+            )
         rows.append(
             {
                 "variant": result["variant"],
                 "max_positions": result["max_positions"],
+                "risk_config": result.get("risk_config", "none"),
+                "risk_policy": result.get("risk_policy", "none"),
                 "start": result["start"],
                 "end": result["end"],
                 "final": result["final"],
@@ -542,10 +692,11 @@ def write_variant_outputs(results):
                 "round_trips": result["round_trips"],
                 "win_rate": result["win_rate"],
                 "avg_trade": result["avg_trade"],
+                "risk_events": len(result.get("risk_events", [])),
             }
         )
     summary = pd.DataFrame(rows).sort_values(["cagr", "calmar"], ascending=False)
-    summary.to_csv(out_dir / "aggressive_variant_summary.csv", index=False)
+    summary.to_csv(out_dir / summary_name, index=False)
     return summary
 
 
@@ -588,8 +739,22 @@ def main():
     parser.add_argument("--max-positions", type=int, default=2)
     parser.add_argument("--start", default="2018-01-01")
     parser.add_argument("--research", action="store_true", help="Run aggressive variant backtests.")
+    parser.add_argument("--risk-research", action="store_true", help="Run predictive risk overlay backtests.")
     args = parser.parse_args()
     data, qqq, errors = load_universe(UNIVERSE)
+    if args.risk_research:
+        results = run_risk_overlay_pack(data, qqq, args.start)
+        summary = write_variant_outputs(results, "risk_overlay_summary.csv", "risk_")
+        print(f"Loaded stocks: {len(data)} | data errors: {len(errors)}")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     if args.research:
         results = run_variant_pack(data, qqq, args.start)
         summary = write_variant_outputs(results)
