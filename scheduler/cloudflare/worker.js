@@ -3,8 +3,11 @@ const REPO = "real-stock-alert";
 const WORKFLOW = "main.yml";
 
 function modeForSchedule(schedule, now) {
-  if (schedule && schedule.startsWith("45 13")) {
+  if (now.getUTCHours() === 13 && now.getUTCMinutes() === 45) {
     return "opening";
+  }
+  if (!(now.getUTCHours() === 21 && now.getUTCMinutes() === 30)) {
+    return null;
   }
   const day = now.getUTCDay();
   return day === 5 ? "weekly" : "daily";
@@ -36,7 +39,11 @@ async function dispatchWorkflow(env, mode) {
 export default {
   async scheduled(event, env, ctx) {
     const now = new Date(event.scheduledTime);
-    ctx.waitUntil(dispatchWorkflow(env, modeForSchedule(event.cron, now)));
+    const mode = modeForSchedule(event.cron, now);
+    if (!mode) {
+      return;
+    }
+    ctx.waitUntil(dispatchWorkflow(env, mode));
   },
 
   async fetch(request, env) {

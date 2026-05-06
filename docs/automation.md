@@ -15,11 +15,15 @@ The Cloudflare Worker dispatches the GitHub Action with either `daily` or `weekl
 Cloudflare schedule:
 
 ```toml
-"45 13 * * MON-FRI"
-"30 21 * * MON-FRI"
+"30,45 13,21 * * MON-FRI"
 ```
 
-The Worker maps `13:45 UTC` to `opening`. During Israel daylight time, that is `16:45` Israel time.
+This is one Cloudflare cron trigger to stay under the free-plan trigger limit. It wakes at `13:30`, `13:45`, `21:30`, and `21:45` UTC, but the Worker only dispatches GitHub at:
+
+- `13:45 UTC`: `opening`
+- `21:30 UTC`: after-close run
+
+During Israel daylight time, `13:45 UTC` is `16:45` Israel time.
 
 The Worker maps the `21:30 UTC` after-close run to:
 
