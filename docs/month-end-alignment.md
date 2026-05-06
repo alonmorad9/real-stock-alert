@@ -6,7 +6,7 @@ Last updated: 2026-05-06
 
 | Repo | Meaning | Money Mode | Source of Truth |
 | --- | --- | --- | --- |
-| `tqqq-alert` | Real TQQQ/manual safety strategy | Real | `position_state.json` |
+| `tqqq-alert` | Real TQQQ early-warning cash/re-entry strategy | Real | `position_state.json` |
 | `swing-stock-alert` | Weekly stock swing demo/paper tracker | Paper/demo | `pilot_state.json` and `reports/` |
 | `real-stock-alert` | Real stock-buying turbo swing pilot | Real | `position_state.json` |
 
@@ -19,11 +19,12 @@ Last updated: 2026-05-06
   - `position_open`: `false`
   - `shares`: `0.0`
   - `cash`: `$2,726.11`
-  - `last_action`: `manual_sold`
-  - `manual_exit_mode`: `true`
-  - `manual_exit_price`: `$67.37`
-  - `manual_exit_date`: `2026-05-05`
-- Meaning: the bot assumes no open TQQQ position and waits under manual safety rules.
+  - `last_action`: `strategy_switched_to_early_warning_cash`
+  - `manual_exit_mode`: `false`
+  - `early_exit_price`: `$67.37`
+  - `early_exit_date`: `2026-05-05`
+  - `waiting_for_early_reentry`: `true`
+- Meaning: the bot assumes no open TQQQ position and waits under early-warning re-entry rules.
 
 ### `swing-stock-alert`
 
@@ -45,7 +46,9 @@ Last updated: 2026-05-06
   - allocated cash: `$1,000`
   - cash: `$1,000`
   - positions: `[]`
-  - latest candidates: `INTC`, `MRVL`
+  - latest candidates: `INTC`, `AMD`
+  - latest market risk: `NORMAL`, score `1`
+  - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
 - Meaning: no real stock position exists until `manual_bought` is run with actual broker fill details.
 
 ## Month-End Review Plan
@@ -55,7 +58,7 @@ At month end, compare the three systems separately:
 1. `tqqq-alert`
    - Inspect `position_state.json`.
    - Confirm real TQQQ cash/shares match the brokerage account.
-   - Check whether manual safety mode caused a re-buy, continued cash, or a new state.
+   - Check whether early-warning cash mode caused a re-buy, continued cash, or a new state.
    - Review action history and Telegram/GitHub Actions behavior.
 
 2. `swing-stock-alert`
@@ -73,9 +76,9 @@ At month end, compare the three systems separately:
 ## Known Alignment Notes
 
 - `tqqq-alert` is no longer in an open TQQQ trade as of the inspected state.
+- `tqqq-alert` is currently early-warning cash/re-entry, not manual safety mode.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
-- `swing-stock-alert` and `real-stock-alert` can show similar tickers, such as `INTC` and `MRVL`, but they mean different things:
+- `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.
 - The TQQQ market reference inside the swing repo is not the real TQQQ strategy result.
-
