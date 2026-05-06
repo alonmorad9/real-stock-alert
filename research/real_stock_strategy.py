@@ -155,8 +155,9 @@ def load_prices(ticker):
     factor = df["AdjClose"] / df["Close"]
     for col in ["Open", "High", "Low", "Close"]:
         df[col] = df[col] * factor
+    df["AdjFactor"] = factor
 
-    return add_indicators(df[["Date", "Open", "High", "Low", "Close", "Volume"]].set_index("Date"))
+    return add_indicators(df[["Date", "Open", "High", "Low", "Close", "Volume", "AdjFactor"]].set_index("Date"))
 
 
 def load_universe(tickers):
@@ -177,26 +178,39 @@ def apply_intraday_snapshot(df, snapshot):
 
     df = df.copy()
     snap_date = snapshot["date"]
+    adj_factor = float(df["AdjFactor"].dropna().iloc[-1]) if "AdjFactor" in df else 1.0
+    adjusted_snapshot = {
+        **snapshot,
+        "open": snapshot["open"] * adj_factor,
+        "high": snapshot["high"] * adj_factor,
+        "low": snapshot["low"] * adj_factor,
+        "close": snapshot["close"] * adj_factor,
+    }
     if snap_date in df.index:
-        df.loc[snap_date, "Open"] = snapshot["open"]
-        df.loc[snap_date, "High"] = max(float(df.loc[snap_date, "High"]), snapshot["high"])
-        df.loc[snap_date, "Low"] = min(float(df.loc[snap_date, "Low"]), snapshot["low"])
-        df.loc[snap_date, "Close"] = snapshot["close"]
+        df.loc[snap_date, "Open"] = adjusted_snapshot["open"]
+        df.loc[snap_date, "High"] = max(float(df.loc[snap_date, "High"]), adjusted_snapshot["high"])
+        df.loc[snap_date, "Low"] = min(float(df.loc[snap_date, "Low"]), adjusted_snapshot["low"])
+        df.loc[snap_date, "Close"] = adjusted_snapshot["close"]
         df.loc[snap_date, "Volume"] = max(float(df.loc[snap_date, "Volume"]), snapshot["volume"])
+        if "AdjFactor" in df:
+            df.loc[snap_date, "AdjFactor"] = adj_factor
     elif snap_date > max(df.index):
         previous = df.iloc[-1]
         df.loc[snap_date, ["Open", "High", "Low", "Close", "Volume"]] = [
-            snapshot["open"],
-            snapshot["high"],
-            snapshot["low"],
-            snapshot["close"],
+            adjusted_snapshot["open"],
+            adjusted_snapshot["high"],
+            adjusted_snapshot["low"],
+            adjusted_snapshot["close"],
             snapshot["volume"],
         ]
         # Seed non-price columns before recomputing indicators below.
         for column in df.columns:
             if column not in {"Open", "High", "Low", "Close", "Volume"}:
                 df.loc[snap_date, column] = previous[column]
-    return add_indicators(df[["Open", "High", "Low", "Close", "Volume"]].sort_index())
+    base_columns = ["Open", "High", "Low", "Close", "Volume"]
+    if "AdjFactor" in df:
+        base_columns.append("AdjFactor")
+    return add_indicators(df[base_columns].sort_index())
 
 
 def apply_intraday_snapshots(data, qqq):
