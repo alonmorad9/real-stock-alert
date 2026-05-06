@@ -9,6 +9,7 @@ on:
         default: daily
         type: choice
         options:
+          - opening
           - daily
           - weekly
           - manual
@@ -42,4 +43,3 @@ jobs:
           git add position_state.json reports/
           git diff --cached --quiet || git commit -m "Update real stock alert report"
           git push
-

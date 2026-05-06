@@ -61,6 +61,51 @@ def fetch_yahoo_chart(ticker):
     return payload
 
 
+def fetch_yahoo_intraday_snapshot(ticker):
+    response = requests.get(
+        f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker}",
+        params={
+            "range": "1d",
+            "interval": "1m",
+            "includePrePost": "false",
+        },
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"},
+    )
+    response.raise_for_status()
+    payload = response.json()
+    result = (payload.get("chart", {}).get("result") or [None])[0]
+    if not result or not result.get("timestamp"):
+        return None
+
+    quote = result["indicators"]["quote"][0]
+    rows = pd.DataFrame(
+        {
+            "DateTime": pd.to_datetime(result["timestamp"], unit="s")
+            .tz_localize("UTC")
+            .tz_convert("America/New_York"),
+            "Open": quote["open"],
+            "High": quote["high"],
+            "Low": quote["low"],
+            "Close": quote["close"],
+            "Volume": quote["volume"],
+        }
+    ).dropna()
+    if rows.empty:
+        return None
+
+    latest = rows.iloc[-1]
+    return {
+        "date": latest["DateTime"].date(),
+        "timestamp": latest["DateTime"].isoformat(),
+        "open": float(rows["Open"].iloc[0]),
+        "high": float(rows["High"].max()),
+        "low": float(rows["Low"].min()),
+        "close": float(latest["Close"]),
+        "volume": float(rows["Volume"].sum()),
+    }
+
+
 def add_indicators(df):
     df = df.copy()
     df["SMA20"] = df["Close"].rolling(20).mean()
@@ -124,6 +169,50 @@ def load_universe(tickers):
             errors.append({"ticker": ticker, "error": str(exc)})
     qqq = load_prices("QQQ")
     return data, qqq, errors
+
+
+def apply_intraday_snapshot(df, snapshot):
+    if not snapshot:
+        return df
+
+    df = df.copy()
+    snap_date = snapshot["date"]
+    if snap_date in df.index:
+        df.loc[snap_date, "Open"] = snapshot["open"]
+        df.loc[snap_date, "High"] = max(float(df.loc[snap_date, "High"]), snapshot["high"])
+        df.loc[snap_date, "Low"] = min(float(df.loc[snap_date, "Low"]), snapshot["low"])
+        df.loc[snap_date, "Close"] = snapshot["close"]
+        df.loc[snap_date, "Volume"] = max(float(df.loc[snap_date, "Volume"]), snapshot["volume"])
+    elif snap_date > max(df.index):
+        previous = df.iloc[-1]
+        df.loc[snap_date, ["Open", "High", "Low", "Close", "Volume"]] = [
+            snapshot["open"],
+            snapshot["high"],
+            snapshot["low"],
+            snapshot["close"],
+            snapshot["volume"],
+        ]
+        # Seed non-price columns before recomputing indicators below.
+        for column in df.columns:
+            if column not in {"Open", "High", "Low", "Close", "Volume"}:
+                df.loc[snap_date, column] = previous[column]
+    return add_indicators(df[["Open", "High", "Low", "Close", "Volume"]].sort_index())
+
+
+def apply_intraday_snapshots(data, qqq):
+    errors = []
+    refreshed = {}
+    for ticker, df in data.items():
+        try:
+            refreshed[ticker] = apply_intraday_snapshot(df, fetch_yahoo_intraday_snapshot(ticker))
+        except Exception as exc:
+            refreshed[ticker] = df
+            errors.append({"ticker": ticker, "error": f"intraday snapshot failed: {exc}"})
+    try:
+        qqq = apply_intraday_snapshot(qqq, fetch_yahoo_intraday_snapshot("QQQ"))
+    except Exception as exc:
+        errors.append({"ticker": "QQQ", "error": f"intraday snapshot failed: {exc}"})
+    return refreshed, qqq, errors
 
 
 def latest_common_date(data, qqq):

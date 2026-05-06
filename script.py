@@ -9,6 +9,7 @@ import requests
 
 from research.real_stock_strategy import (
     UNIVERSE,
+    apply_intraday_snapshots,
     latest_common_date,
     load_prices,
     load_universe,
@@ -155,12 +156,17 @@ def manual_sold(args):
 def build_report(mode):
     state = load_state()
     data, qqq, errors = load_universe(UNIVERSE)
+    data_source = "daily Yahoo bars"
+    if mode == "opening":
+        data, qqq, intraday_errors = apply_intraday_snapshots(data, qqq)
+        errors.extend(intraday_errors)
+        data_source = "daily Yahoo bars with intraday 1-minute opening snapshot"
     asof = latest_common_date(data, qqq)
     settings = state.get("settings", {})
     max_positions = int(settings.get("max_positions", 2))
     profile = strategy_profile(state)
     candidates = scan_candidates(data, qqq, asof, max_positions, profile)
-    top_tickers = [item["ticker"] for item in candidates] if mode == "weekly" else []
+    top_tickers = [item["ticker"] for item in candidates] if mode in {"weekly", "opening"} else []
     market = market_filter(qqq, asof)
 
     exit_statuses = []
@@ -194,6 +200,7 @@ def build_report(mode):
         f"Mode: `{mode}`",
         f"Profile: `{profile}`",
         f"Max positions: `{max_positions}`",
+        f"Data source: `{data_source}`",
         "",
         "## Market Filter",
         "",
@@ -244,8 +251,8 @@ def build_report(mode):
         lines.append("")
 
     lines.extend(["## Buy Candidates", ""])
-    if mode != "weekly":
-        lines.append("Weekly buy scan was not requested on this run.")
+    if mode not in {"weekly", "opening"}:
+        lines.append("Buy scan was not requested on this run.")
     elif not market["market_on"]:
         lines.append("No new buys. QQQ is below SMA200.")
     elif slots <= 0:
@@ -288,6 +295,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command")
     subparsers.add_parser("weekly")
+    subparsers.add_parser("opening")
     subparsers.add_parser("daily")
     subparsers.add_parser("manual")
 

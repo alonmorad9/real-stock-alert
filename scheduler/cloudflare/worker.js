@@ -2,7 +2,10 @@ const OWNER = "alonmorad9";
 const REPO = "real-stock-alert";
 const WORKFLOW = "main.yml";
 
-function modeForDate(now) {
+function modeForSchedule(schedule, now) {
+  if (schedule && schedule.startsWith("45 13")) {
+    return "opening";
+  }
   const day = now.getUTCDay();
   return day === 5 ? "weekly" : "daily";
 }
@@ -33,17 +36,16 @@ async function dispatchWorkflow(env, mode) {
 export default {
   async scheduled(event, env, ctx) {
     const now = new Date(event.scheduledTime);
-    ctx.waitUntil(dispatchWorkflow(env, modeForDate(now)));
+    ctx.waitUntil(dispatchWorkflow(env, modeForSchedule(event.cron, now)));
   },
 
   async fetch(request, env) {
     const url = new URL(request.url);
-    const mode = url.searchParams.get("mode") || modeForDate(new Date());
-    if (!["daily", "weekly", "manual"].includes(mode)) {
+    const mode = url.searchParams.get("mode") || modeForSchedule("", new Date());
+    if (!["daily", "weekly", "opening", "manual"].includes(mode)) {
       return new Response("Invalid mode", { status: 400 });
     }
     await dispatchWorkflow(env, mode);
     return new Response(`Dispatched ${mode}\n`);
   },
 };
-

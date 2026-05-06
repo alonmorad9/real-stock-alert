@@ -6,6 +6,7 @@ Last updated: 2026-05-05
 
 Recommended first version:
 
+- Opening turbo candidate scan: 15 minutes after US market open on market weekdays.
 - Daily exit check: after US market close, only meant to manage confirmed open positions.
 - Weekly buy scan: Friday after US market close.
 
@@ -14,10 +15,16 @@ The Cloudflare Worker dispatches the GitHub Action with either `daily` or `weekl
 Cloudflare schedule:
 
 ```toml
+"45 13 * * MON-FRI"
 "30 21 * * MON-FRI"
 ```
 
-The Worker maps Monday through Thursday to `daily` and Friday to `weekly`.
+The Worker maps `13:45 UTC` to `opening`. During Israel daylight time, that is `16:45` Israel time.
+
+The Worker maps the `21:30 UTC` after-close run to:
+
+- Monday through Thursday: `daily`
+- Friday: `weekly`
 
 ## GitHub Action
 
@@ -28,6 +35,7 @@ Workflow:
 Manual run:
 
 ```bash
+gh workflow run main.yml -f mode=opening
 gh workflow run main.yml -f mode=weekly
 gh workflow run main.yml -f mode=daily
 ```
