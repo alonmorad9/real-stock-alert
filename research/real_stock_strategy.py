@@ -115,7 +115,14 @@ def add_indicators(df):
     df["VOL20"] = df["Volume"].rolling(20).mean()
     df["RET20"] = df["Close"] / df["Close"].shift(20) - 1
     df["RET63"] = df["Close"] / df["Close"].shift(63) - 1
+    delta = df["Close"].diff()
+    gains = delta.clip(lower=0).rolling(14).mean()
+    losses = (-delta.clip(upper=0)).rolling(14).mean()
+    rs = gains / losses.replace(0, np.nan)
+    df["RSI14"] = 100 - (100 / (1 + rs))
+    df["RSI14"] = df["RSI14"].fillna(100)
     prev_close = df["Close"].shift(1)
+    df["PREV_CLOSE"] = prev_close
     true_range = pd.concat(
         [
             df["High"] - df["Low"],
@@ -271,6 +278,22 @@ def variant_trailing_stop(highest_high, atr14, variant):
     return trailing_stop(highest_high, atr14)
 
 
+def extension_warning(row):
+    warnings = []
+    rsi14 = float(row["RSI14"])
+    above_sma50 = float(row["Close"] / row["SMA50"] - 1)
+    intraday_move = float(row["Close"] / row["PREV_CLOSE"] - 1) if row["PREV_CLOSE"] else 0.0
+    if rsi14 >= 80:
+        warnings.append(f"RSI14 {rsi14:.0f}")
+    if above_sma50 >= 0.30:
+        warnings.append(f"{above_sma50:.0%} above SMA50")
+    if intraday_move >= 0.08:
+        warnings.append(f"{intraday_move:.0%} above prior close")
+    if warnings:
+        return "HOT BUT STRETCHED: " + ", ".join(warnings)
+    return "OK"
+
+
 def candidate_for(data, qqq, ticker, date, variant="base"):
     if ticker not in data or date not in data[ticker].index or date not in qqq.index:
         return None
@@ -294,6 +317,9 @@ def candidate_for(data, qqq, ticker, date, variant="base"):
         "ret63": float(row["RET63"]),
         "ret20": float(row["RET20"]),
         "above_sma50": float(above_sma50),
+        "rsi14": float(row["RSI14"]),
+        "intraday_move": float(row["Close"] / row["PREV_CLOSE"] - 1) if row["PREV_CLOSE"] else 0.0,
+        "extension_warning": extension_warning(row),
         "sma50": float(row["SMA50"]),
         "sma200": float(row["SMA200"]),
         "atr14": atr14,

@@ -274,6 +274,14 @@ def build_report(mode):
                     f"{money(cash_per_slot)} | {money(candidate['initial_stop'])} | "
                     f"{pct(candidate['rs63'])} | {pct(candidate['ret20'])} |"
                 )
+            stretched = [candidate for candidate in buy_candidates if candidate["extension_warning"] != "OK"]
+            if stretched:
+                lines.extend(["", "## Overextension Warnings", ""])
+                for candidate in stretched:
+                    lines.append(
+                        f"- `{candidate['ticker']}`: {candidate['extension_warning']}. "
+                        "Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched."
+                    )
             lines.extend(
                 [
                     "",

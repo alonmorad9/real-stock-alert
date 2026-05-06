@@ -50,6 +50,8 @@ Candidates must satisfy:
 - 63-day relative strength better than QQQ,
 - average dollar volume above `$50M/day`.
 
+The report may show an advisory `HOT BUT STRETCHED` warning. This does not remove a candidate or change its rank. It flags cases where the stock may be extended by RSI14, distance above SMA50, or a large opening move above the prior close.
+
 Ranking favors:
 
 - 63-day relative strength,
