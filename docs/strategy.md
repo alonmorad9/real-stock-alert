@@ -52,6 +52,16 @@ Candidates must satisfy:
 
 The report may show an advisory `HOT BUT STRETCHED` warning. This does not remove a candidate or change its rank. It flags cases where the stock may be extended by RSI14, distance above SMA50, or a large opening move above the prior close.
 
+## Market Risk Overlay
+
+The live bot uses the `risk_balanced` overlay as allocation guidance for new buys:
+
+- `NORMAL`: use normal suggested allocation.
+- `ELEVATED`: use half-size new buys.
+- `DEFENSIVE`: use half-size new buys and manually review risk. The overlay does not auto-sell.
+
+The overlay scores QQQ using short-term trend, recent drops, distribution days, 20-day drawdown, RSI14, and distance above SMA20. This was selected from the historical risk-overlay research because half-sizing during elevated risk improved the turbo backtest without replacing the momentum engine.
+
 Ranking favors:
 
 - 63-day relative strength,

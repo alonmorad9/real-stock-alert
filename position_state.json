@@ -19,6 +19,12 @@
     "max_positions": 2,
     "profile": "turbo",
     "qqq_below_sma200_action": "sell_all",
+    "risk_overlay": {
+      "allocation_when_elevated": 0.5,
+      "config": "risk_balanced",
+      "enabled": true,
+      "policy": "half_size_new_buys_only"
+    },
     "weekly_buy_scan": true
   },
   "strategy": "turbo_top_2_real_stock_momentum"

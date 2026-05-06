@@ -8,12 +8,15 @@ from pathlib import Path
 import requests
 
 from research.real_stock_strategy import (
+    RISK_CONFIGS,
     UNIVERSE,
+    add_market_risk_indicators,
     apply_intraday_snapshots,
     latest_common_date,
     load_prices,
     load_universe,
     market_filter,
+    market_risk_score,
     position_exit_status,
     scan_candidates,
     variant_initial_stop,
@@ -79,6 +82,38 @@ def get_latest_price(ticker):
 
 def strategy_profile(state):
     return state.get("settings", {}).get("profile", "base")
+
+
+def live_risk_config():
+    return next(config for config in RISK_CONFIGS if config["name"] == "risk_balanced")
+
+
+def risk_guidance(qqq, asof):
+    config = live_risk_config()
+    risk_score, reasons = market_risk_score(add_market_risk_indicators(qqq), asof, config)
+    if risk_score >= config["defensive_threshold"]:
+        return {
+            "level": "DEFENSIVE",
+            "score": risk_score,
+            "reasons": reasons,
+            "allocation_multiplier": 0.5,
+            "action": "Use half-size only for new buys. Do not auto-sell from this overlay.",
+        }
+    if risk_score >= config["elevated_threshold"]:
+        return {
+            "level": "ELEVATED",
+            "score": risk_score,
+            "reasons": reasons,
+            "allocation_multiplier": 0.5,
+            "action": "Use half-size for new buys.",
+        }
+    return {
+        "level": "NORMAL",
+        "score": risk_score,
+        "reasons": reasons,
+        "allocation_multiplier": 1.0,
+        "action": "Use normal suggested allocation.",
+    }
 
 
 def manual_bought(args):
@@ -168,6 +203,7 @@ def build_report(mode):
     candidates = scan_candidates(data, qqq, asof, max_positions, profile)
     top_tickers = [item["ticker"] for item in candidates] if mode in {"weekly", "opening"} else []
     market = market_filter(qqq, asof)
+    risk = risk_guidance(qqq, asof)
 
     exit_statuses = []
     portfolio_value = float(state.get("cash", 0.0))
@@ -185,6 +221,12 @@ def build_report(mode):
     state["latest_portfolio_value"] = round(portfolio_value, 2)
     state["latest_unrealized_pnl"] = round(portfolio_value - float(state.get("allocated_cash", 0.0)), 2)
     state["latest_candidates"] = [candidate["ticker"] for candidate in candidates]
+    state["latest_market_risk"] = {
+        "level": risk["level"],
+        "score": risk["score"],
+        "reasons": risk["reasons"],
+        "allocation_multiplier": risk["allocation_multiplier"],
+    }
     state["active_profile"] = profile
     state["last_action"] = f"{mode}_scan"
     save_state(state)
@@ -193,6 +235,7 @@ def build_report(mode):
     open_tickers = {position["ticker"] for position in open_positions}
     slots = max(0, max_positions - len(open_positions))
     cash_per_slot = float(state.get("cash", 0.0)) / slots if slots else 0.0
+    risk_adjusted_cash_per_slot = cash_per_slot * risk["allocation_multiplier"]
 
     lines = [
         f"# {SYSTEM_LABEL} Report - {asof}",
@@ -208,6 +251,17 @@ def build_report(mode):
         f"- QQQ SMA200: {money(market['sma200'])}",
         f"- Market filter: {'ON' if market['market_on'] else 'OFF'}",
         "",
+        "## Market Risk Overlay",
+        "",
+        f"- Risk level: `{risk['level']}`",
+        f"- Risk score: `{risk['score']}`",
+        f"- Suggested new-buy size: `{pct(risk['allocation_multiplier'])}` of normal",
+        f"- Action: {risk['action']}",
+    ]
+    if risk["reasons"]:
+        lines.append(f"- Reasons: {', '.join(risk['reasons'])}")
+    lines.extend([
+        "",
         "## Real Account State",
         "",
         f"- Allocated cash: {money(state.get('allocated_cash', 0.0))}",
@@ -215,7 +269,7 @@ def build_report(mode):
         f"- Portfolio value estimate: {money(portfolio_value)}",
         f"- Realized P&L: {money(state.get('realized_pnl', 0.0))}",
         "",
-    ]
+    ])
 
     if not open_positions:
         lines.extend(["## Open Positions", "", "No confirmed real positions are currently tracked.", ""])
@@ -264,15 +318,23 @@ def build_report(mode):
         else:
             lines.extend(
                 [
-                    "| Rank | Ticker | Close | Suggested Allocation | Initial Stop | 63d RS | 20d Return |",
-                    "| ---: | --- | ---: | ---: | ---: | ---: | ---: |",
+                    "| Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |",
+                    "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
                 ]
             )
             for idx, candidate in enumerate(buy_candidates, start=1):
                 lines.append(
                     f"| {idx} | {candidate['ticker']} | {money(candidate['close'])} | "
-                    f"{money(cash_per_slot)} | {money(candidate['initial_stop'])} | "
+                    f"{money(cash_per_slot)} | {money(risk_adjusted_cash_per_slot)} | {money(candidate['initial_stop'])} | "
                     f"{pct(candidate['rs63'])} | {pct(candidate['ret20'])} |"
+                )
+            lines.extend(["", "## Explicit Buy Instructions", ""])
+            for candidate in buy_candidates:
+                approx_shares = risk_adjusted_cash_per_slot / candidate["close"] if candidate["close"] else 0.0
+                lines.append(
+                    f"- `{candidate['ticker']}`: suggested buy amount {money(risk_adjusted_cash_per_slot)} "
+                    f"(about {approx_shares:.4f} shares at {money(candidate['close'])}). "
+                    f"Initial stop reference: {money(candidate['initial_stop'])}."
                 )
             stretched = [candidate for candidate in buy_candidates if candidate["extension_warning"] != "OK"]
             if stretched:

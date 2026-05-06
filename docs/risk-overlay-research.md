@@ -26,6 +26,16 @@ The overlay scores QQQ market risk using:
 - `half_elevated`: use half-size new buys when market risk is elevated.
 - `exit_defensive`: exit positions when risk reaches a defensive threshold.
 
+## Selected Live Use
+
+The live bot uses `risk_balanced` as guidance only:
+
+- normal risk: normal new-buy allocation,
+- elevated or defensive risk: half-size new buys,
+- no automatic selling from this overlay.
+
+Telegram reports should show explicit dollar instructions for the risk-adjusted buy amount.
+
 ## Run
 
 ```bash
@@ -43,4 +53,3 @@ Outputs:
 - `research/out/risk_*_equity_curve.csv`
 - `research/out/risk_*_trades.csv`
 - `research/out/risk_*_risk_events.csv`
-
