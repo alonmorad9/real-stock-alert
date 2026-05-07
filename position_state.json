@@ -3,8 +3,8 @@
   "allocated_cash": 1000.0,
   "cash": 1000.0,
   "last_action": "daily_scan",
-  "last_action_at": "2026-05-06T21:31:12.369745+00:00",
-  "last_scan_date": "2026-05-06",
+  "last_action_at": "2026-05-07T13:37:15.465392+00:00",
+  "last_scan_date": "2026-05-07",
   "latest_candidates": [
     "INTC",
     "AMD"
@@ -12,10 +12,8 @@
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [
-      "QQQ hot RSI"
-    ],
-    "score": 1
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 1000.0,
   "latest_unrealized_pnl": 0.0,
