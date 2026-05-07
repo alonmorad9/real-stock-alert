@@ -1,13 +1,13 @@
 # Automation
 
-Last updated: 2026-05-05
+Last updated: 2026-05-07
 
 ## Schedule
 
 Recommended first version:
 
 - Opening turbo candidate scan: 15 minutes after US market open on market weekdays.
-- Daily exit check: after US market close, only meant to manage confirmed open positions.
+- Daily after-close run: check confirmed open positions for exits and include Turbo buy candidates.
 - Weekly buy scan: Friday after US market close.
 
 The Cloudflare Worker dispatches the GitHub Action with either `daily` or `weekly` mode. GitHub Actions can also be run manually.

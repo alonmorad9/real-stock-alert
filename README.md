@@ -18,7 +18,7 @@ Active live profile: `turbo` max 2.
 - Allow new buys only when `QQQ` is above SMA200.
 - If `QQQ` closes below SMA200, flag all open positions for sale.
 - Run an opening turbo candidate scan 15 minutes after US market open on market weekdays.
-- Run a daily close exit check for confirmed positions.
+- Run a daily close exit check for confirmed positions and include Turbo buy candidates.
 - Run a weekly full buy scan after Friday close.
 - Sell when price closes below SMA50, the trailing stop is hit, or a holding drops out of the weekly top list.
 

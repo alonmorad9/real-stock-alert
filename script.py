@@ -201,6 +201,7 @@ def build_report(mode):
     max_positions = int(settings.get("max_positions", 2))
     profile = strategy_profile(state)
     candidates = scan_candidates(data, qqq, asof, max_positions, profile)
+    buy_scan_modes = {"weekly", "opening", "daily"}
     top_tickers = [item["ticker"] for item in candidates] if mode in {"weekly", "opening"} else []
     market = market_filter(qqq, asof)
     risk = risk_guidance(qqq, asof)
@@ -305,7 +306,7 @@ def build_report(mode):
         lines.append("")
 
     lines.extend(["## Buy Candidates", ""])
-    if mode not in {"weekly", "opening"}:
+    if mode not in buy_scan_modes:
         lines.append("Buy scan was not requested on this run.")
     elif not market["market_on"]:
         lines.append("No new buys. QQQ is below SMA200.")
