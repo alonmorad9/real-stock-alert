@@ -2,8 +2,8 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-07T13:46:20.281688+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-07T21:31:28.943865+00:00",
   "last_scan_date": "2026-05-07",
   "latest_candidates": [
     "INTC",
