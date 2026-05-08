@@ -2,9 +2,9 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-07T21:31:28.943865+00:00",
-  "last_scan_date": "2026-05-07",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-08T13:46:06.875398+00:00",
+  "last_scan_date": "2026-05-08",
   "latest_candidates": [
     "INTC",
     "AMD"
@@ -12,8 +12,10 @@
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [],
-    "score": 0
+    "reasons": [
+      "QQQ hot RSI"
+    ],
+    "score": 1
   },
   "latest_portfolio_value": 1000.0,
   "latest_unrealized_pnl": 0.0,
