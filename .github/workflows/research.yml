@@ -16,6 +16,7 @@ on:
           - risk
           - entry
           - dip
+          - universe
           - aggressive
 
 permissions:
@@ -42,6 +43,8 @@ jobs:
             python research/real_stock_strategy.py --entry-research --start "${{ inputs.start }}"
           elif [ "${{ inputs.kind }}" = "dip" ]; then
             python research/real_stock_strategy.py --dip-research --start "${{ inputs.start }}"
+          elif [ "${{ inputs.kind }}" = "universe" ]; then
+            python research/real_stock_strategy.py --universe-research --start "${{ inputs.start }}"
           else
             python research/real_stock_strategy.py --research --start "${{ inputs.start }}"
           fi

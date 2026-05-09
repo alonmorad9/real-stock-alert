@@ -25,6 +25,21 @@ UNIVERSE = [
     "MAR", "SBUX", "PEP", "LIN", "WMT",
 ]
 
+EXPANDED_GROWTH_UNIVERSE = sorted(set(UNIVERSE + [
+    "AFRM", "AI", "ALAB", "ALGN", "ANET", "APLD", "ARKK", "ASTS", "AXON", "BABA",
+    "BIDU", "BILI", "BILL", "BMBL", "BROS", "CAVA", "CELH", "CHWY", "COIN", "DASH",
+    "DOCU", "DUOL", "ELF", "ENPH", "ETSY", "FSLR", "FUTU", "GME", "HOOD", "HIMS",
+    "IONQ", "IOT", "JOBY", "LCID", "MARA", "MNDY", "NET", "NIO", "OKTA", "ON",
+    "PATH", "PINS", "RBLX", "RDDT", "RIVN", "ROKU", "SE", "SEDG", "S", "SOFI",
+    "SOUN", "SPOT", "TOST", "TTD", "TWLO", "UPST", "VRT", "WBD", "WDC", "XYZ",
+    "XPEV", "ZM",
+]))
+
+EXPANDED_WITH_ETFS_UNIVERSE = sorted(set(EXPANDED_GROWTH_UNIVERSE + [
+    "ARKG", "ARKW", "BOTZ", "CIBR", "IBB", "IGV", "IWM", "KWEB", "QQQ", "SMH",
+    "SOXL", "TAN", "TECL", "TQQQ", "URA", "XBI", "XLE", "XLF", "XLK", "XLV",
+]))
+
 
 @dataclass
 class BacktestPosition:
@@ -943,6 +958,37 @@ def run_dip_entry_pack(data, qqq, start="2018-01-01"):
     return [baseline] + [run_dip_entry_backtest(data, qqq, start, 2, spec) for spec in specs]
 
 
+def run_universe_pack(start="2018-01-01"):
+    config = next(item for item in RISK_CONFIGS if item["name"] == "risk_balanced")
+    specs = [
+        ("current_top2", UNIVERSE, 2),
+        ("current_top3", UNIVERSE, 3),
+        ("expanded_growth_top2", EXPANDED_GROWTH_UNIVERSE, 2),
+        ("expanded_growth_top3", EXPANDED_GROWTH_UNIVERSE, 3),
+        ("expanded_with_etfs_top2", EXPANDED_WITH_ETFS_UNIVERSE, 2),
+        ("expanded_with_etfs_top3", EXPANDED_WITH_ETFS_UNIVERSE, 3),
+    ]
+    results = []
+    load_notes = []
+    for label, tickers, max_positions in specs:
+        data, qqq, errors = load_universe(tickers)
+        result = run_rotation_backtest(data, qqq, start, max_positions, "turbo", config, "half_elevated")
+        result["entry_decision"] = label
+        result["entry_system"] = "universe"
+        result["universe_size"] = len(tickers)
+        result["loaded_tickers"] = len(data)
+        result["data_errors"] = len(errors)
+        results.append(result)
+        for item in errors:
+            load_notes.append({"universe": label, **item})
+
+    out_dir = Path("research/out")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if load_notes:
+        pd.DataFrame(load_notes).to_csv(out_dir / "universe_load_errors.csv", index=False)
+    return results
+
+
 def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv", prefix=""):
     out_dir = Path("research/out")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -974,6 +1020,9 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "min_drop": result.get("min_drop", "n/a"),
                 "profit_target": result.get("profit_target", "n/a"),
                 "max_hold_days": result.get("max_hold_days", "n/a"),
+                "universe_size": result.get("universe_size", "n/a"),
+                "loaded_tickers": result.get("loaded_tickers", "n/a"),
+                "data_errors": result.get("data_errors", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
                 "final": result["final"],
@@ -1034,7 +1083,20 @@ def main():
     parser.add_argument("--risk-research", action="store_true", help="Run predictive risk overlay backtests.")
     parser.add_argument("--entry-research", action="store_true", help="Run buy-decision and overextension backtests.")
     parser.add_argument("--dip-research", action="store_true", help="Run separate buy-the-dip entry backtests.")
+    parser.add_argument("--universe-research", action="store_true", help="Run expanded universe comparison backtests.")
     args = parser.parse_args()
+    if args.universe_research:
+        results = run_universe_pack(args.start)
+        summary = write_variant_outputs(results, "universe_comparison_summary.csv", "universe_")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     data, qqq, errors = load_universe(UNIVERSE)
     if args.dip_research:
         results = run_dip_entry_pack(data, qqq, args.start)
