@@ -85,6 +85,7 @@ See [docs/automation.md](docs/automation.md).
 Higher-risk swing variants are documented in [docs/aggressive-research.md](docs/aggressive-research.md).
 Predictive risk-overlay tests are documented in [docs/risk-overlay-research.md](docs/risk-overlay-research.md).
 Entry-decision tests are documented in [docs/entry-decision-research.md](docs/entry-decision-research.md).
+Repeat-stretch tests are documented in [docs/repeat-stretch-research.md](docs/repeat-stretch-research.md).
 Separate buy-the-dip entry tests can be run before deciding whether to add a dip scanner to live alerts.
 Expanded-universe tests compare the current fixed universe against broader growth and ETF baskets.
 
@@ -94,6 +95,7 @@ Run locally:
 python3 research/real_stock_strategy.py --research --start 2018-01-01
 python3 research/real_stock_strategy.py --risk-research --start 2018-01-01
 python3 research/real_stock_strategy.py --entry-research --start 2018-01-01
+python3 research/real_stock_strategy.py --repeat-stretch-research --start 2018-01-01
 python3 research/real_stock_strategy.py --dip-research --start 2018-01-01
 python3 research/real_stock_strategy.py --universe-research --start 2018-01-01
 ```

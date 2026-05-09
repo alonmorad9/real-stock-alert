@@ -412,6 +412,13 @@ def is_stretched(row):
     return extension_warning(row) != "OK"
 
 
+def is_extremely_stretched(row):
+    rsi14 = float(row["RSI14"])
+    above_sma50 = float(row["Close"] / row["SMA50"] - 1)
+    intraday_move = float(row["Close"] / row["PREV_CLOSE"] - 1) if row["PREV_CLOSE"] else 0.0
+    return bool(rsi14 >= 85 or above_sma50 >= 0.60 or intraday_move >= 0.12)
+
+
 def candidate_for(data, qqq, ticker, date, variant="base"):
     if ticker not in data or date not in data[ticker].index or date not in qqq.index:
         return None
@@ -499,16 +506,23 @@ def qualifies_for_variant(row, qrow, variant):
     return bool(market_ok and liquid and relative_strength and trend_ok and momentum_ok)
 
 
-def rank_for_date(data, qqq, date, positions, variant):
+def rank_for_date(data, qqq, date, positions, variant, rank_policy="none", previous_targets=None):
     if date not in qqq.index:
         return []
     qrow = qqq.loc[date]
     ranked = []
+    previous_targets = set(previous_targets or [])
     for ticker, df in data.items():
         if ticker in positions or date not in df.index:
             continue
         row = df.loc[date]
         if qualifies_for_variant(row, qrow, variant):
+            if rank_policy == "skip_repeat_stretched" and ticker in previous_targets and is_stretched(row):
+                continue
+            if rank_policy == "skip_repeat_extreme" and ticker in previous_targets and is_extremely_stretched(row):
+                continue
+            if rank_policy == "skip_extreme" and is_extremely_stretched(row):
+                continue
             ranked.append((float(score_candidate(row, qrow, variant)), ticker))
     ranked.sort(reverse=True)
     return [ticker for _, ticker in ranked]
@@ -626,6 +640,7 @@ def run_rotation_backtest(
     risk_policy="none",
     extension_policy="none",
     entry_limit=None,
+    rank_policy="none",
 ):
     dates = common_dates(data, qqq, start)
     cash = 1.0
@@ -721,7 +736,9 @@ def run_rotation_backtest(
         is_week_end = idx == len(dates) - 1 or pd.Timestamp(dates[idx + 1]).isocalendar().week != pd.Timestamp(date).isocalendar().week
         if is_week_end:
             held = [ticker for ticker in positions if ticker in data and date in data[ticker].index]
-            target_tickers = (held + rank_for_date(data, qqq, date, positions, variant))[:max_positions]
+            target_tickers = (
+                held + rank_for_date(data, qqq, date, positions, variant, rank_policy, target_tickers)
+            )[:max_positions]
             rebalance_next_open = True
 
     return summarize_backtest_result(
@@ -732,6 +749,7 @@ def run_rotation_backtest(
         "risk_config": risk_config["name"] if risk_config else "none",
         "extension_policy": extension_policy,
         "entry_limit": entry_limit or "none",
+        "rank_policy": rank_policy,
         "entry_system": "momentum",
         },
         values,
@@ -894,6 +912,36 @@ def run_entry_decision_pack(data, qqq, start="2018-01-01"):
     return results
 
 
+def run_repeat_stretch_pack(data, qqq, start="2018-01-01"):
+    config = next(item for item in RISK_CONFIGS if item["name"] == "risk_balanced")
+    specs = [
+        ("baseline_full_two", "none", "none", None),
+        ("skip_repeat_stretched", "skip_repeat_stretched", "none", None),
+        ("skip_repeat_extreme", "skip_repeat_extreme", "none", None),
+        ("skip_all_extreme", "skip_extreme", "none", None),
+        ("half_stretched_baseline", "none", "half_stretched", None),
+        ("skip_stretched_baseline", "none", "skip_stretched", None),
+    ]
+    results = []
+    for label, rank_policy, extension_policy, entry_limit in specs:
+        result = run_rotation_backtest(
+            data,
+            qqq,
+            start,
+            2,
+            "turbo",
+            config,
+            "half_elevated",
+            extension_policy,
+            entry_limit,
+            rank_policy,
+        )
+        result["entry_decision"] = label
+        result["entry_system"] = "repeat_stretch"
+        results.append(result)
+    return results
+
+
 def run_dip_entry_pack(data, qqq, start="2018-01-01"):
     specs = [
         {
@@ -1014,6 +1062,7 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "risk_config": result.get("risk_config", "none"),
                 "risk_policy": result.get("risk_policy", "none"),
                 "extension_policy": result.get("extension_policy", "none"),
+                "rank_policy": result.get("rank_policy", "none"),
                 "entry_limit": result.get("entry_limit", "none"),
                 "entry_decision": result.get("entry_decision", "n/a"),
                 "entry_system": result.get("entry_system", "momentum"),
@@ -1082,6 +1131,7 @@ def main():
     parser.add_argument("--research", action="store_true", help="Run aggressive variant backtests.")
     parser.add_argument("--risk-research", action="store_true", help="Run predictive risk overlay backtests.")
     parser.add_argument("--entry-research", action="store_true", help="Run buy-decision and overextension backtests.")
+    parser.add_argument("--repeat-stretch-research", action="store_true", help="Run repeat stretched recommendation backtests.")
     parser.add_argument("--dip-research", action="store_true", help="Run separate buy-the-dip entry backtests.")
     parser.add_argument("--universe-research", action="store_true", help="Run expanded universe comparison backtests.")
     args = parser.parse_args()
@@ -1098,6 +1148,19 @@ def main():
         }))
         return
     data, qqq, errors = load_universe(UNIVERSE)
+    if args.repeat_stretch_research:
+        results = run_repeat_stretch_pack(data, qqq, args.start)
+        summary = write_variant_outputs(results, "repeat_stretch_summary.csv", "repeat_")
+        print(f"Loaded stocks: {len(data)} | data errors: {len(errors)}")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     if args.dip_research:
         results = run_dip_entry_pack(data, qqq, args.start)
         summary = write_variant_outputs(results, "dip_entry_summary.csv", "dip_")

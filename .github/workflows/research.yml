@@ -15,6 +15,7 @@ on:
         options:
           - risk
           - entry
+          - repeat
           - dip
           - universe
           - aggressive
@@ -41,6 +42,8 @@ jobs:
             python research/real_stock_strategy.py --risk-research --start "${{ inputs.start }}"
           elif [ "${{ inputs.kind }}" = "entry" ]; then
             python research/real_stock_strategy.py --entry-research --start "${{ inputs.start }}"
+          elif [ "${{ inputs.kind }}" = "repeat" ]; then
+            python research/real_stock_strategy.py --repeat-stretch-research --start "${{ inputs.start }}"
           elif [ "${{ inputs.kind }}" = "dip" ]; then
             python research/real_stock_strategy.py --dip-research --start "${{ inputs.start }}"
           elif [ "${{ inputs.kind }}" = "universe" ]; then
