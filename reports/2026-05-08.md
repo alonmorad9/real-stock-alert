@@ -1,8 +1,9 @@
 # REAL STOCK SYSTEM Report - 2026-05-08
 
-Mode: `weekly`
+Mode: `daily`
 Profile: `turbo`
 Max positions: `2`
+Rank policy: `skip_repeat_stretched`
 Data source: `daily Yahoo bars`
 
 ## Market Filter
@@ -32,19 +33,24 @@ No confirmed real positions are currently tracked.
 
 ## Buy Candidates
 
+## Skipped Repeat Stretched Candidates
+
+- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 88, 101% above SMA50, 14% above prior close).
+- `AMD` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 81, 79% above SMA50, 11% above prior close).
+
 | Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | INTC | $124.92 | $500.00 | $500.00 | $109.93 | 130.1% | 100.3% |
-| 2 | AMD | $455.19 | $500.00 | $500.00 | $400.57 | 101.6% | 85.8% |
+| 1 | MU | $746.81 | $500.00 | $500.00 | $657.19 | 72.5% | 77.6% |
+| 2 | DDOG | $200.16 | $500.00 | $500.00 | $176.14 | 62.4% | 90.0% |
 
 ## Explicit Buy Instructions
 
-- `INTC`: suggested buy amount $500.00 (about 4.0026 shares at $124.92). Initial stop reference: $109.93.
-- `AMD`: suggested buy amount $500.00 (about 1.0984 shares at $455.19). Initial stop reference: $400.57.
+- `MU`: suggested buy amount $500.00 (about 0.6695 shares at $746.81). Initial stop reference: $657.19.
+- `DDOG`: suggested buy amount $500.00 (about 2.4980 shares at $200.16). Initial stop reference: $176.14.
 
 ## Overextension Warnings
 
-- `INTC`: HOT BUT STRETCHED: RSI14 88, 101% above SMA50, 14% above prior close. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
-- `AMD`: HOT BUT STRETCHED: RSI14 81, 79% above SMA50, 11% above prior close. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `MU`: HOT BUT STRETCHED: RSI14 88, 66% above SMA50, 15% above prior close. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `DDOG`: HOT BUT STRETCHED: RSI14 88, 57% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
 
 These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.
