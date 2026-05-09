@@ -15,7 +15,7 @@ Last updated: 2026-05-07
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-07:
+- Current state inspected locally on 2026-05-09:
   - `position_open`: `false`
   - `shares`: `0.0`
   - `cash`: `$2,726.11`
@@ -51,11 +51,15 @@ Last updated: 2026-05-07
   - allocated cash: `$1,000`
   - cash: `$1,000`
   - positions: `[]`
-  - latest candidates: `INTC`, `AMD`
-  - latest market risk: `NORMAL`, score `1`
+  - latest candidates: `MU`, `DDOG`
+  - latest skipped repeat-stretched candidates: `INTC`, `AMD`
+  - latest market risk: `NORMAL`, score `2`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
+  - rank policy: `skip_repeat_stretched`
 - latest research decision:
   - Turbo remains the live stock strategy.
+  - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.
+  - Expanded-universe tests did not beat the current universe, so the live universe should stay narrow.
   - Buy-the-dip was tested as a separate entry system and did not beat Turbo.
   - Best dip variant: `14.46x`, `37.8%` CAGR, `-34.9%` max drawdown.
   - Turbo baseline in the same dip test: `43.59x`, `57.2%` CAGR, `-35.8%` max drawdown.

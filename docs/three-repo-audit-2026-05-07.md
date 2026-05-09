@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | `tqqq-alert` | Real TQQQ strategy | `position_state.json` | Cash, manual safety mode after `manual_sold` |
 | `swing-stock-alert` | Weekly stock swing paper/demo tracker | `pilot_state.json` and reports | Paper positions `INTC`, `MRVL` |
-| `real-stock-alert` | Real stock Turbo pilot | `position_state.json` | No real positions; latest candidates `INTC`, `AMD` |
+| `real-stock-alert` | Real stock Turbo pilot | `position_state.json` | No real positions; latest candidates `MU`, `DDOG`; skipped repeat-stretched `INTC`, `AMD` |
 
 ## TQQQ Repo
 
@@ -81,13 +81,17 @@ Current real-stock state:
 - allocated cash: `$1,000`
 - cash: `$1,000`
 - positions: none
-- latest candidates: `INTC`, `AMD`
-- market risk: `NORMAL`, score `1`
+- latest candidates: `MU`, `DDOG`
+- latest skipped repeat-stretched candidates: `INTC`, `AMD`
+- market risk: `NORMAL`, score `2`
 - risk overlay: `risk_balanced`, half-size new buys only when risk is elevated/defensive
+- rank policy: `skip_repeat_stretched`
 
 Strategy decision:
 
 - Keep Turbo top-2 momentum as the live real-stock strategy.
+- Keep `skip_repeat_stretched` active because it improved the historical return/drawdown tradeoff.
+- Keep the current universe; expanded growth/ETF universes underperformed.
 - Keep buy-the-dip as research/watchlist only because the dip backtest did not beat Turbo.
 
 ## Aligned Operating Plan
