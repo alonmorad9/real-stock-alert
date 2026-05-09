@@ -50,7 +50,9 @@ Candidates must satisfy:
 - 63-day relative strength better than QQQ,
 - average dollar volume above `$50M/day`.
 
-The report may show an advisory `HOT BUT STRETCHED` warning. This does not remove a candidate or change its rank. It flags cases where the stock may be extended by RSI14, distance above SMA50, or a large opening move above the prior close.
+The live rank policy is `skip_repeat_stretched`. If a ticker was already a recent target and is still marked `HOT BUT STRETCHED`, the bot skips it as a fresh buy recommendation and looks for the next qualified momentum name. This is meant to avoid repeatedly chasing the same overextended leaders when no real position was confirmed.
+
+If a stretched ticker is not a repeat target, the report may still show an advisory `HOT BUT STRETCHED` warning. That warning flags cases where the stock may be extended by RSI14, distance above SMA50, or a large opening move above the prior close.
 
 ## Market Risk Overlay
 

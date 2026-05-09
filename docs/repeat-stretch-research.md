@@ -8,7 +8,7 @@ Test the idea before live implementation:
 
 > If the same top candidates keep appearing while they are very stretched, should the bot wait for cool-off or confirmation instead of repeating the buy recommendation?
 
-This is research only. It does not change live alerts.
+This started as research only. After the 2026-05-09 test, `skip_repeat_stretched` was selected for live buy scans.
 
 ## Tested Variants
 
@@ -39,3 +39,16 @@ Or run the `Real Stock Research` GitHub Action with:
 ## Decision Rule
 
 Only add a live repeat-stretch rule if it improves the return/drawdown tradeoff. If it reduces return heavily, keep overextension as a warning only.
+
+## 2026-05-09 Result
+
+| Strategy | Final | CAGR | Max Drawdown |
+| --- | ---: | ---: | ---: |
+| `skip_repeat_stretched` | `49.27x` | `59.5%` | `-33.4%` |
+| baseline full Turbo | `46.83x` | `58.6%` | `-35.8%` |
+| `skip_repeat_extreme` | `46.83x` | `58.6%` | `-35.8%` |
+| `skip_all_extreme` | `33.60x` | `52.4%` | `-34.9%` |
+| `half_stretched_baseline` | `29.64x` | `50.1%` | `-34.1%` |
+| `skip_stretched_baseline` | `11.74x` | `34.3%` | `-29.3%` |
+
+Decision: implement `skip_repeat_stretched` in live buy scans. Do not skip all stretched names.

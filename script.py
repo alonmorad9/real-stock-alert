@@ -200,9 +200,21 @@ def build_report(mode):
     settings = state.get("settings", {})
     max_positions = int(settings.get("max_positions", 2))
     profile = strategy_profile(state)
-    candidates = scan_candidates(data, qqq, asof, max_positions, profile)
+    previous_targets = state.get("latest_candidates", [])
+    rank_policy = settings.get("rank_policy", "skip_repeat_stretched")
+    raw_candidates = scan_candidates(data, qqq, asof, max_positions, profile)
+    candidates, skipped_candidates = scan_candidates(
+        data,
+        qqq,
+        asof,
+        max_positions,
+        profile,
+        rank_policy,
+        previous_targets,
+        True,
+    )
     buy_scan_modes = {"weekly", "opening", "daily"}
-    top_tickers = [item["ticker"] for item in candidates] if mode in {"weekly", "opening"} else []
+    top_tickers = [item["ticker"] for item in raw_candidates] if mode in {"weekly", "opening"} else []
     market = market_filter(qqq, asof)
     risk = risk_guidance(qqq, asof)
 
@@ -222,6 +234,10 @@ def build_report(mode):
     state["latest_portfolio_value"] = round(portfolio_value, 2)
     state["latest_unrealized_pnl"] = round(portfolio_value - float(state.get("allocated_cash", 0.0)), 2)
     state["latest_candidates"] = [candidate["ticker"] for candidate in candidates]
+    state["latest_skipped_candidates"] = [
+        {"ticker": candidate["ticker"], "reason": candidate["skip_reason"]}
+        for candidate in skipped_candidates[:max_positions]
+    ]
     state["latest_market_risk"] = {
         "level": risk["level"],
         "score": risk["score"],
@@ -244,6 +260,7 @@ def build_report(mode):
         f"Mode: `{mode}`",
         f"Profile: `{profile}`",
         f"Max positions: `{max_positions}`",
+        f"Rank policy: `{rank_policy}`",
         f"Data source: `{data_source}`",
         "",
         "## Market Filter",
@@ -314,6 +331,15 @@ def build_report(mode):
         lines.append("No new buys. Max confirmed positions are already filled.")
     else:
         buy_candidates = [candidate for candidate in candidates if candidate["ticker"] not in open_tickers][:slots]
+        visible_skips = [candidate for candidate in skipped_candidates if candidate["ticker"] not in open_tickers]
+        if visible_skips:
+            lines.extend(["## Skipped Repeat Stretched Candidates", ""])
+            for candidate in visible_skips[:max_positions]:
+                lines.append(
+                    f"- `{candidate['ticker']}` skipped: it was already a recent target and is still stretched "
+                    f"({candidate['extension_warning']})."
+                )
+            lines.append("")
         if not buy_candidates:
             lines.append("No qualified new buy candidates.")
         else:

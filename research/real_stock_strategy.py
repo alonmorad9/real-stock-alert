@@ -453,13 +453,40 @@ def candidate_for(data, qqq, ticker, date, variant="base"):
     }
 
 
-def scan_candidates(data, qqq, date, max_positions=2, variant="base"):
+def scan_candidates(
+    data,
+    qqq,
+    date,
+    max_positions=2,
+    variant="base",
+    rank_policy="none",
+    previous_targets=None,
+    return_skipped=False,
+):
     candidates = []
+    skipped = []
+    previous_targets = set(previous_targets or [])
     for ticker in data:
         signal = candidate_for(data, qqq, ticker, date, variant)
         if signal:
             candidates.append(signal)
-    return sorted(candidates, key=lambda item: item["score"], reverse=True)[:max_positions]
+    ranked = sorted(candidates, key=lambda item: item["score"], reverse=True)
+    filtered = []
+    for candidate in ranked:
+        repeat_stretched = (
+            rank_policy == "skip_repeat_stretched"
+            and candidate["ticker"] in previous_targets
+            and candidate["extension_warning"] != "OK"
+        )
+        if repeat_stretched:
+            skipped.append({**candidate, "skip_reason": "repeat stretched candidate"})
+            continue
+        filtered.append(candidate)
+        if len(filtered) >= max_positions:
+            break
+    if return_skipped:
+        return filtered, skipped
+    return filtered
 
 
 def common_dates(data, qqq, start):

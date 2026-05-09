@@ -16,6 +16,7 @@ Active live profile: `turbo` max 2.
 - Trade liquid large-cap and growth stocks.
 - Hold at most 2 stocks.
 - Allow new buys only when `QQQ` is above SMA200.
+- Skip repeat stretched names as fresh buy candidates, using the tested `skip_repeat_stretched` rank policy.
 - If `QQQ` closes below SMA200, flag all open positions for sale.
 - Run an opening turbo candidate scan 15 minutes after US market open on market weekdays.
 - Run a daily close exit check for confirmed positions and include Turbo buy candidates.

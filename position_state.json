@@ -28,6 +28,7 @@
     "max_positions": 2,
     "profile": "turbo",
     "qqq_below_sma200_action": "sell_all",
+    "rank_policy": "skip_repeat_stretched",
     "risk_overlay": {
       "allocation_when_elevated": 0.5,
       "config": "risk_balanced",
