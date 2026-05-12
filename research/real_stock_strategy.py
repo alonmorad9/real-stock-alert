@@ -40,6 +40,21 @@ EXPANDED_WITH_ETFS_UNIVERSE = sorted(set(EXPANDED_GROWTH_UNIVERSE + [
     "SOXL", "TAN", "TECL", "TQQQ", "URA", "XBI", "XLE", "XLF", "XLK", "XLV",
 ]))
 
+SECTOR_GROUPS = {
+    "semis": {
+        "NVDA", "AMD", "AVGO", "INTC", "QCOM", "TXN", "AMAT", "LRCX", "MU", "KLAC",
+        "ADI", "MRVL", "ASML", "ARM", "SMCI", "ON", "WDC",
+    },
+    "software": {
+        "MSFT", "ADBE", "CRM", "ORCL", "PANW", "CRWD", "DDOG", "ZS", "MDB", "SNOW",
+        "PLTR", "APP", "CDNS", "SNPS", "INTU", "SHOP", "NET", "OKTA", "MNDY", "IOT",
+    },
+    "internet": {
+        "GOOGL", "GOOG", "META", "AMZN", "NFLX", "UBER", "ABNB", "BKNG", "MELI",
+        "RDDT", "DASH", "SPOT", "PINS", "ROKU", "SE",
+    },
+}
+
 
 @dataclass
 class BacktestPosition:
@@ -518,6 +533,19 @@ def score_candidate(row, qrow, variant):
     if variant == "turbo":
         return rs63 * 90 + row["RET20"] * 80 + above_sma50 * 35
     return rs63 * 100 + row["RET20"] * 35 + above_sma50 * 20
+
+
+def score_candidate_weights(row, qrow, weights):
+    rs63 = row["RET63"] - qrow["RET63"]
+    above_sma50 = row["Close"] / row["SMA50"] - 1
+    return rs63 * weights["rs63"] + row["RET20"] * weights["ret20"] + above_sma50 * weights["above_sma50"]
+
+
+def sector_for(ticker):
+    for sector, tickers in SECTOR_GROUPS.items():
+        if ticker in tickers:
+            return sector
+    return ticker
 
 
 def qualifies_for_variant(row, qrow, variant):
@@ -1064,6 +1092,192 @@ def run_universe_pack(start="2018-01-01"):
     return results
 
 
+def idea_trailing_stop(highest_high, atr14, stop_policy):
+    if stop_policy == "tight":
+        return max(highest_high * 0.88, highest_high - 2.5 * atr14)
+    if stop_policy == "loose":
+        return max(highest_high * 0.78, highest_high - 4.0 * atr14)
+    return variant_trailing_stop(highest_high, atr14, "turbo")
+
+
+def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", options=None):
+    options = options or {}
+    dates = common_dates(data, qqq, start)
+    cash = 1.0
+    positions = {}
+    values = []
+    trades = []
+    target_tickers = []
+    rebalance_next_open = False
+    risk_events = []
+    config = next(item for item in RISK_CONFIGS if item["name"] == "risk_balanced")
+    qqq_risk = add_market_risk_indicators(qqq)
+    weights = options.get("weights", {"rs63": 90, "ret20": 80, "above_sma50": 35})
+    rank_policy = options.get("rank_policy", "skip_repeat_stretched")
+    stop_policy = options.get("stop_policy", "turbo")
+    exit_policy = options.get("exit_policy", "sma50")
+    max_open_gap = options.get("max_open_gap")
+    profit_lock = options.get("profit_lock")
+    profit_target = options.get("profit_target")
+    sector_limit = bool(options.get("sector_limit", False))
+
+    for idx, date in enumerate(dates):
+        qrow = qqq.loc[date]
+        market_ok = qrow["Close"] > qrow["SMA200"]
+        risk_score, risk_reasons = market_risk_score(qqq_risk, date, config)
+        if risk_score >= config["elevated_threshold"]:
+            risk_events.append((date, risk_score, "; ".join(risk_reasons)))
+
+        if rebalance_next_open:
+            desired = set(target_tickers if market_ok else [])
+            for ticker in list(positions):
+                if ticker not in desired and date in data[ticker].index:
+                    row = data[ticker].loc[date]
+                    pos = positions.pop(ticker)
+                    cash += pos.shares * row["Open"]
+                    trades.append((date, ticker, "sell", row["Open"], "weekly_rotation"))
+
+            equity = cash + sum(
+                pos.shares * data[ticker].loc[date]["Open"]
+                for ticker, pos in positions.items()
+                if date in data[ticker].index
+            )
+            active_sectors = {sector_for(ticker) for ticker in positions}
+            buys_this_rebalance = 0
+            for ticker in target_tickers:
+                if not market_ok or ticker in positions or ticker not in data or date not in data[ticker].index:
+                    continue
+                if len(positions) >= 2:
+                    break
+                row = data[ticker].loc[date]
+                prev_close = row["PREV_CLOSE"]
+                opening_gap = row["Open"] / prev_close - 1 if prev_close else 0.0
+                if max_open_gap is not None and opening_gap > max_open_gap:
+                    trades.append((date, ticker, "skip", row["Open"], f"open_gap_{opening_gap:.2%}"))
+                    continue
+                sector = sector_for(ticker)
+                if sector_limit and sector in active_sectors:
+                    trades.append((date, ticker, "skip", row["Open"], f"sector_limit_{sector}"))
+                    continue
+                target_value = equity / 2
+                allocation = min(cash, target_value * risk_multiplier(risk_score, config, "half_elevated"))
+                if allocation <= 0:
+                    trades.append((date, ticker, "skip", row["Open"], f"risk_score_{risk_score}"))
+                    continue
+                shares = allocation / row["Open"]
+                cash -= allocation
+                stop = variant_initial_stop(float(row["Open"]), float(row["ATR14"]), "turbo")
+                positions[ticker] = BacktestPosition(ticker, shares, row["Open"], date, row["High"], stop)
+                active_sectors.add(sector)
+                trades.append((date, ticker, "buy", row["Open"], label))
+                buys_this_rebalance += 1
+            rebalance_next_open = False
+
+        for ticker in list(positions):
+            if date not in data[ticker].index:
+                continue
+            row = data[ticker].loc[date]
+            pos = positions[ticker]
+            pos.highest_high = max(pos.highest_high, row["High"])
+            pos.stop = max(pos.stop, idea_trailing_stop(float(pos.highest_high), float(row["ATR14"]), stop_policy))
+            if profit_lock and pos.highest_high >= pos.entry_price * (1 + profit_lock["trigger"]):
+                pos.stop = max(pos.stop, pos.highest_high * (1 - profit_lock["trail"]))
+            if profit_target and row["High"] >= pos.entry_price * (1 + profit_target):
+                exit_price = pos.entry_price * (1 + profit_target)
+                cash += pos.shares * exit_price
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", exit_price, "profit_target"))
+            elif row["Low"] <= pos.stop:
+                cash += pos.shares * pos.stop
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", pos.stop, "stop"))
+            elif exit_policy == "ema21" and row["Close"] < row["EMA21"]:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "ema21_exit"))
+            elif exit_policy == "sma20" and row["Close"] < row["SMA20"]:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "sma20_exit"))
+            elif exit_policy == "sma50" and row["Close"] < row["SMA50"]:
+                cash += pos.shares * row["Close"]
+                positions.pop(ticker)
+                trades.append((date, ticker, "sell", row["Close"], "sma50_exit"))
+
+        value = cash + sum(
+            pos.shares * data[ticker].loc[date]["Close"]
+            for ticker, pos in positions.items()
+            if date in data[ticker].index
+        )
+        values.append((date, float(value)))
+
+        is_week_end = idx == len(dates) - 1 or pd.Timestamp(dates[idx + 1]).isocalendar().week != pd.Timestamp(date).isocalendar().week
+        if is_week_end:
+            held = [ticker for ticker in positions if ticker in data and date in data[ticker].index]
+            ranked = []
+            previous_targets = set(target_tickers)
+            held_sectors = {sector_for(ticker) for ticker in held}
+            for ticker, df in data.items():
+                if ticker in positions or date not in df.index:
+                    continue
+                row = df.loc[date]
+                if not qualifies_for_variant(row, qrow, "turbo"):
+                    continue
+                if rank_policy == "skip_repeat_stretched" and ticker in previous_targets and is_stretched(row):
+                    continue
+                if sector_limit and sector_for(ticker) in held_sectors:
+                    continue
+                ranked.append((float(score_candidate_weights(row, qrow, weights)), ticker))
+            ranked.sort(reverse=True)
+            target_tickers = (held + [ticker for _, ticker in ranked])[:2]
+            rebalance_next_open = True
+
+    return summarize_backtest_result(
+        {
+            "variant": "turbo",
+            "max_positions": 2,
+            "risk_policy": "half_elevated",
+            "risk_config": config["name"],
+            "extension_policy": "none",
+            "rank_policy": rank_policy,
+            "entry_limit": "none",
+            "entry_decision": label,
+            "entry_system": "strategy_idea",
+            "stop_policy": stop_policy,
+            "exit_policy": exit_policy,
+            "profit_target": profit_target or "none",
+            "max_open_gap": max_open_gap if max_open_gap is not None else "none",
+            "sector_limit": sector_limit,
+        },
+        values,
+        trades,
+        positions,
+        data,
+        values[-1][0],
+        risk_events,
+    )
+
+
+def run_strategy_idea_pack(data, qqq, start="2018-01-01"):
+    specs = [
+        ("baseline_live", {}),
+        ("score_20d_heavy", {"weights": {"rs63": 70, "ret20": 120, "above_sma50": 25}}),
+        ("score_rs63_heavy", {"weights": {"rs63": 130, "ret20": 55, "above_sma50": 25}}),
+        ("score_no_extension", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}}),
+        ("exit_ema21", {"exit_policy": "ema21"}),
+        ("exit_sma20", {"exit_policy": "sma20"}),
+        ("stop_tight", {"stop_policy": "tight"}),
+        ("stop_loose", {"stop_policy": "loose"}),
+        ("profit_lock_25_10", {"profit_lock": {"trigger": 0.25, "trail": 0.10}}),
+        ("profit_lock_40_15", {"profit_lock": {"trigger": 0.40, "trail": 0.15}}),
+        ("profit_target_50", {"profit_target": 0.50}),
+        ("open_gap_max_8pct", {"max_open_gap": 0.08}),
+        ("open_gap_max_12pct", {"max_open_gap": 0.12}),
+        ("sector_limit", {"sector_limit": True}),
+    ]
+    return [run_strategy_idea_backtest(data, qqq, start, label, options) for label, options in specs]
+
+
 def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv", prefix=""):
     out_dir = Path("research/out")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1099,6 +1313,10 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "universe_size": result.get("universe_size", "n/a"),
                 "loaded_tickers": result.get("loaded_tickers", "n/a"),
                 "data_errors": result.get("data_errors", "n/a"),
+                "stop_policy": result.get("stop_policy", "n/a"),
+                "exit_policy": result.get("exit_policy", "n/a"),
+                "max_open_gap": result.get("max_open_gap", "n/a"),
+                "sector_limit": result.get("sector_limit", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
                 "final": result["final"],
@@ -1161,6 +1379,7 @@ def main():
     parser.add_argument("--repeat-stretch-research", action="store_true", help="Run repeat stretched recommendation backtests.")
     parser.add_argument("--dip-research", action="store_true", help="Run separate buy-the-dip entry backtests.")
     parser.add_argument("--universe-research", action="store_true", help="Run expanded universe comparison backtests.")
+    parser.add_argument("--idea-research", action="store_true", help="Run strategy idea backtests.")
     args = parser.parse_args()
     if args.universe_research:
         results = run_universe_pack(args.start)
@@ -1175,6 +1394,19 @@ def main():
         }))
         return
     data, qqq, errors = load_universe(UNIVERSE)
+    if args.idea_research:
+        results = run_strategy_idea_pack(data, qqq, args.start)
+        summary = write_variant_outputs(results, "strategy_idea_summary.csv", "idea_")
+        print(f"Loaded stocks: {len(data)} | data errors: {len(errors)}")
+        print(summary.to_string(index=False, formatters={
+            "final": "{:.2f}x".format,
+            "cagr": "{:.1%}".format,
+            "maxdd": "{:.1%}".format,
+            "calmar": "{:.2f}".format,
+            "win_rate": "{:.1%}".format,
+            "avg_trade": "{:.1%}".format,
+        }))
+        return
     if args.repeat_stretch_research:
         results = run_repeat_stretch_pack(data, qqq, args.start)
         summary = write_variant_outputs(results, "repeat_stretch_summary.csv", "repeat_")

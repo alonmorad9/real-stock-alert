@@ -18,6 +18,7 @@ on:
           - repeat
           - dip
           - universe
+          - ideas
           - aggressive
 
 permissions:
@@ -48,6 +49,8 @@ jobs:
             python research/real_stock_strategy.py --dip-research --start "${{ inputs.start }}"
           elif [ "${{ inputs.kind }}" = "universe" ]; then
             python research/real_stock_strategy.py --universe-research --start "${{ inputs.start }}"
+          elif [ "${{ inputs.kind }}" = "ideas" ]; then
+            python research/real_stock_strategy.py --idea-research --start "${{ inputs.start }}"
           else
             python research/real_stock_strategy.py --research --start "${{ inputs.start }}"
           fi
