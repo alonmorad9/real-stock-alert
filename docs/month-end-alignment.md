@@ -1,6 +1,6 @@
 # Month-End Alignment
 
-Last updated: 2026-05-07
+Last updated: 2026-05-12
 
 ## Current Repo Meanings
 
@@ -15,7 +15,7 @@ Last updated: 2026-05-07
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-09:
+- Current state inspected locally on 2026-05-12:
   - `position_open`: `false`
   - `shares`: `0.0`
   - `cash`: `$2,726.11`
@@ -29,6 +29,7 @@ Last updated: 2026-05-07
   - `waiting_for_early_reentry`: `false`
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
+- Fresh buys and re-buys also require `RSI14 <= 60`, based on the 2026-05-12 RSI guard research.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
 
 ### `swing-stock-alert`
@@ -44,16 +45,16 @@ Last updated: 2026-05-07
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-07:
+- Current state inspected locally on 2026-05-12:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
   - allocated cash: `$1,000`
   - cash: `$1,000`
   - positions: `[]`
-  - latest candidates: `MU`, `DDOG`
+  - latest candidates: `MU`, `QCOM`
   - latest skipped repeat-stretched candidates: `INTC`, `AMD`
-  - latest market risk: `NORMAL`, score `2`
+  - latest market risk: `NORMAL`, score `1`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
 - latest research decision:
@@ -63,6 +64,8 @@ Last updated: 2026-05-07
   - Buy-the-dip was tested as a separate entry system and did not beat Turbo.
   - Best dip variant: `14.46x`, `37.8%` CAGR, `-34.9%` max drawdown.
   - Turbo baseline in the same dip test: `43.59x`, `57.2%` CAGR, `-35.8%` max drawdown.
+  - The 2026-05-12 strategy-idea test selected `score_no_extension`: `45.21x`, `57.8%` CAGR, `-31.2%` max drawdown versus `baseline_live` `32.84x`, `51.9%` CAGR, `-32.7%` max drawdown.
+  - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded.
 - Meaning: no real stock position exists until `manual_bought` is run with actual broker fill details.
 
 ## Month-End Review Plan
@@ -96,9 +99,9 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: keep the optimized TQQQ strategy, but current real state is manual safety cash/re-entry after `manual_sold`.
+  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard, but current real state is manual safety cash/re-entry after `manual_sold`.
   - Swing repo: keep as paper/demo weekly stock comparison only.
-  - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot.
+  - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched` and `score_no_extension`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.
