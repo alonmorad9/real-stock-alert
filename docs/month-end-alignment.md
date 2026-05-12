@@ -29,6 +29,7 @@ Last updated: 2026-05-12
   - `waiting_for_early_reentry`: `false`
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
+- Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 60`.
 - Fresh buys and re-buys also require `RSI14 <= 60`, based on the 2026-05-12 RSI guard research.
 - Parabolic-stretch checks were added as Telegram advisory warnings only. They are not automatic sell rules for the month-end test.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
@@ -100,7 +101,7 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard; parabolic-stretch warnings are advisory only. Current real state is manual safety cash/re-entry after `manual_sold`.
+  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard and manual safety timeout; parabolic-stretch warnings are advisory only. Current real state is manual safety cash/re-entry after `manual_sold`.
   - Swing repo: keep as paper/demo weekly stock comparison only.
   - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched` and `score_no_extension`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
