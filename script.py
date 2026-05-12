@@ -283,9 +283,10 @@ def build_report(mode):
         "## Quick Meaning",
         "",
         "- `turbo`: aggressive momentum mode. It buys leaders, not cheap/dip names.",
+        "- Score formula: 63d relative strength plus 20d momentum. Extra distance above SMA50 is no longer rewarded.",
         f"- Risk `{risk['level']}` / score `{risk['score']}` controls size only. This run uses {pct(risk['allocation_multiplier'])} of normal new-buy size.",
         "- Reasons explain market-wide QQQ warnings; they do not pick the stocks.",
-        "- Overextension warnings are stock-specific. They warn about chasing hot names.",
+        "- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.",
         "- `skip_repeat_stretched` means a recent top pick is skipped if it is still stretched, so the bot stops repeating the same overextended names.",
         "- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.",
     ])

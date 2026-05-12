@@ -531,7 +531,7 @@ def score_candidate(row, qrow, variant):
     if variant == "aggressive":
         return rs63 * 120 + row["RET20"] * 55 + above_sma50 * 25
     if variant == "turbo":
-        return rs63 * 90 + row["RET20"] * 80 + above_sma50 * 35
+        return rs63 * 100 + row["RET20"] * 90
     return rs63 * 100 + row["RET20"] * 35 + above_sma50 * 20
 
 

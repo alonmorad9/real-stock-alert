@@ -67,8 +67,9 @@ The overlay scores QQQ using short-term trend, recent drops, distribution days, 
 Ranking favors:
 
 - 63-day relative strength,
-- 20-day momentum,
-- strength above SMA50.
+- 20-day momentum.
+
+The current Turbo score does not give extra points for being far above SMA50. SMA50 extension is still used for filters and overextension warnings, but the 2026-05-12 research found that removing it from the score improved the historical result and reduced drawdown.
 
 ## Position Sizing
 

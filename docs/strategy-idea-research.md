@@ -57,3 +57,16 @@ Or run the `Real Stock Research` GitHub Action with:
 ## Decision Rule
 
 Only change live behavior if an idea beats the live baseline on return while keeping drawdown reasonable and the trades realistic enough to follow manually.
+
+## 2026-05-12 Result
+
+The best tested idea was `score_no_extension`.
+
+| Idea | Final multiple | CAGR | Max drawdown | Decision |
+| --- | ---: | ---: | ---: | --- |
+| `score_no_extension` | 45.21x | 57.8% | -31.2% | Implement live |
+| `score_20d_heavy` | 39.24x | 55.1% | -37.6% | Reject |
+| `score_rs63_heavy` | 37.00x | 54.1% | -31.4% | Reject |
+| `baseline_live` | 32.84x | 51.9% | -32.7% | Replaced |
+
+Decision: keep Turbo, `risk_balanced`, half-size elevated-risk buys, and `skip_repeat_stretched`, but change the live Turbo score to use 63-day relative strength plus 20-day momentum only. Do not reward extra distance above SMA50 in the score; keep SMA50 extension for warnings and stretched-repeat discipline.
