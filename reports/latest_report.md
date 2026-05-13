@@ -1,15 +1,15 @@
 # REAL STOCK SYSTEM Report - 2026-05-13
 
-Mode: `opening`
+Mode: `daily`
 Profile: `turbo`
 Max positions: `2`
 Rank policy: `skip_repeat_stretched`
-Data source: `daily Yahoo bars with intraday 1-minute opening snapshot`
+Data source: `daily Yahoo bars`
 
 ## Market Filter
 
-- QQQ close: $706.46
-- QQQ SMA200: $608.31
+- QQQ close: $714.71
+- QQQ SMA200: $608.35
 - Market filter: ON
 
 ## Market Risk Overlay
@@ -43,24 +43,19 @@ No confirmed real positions are currently tracked.
 
 ## Buy Candidates
 
-## Skipped Repeat Stretched Candidates
-
-- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 77% above SMA50).
-- `AMD` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 63% above SMA50).
-
 | Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | MU | $790.94 | $500.00 | $500.00 | $696.03 | 77.5% | 73.4% |
-| 2 | MRVL | $176.22 | $500.00 | $500.00 | $155.07 | 101.4% | 30.9% |
+| 1 | INTC | $120.29 | $500.00 | $500.00 | $105.86 | 132.4% | 85.2% |
+| 2 | AMD | $445.50 | $500.00 | $500.00 | $392.04 | 91.9% | 72.6% |
 
 ## Explicit Buy Instructions
 
-- `MU`: suggested buy amount $500.00 (about 0.6322 shares at $790.94). Initial stop reference: $696.03.
-- `MRVL`: suggested buy amount $500.00 (about 2.8374 shares at $176.22). Initial stop reference: $155.07.
+- `INTC`: suggested buy amount $500.00 (about 4.1566 shares at $120.29). Initial stop reference: $105.86.
+- `AMD`: suggested buy amount $500.00 (about 1.1223 shares at $445.50). Initial stop reference: $392.04.
 
 ## Overextension Warnings
 
-- `MU`: HOT BUT STRETCHED: RSI14 84, 68% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
-- `MRVL`: HOT BUT STRETCHED: 42% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `INTC`: HOT BUT STRETCHED: RSI14 80, 80% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `AMD`: HOT BUT STRETCHED: 65% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
 
 These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.

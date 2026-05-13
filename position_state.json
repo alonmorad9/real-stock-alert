@@ -2,12 +2,12 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-13T13:46:59.379371+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-13T21:30:55.351637+00:00",
   "last_scan_date": "2026-05-13",
   "latest_candidates": [
-    "MU",
-    "MRVL"
+    "INTC",
+    "AMD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -18,16 +18,7 @@
     "score": 1
   },
   "latest_portfolio_value": 1000.0,
-  "latest_skipped_candidates": [
-    {
-      "reason": "repeat stretched candidate",
-      "ticker": "INTC"
-    },
-    {
-      "reason": "repeat stretched candidate",
-      "ticker": "AMD"
-    }
-  ],
+  "latest_skipped_candidates": [],
   "latest_unrealized_pnl": 0.0,
   "positions": [],
   "realized_pnl": 0.0,
