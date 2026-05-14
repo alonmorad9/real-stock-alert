@@ -200,7 +200,12 @@ def build_report(mode):
     settings = state.get("settings", {})
     max_positions = int(settings.get("max_positions", 2))
     profile = strategy_profile(state)
-    previous_targets = state.get("latest_candidates", [])
+    previous_targets = list(
+        dict.fromkeys(
+            state.get("latest_candidates", [])
+            + [item["ticker"] for item in state.get("latest_skipped_candidates", [])]
+        )
+    )
     rank_policy = settings.get("rank_policy", "skip_repeat_stretched")
     raw_candidates = scan_candidates(data, qqq, asof, max_positions, profile)
     candidates, skipped_candidates = scan_candidates(
@@ -287,7 +292,7 @@ def build_report(mode):
         f"- Risk `{risk['level']}` / score `{risk['score']}` controls size only. This run uses {pct(risk['allocation_multiplier'])} of normal new-buy size.",
         "- Reasons explain market-wide QQQ warnings; they do not pick the stocks.",
         "- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.",
-        "- `skip_repeat_stretched` means a recent top pick is skipped if it is still stretched, so the bot stops repeating the same overextended names.",
+        "- `skip_repeat_stretched` means a recent recommended or skipped target is skipped again if it is still stretched.",
         "- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.",
     ])
     lines.extend([
@@ -344,6 +349,9 @@ def build_report(mode):
     else:
         buy_candidates = [candidate for candidate in candidates if candidate["ticker"] not in open_tickers][:slots]
         visible_skips = [candidate for candidate in skipped_candidates if candidate["ticker"] not in open_tickers]
+        if rank_policy == "skip_repeat_stretched" and previous_targets:
+            lines.append(f"Repeat-stretch memory from previous scan: `{', '.join(previous_targets)}`.")
+            lines.append("")
         if visible_skips:
             lines.extend(["## Skipped Repeat Stretched Candidates", ""])
             for candidate in visible_skips[:max_positions]:
