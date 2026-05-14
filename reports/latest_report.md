@@ -1,14 +1,14 @@
 # REAL STOCK SYSTEM Report - 2026-05-14
 
-Mode: `opening`
+Mode: `daily`
 Profile: `turbo`
 Max positions: `2`
 Rank policy: `skip_repeat_stretched`
-Data source: `daily Yahoo bars with intraday 1-minute opening snapshot`
+Data source: `daily Yahoo bars`
 
 ## Market Filter
 
-- QQQ close: $718.95
+- QQQ close: $719.79
 - QQQ SMA200: $609.12
 - Market filter: ON
 
@@ -43,26 +43,26 @@ No confirmed real positions are currently tracked.
 
 ## Buy Candidates
 
-Repeat-stretch memory from previous scan: `INTC, AMD`.
+Repeat-stretch memory from previous scan: `MRVL, MU, INTC, AMD`.
 
 ## Skipped Repeat Stretched Candidates
 
-- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 73% above SMA50).
+- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 70% above SMA50).
 - `AMD` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 64% above SMA50).
 
 | Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | MRVL | $187.12 | $500.00 | $500.00 | $164.67 | 119.5% | 40.3% |
-| 2 | MU | $804.47 | $500.00 | $500.00 | $707.93 | 74.6% | 75.9% |
+| 1 | ARM | $228.50 | $500.00 | $500.00 | $201.08 | 67.0% | 40.8% |
+| 2 | DDOG | $202.84 | $500.00 | $500.00 | $178.50 | 40.8% | 64.3% |
 
 ## Explicit Buy Instructions
 
-- `MRVL`: suggested buy amount $500.00 (about 2.6721 shares at $187.12). Initial stop reference: $164.67.
-- `MU`: suggested buy amount $500.00 (about 0.6215 shares at $804.47). Initial stop reference: $707.93.
+- `ARM`: suggested buy amount $500.00 (about 2.1882 shares at $228.50). Initial stop reference: $201.08.
+- `DDOG`: suggested buy amount $500.00 (about 2.4650 shares at $202.84). Initial stop reference: $178.50.
 
 ## Overextension Warnings
 
-- `MRVL`: HOT BUT STRETCHED: 48% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
-- `MU`: HOT BUT STRETCHED: RSI14 84, 68% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `ARM`: HOT BUT STRETCHED: 38% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `DDOG`: HOT BUT STRETCHED: RSI14 89, 51% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
 
 These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.
