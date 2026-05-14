@@ -1,6 +1,6 @@
 # Month-End Alignment
 
-Last updated: 2026-05-12
+Last updated: 2026-05-14
 
 ## Current Repo Meanings
 
@@ -15,7 +15,7 @@ Last updated: 2026-05-12
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-12:
+- Current state inspected locally on 2026-05-14:
   - `position_open`: `false`
   - `shares`: `0.0`
   - `cash`: `$2,726.11`
@@ -27,7 +27,10 @@ Last updated: 2026-05-12
   - `early_exit_price`: `null`
   - `early_exit_date`: `null`
   - `waiting_for_early_reentry`: `false`
+  - `parking_ticker`: `XLK`
+  - `parking_shares`: `0.0`
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
+- Meaning of parking fields: XLK is tracked only as an optional waiting/parking asset. Because `parking_shares` is `0.0`, there is no real XLK parking position in the inspected state.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
 - Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 60`.
 - Fresh buys and re-buys also require `RSI14 <= 60`, based on the 2026-05-12 RSI guard research.
@@ -47,15 +50,15 @@ Last updated: 2026-05-12
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-12:
+- Current state inspected locally on 2026-05-14:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
   - allocated cash: `$1,000`
   - cash: `$1,000`
   - positions: `[]`
-  - latest candidates: `MU`, `QCOM`
-  - latest skipped repeat-stretched candidates: `INTC`, `AMD`
+  - latest candidates: `INTC`, `AMD`
+  - latest skipped repeat-stretched candidates: `[]`
   - latest market risk: `NORMAL`, score `1`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
@@ -68,6 +71,7 @@ Last updated: 2026-05-12
   - Turbo baseline in the same dip test: `43.59x`, `57.2%` CAGR, `-35.8%` max drawdown.
   - The 2026-05-12 strategy-idea test selected `score_no_extension`: `45.21x`, `57.8%` CAGR, `-31.2%` max drawdown versus `baseline_live` `32.84x`, `51.9%` CAGR, `-32.7%` max drawdown.
   - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded.
+  - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
 - Meaning: no real stock position exists until `manual_bought` is run with actual broker fill details.
 
 ## Month-End Review Plan
@@ -101,9 +105,9 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard and manual safety timeout; parabolic-stretch warnings are advisory only. Current real state is manual safety cash/re-entry after `manual_sold`.
+  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard and manual safety timeout; parabolic-stretch warnings are advisory only. XLK parking tracking exists but currently has zero shares. Current real state is manual safety cash/re-entry after `manual_sold`.
   - Swing repo: keep as paper/demo weekly stock comparison only.
-  - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched` and `score_no_extension`.
+  - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, and `score_no_extension`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.
