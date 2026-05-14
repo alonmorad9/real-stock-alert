@@ -18,7 +18,7 @@ Last updated: 2026-05-14
 - Current state inspected locally on 2026-05-14:
   - `position_open`: `false`
   - `shares`: `0.0`
-  - `cash`: `$2,726.11`
+  - `cash`: `$26.13`
   - `last_action`: `manual_sold`
   - `manual_exit_mode`: `true`
   - `manual_exit_price`: `$67.37`
@@ -28,9 +28,10 @@ Last updated: 2026-05-14
   - `early_exit_date`: `null`
   - `waiting_for_early_reentry`: `false`
   - `parking_ticker`: `XLK`
-  - `parking_shares`: `0.0`
+  - `parking_shares`: `15.1158`
+  - `parking_avg_cost`: `$178.62`
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
-- Meaning of parking fields: XLK is tracked only as an optional waiting/parking asset. Because `parking_shares` is `0.0`, there is no real XLK parking position in the inspected state.
+- Meaning of parking fields: XLK is tracked as the optional waiting/parking asset while the real TQQQ strategy is out of TQQQ. Because `parking_shares` is above zero, the month-end real path should include XLK value plus cash.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
 - Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 60`.
 - Fresh buys and re-buys also require `RSI14 <= 60`, based on the 2026-05-12 RSI guard research.
@@ -82,6 +83,7 @@ At month end, compare the three systems separately:
    - Inspect `position_state.json`.
    - Confirm real TQQQ cash/shares match the brokerage account.
    - Check whether manual safety mode caused a re-buy, continued cash, or a new state.
+   - If `parking_shares` is above zero, include XLK value in the real path.
    - Compare real path against `bot_strategy_state.json`, which is only a paper benchmark.
    - Review action history and Telegram/GitHub Actions behavior.
 
@@ -105,7 +107,7 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard and manual safety timeout; parabolic-stretch warnings are advisory only. XLK parking tracking exists but currently has zero shares. Current real state is manual safety cash/re-entry after `manual_sold`.
+  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard and manual safety timeout; parabolic-stretch warnings are advisory only. Current real state is manual safety mode with tracked XLK waiting-asset exposure after `manual_parking_bought`.
   - Swing repo: keep as paper/demo weekly stock comparison only.
   - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, and `score_no_extension`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
