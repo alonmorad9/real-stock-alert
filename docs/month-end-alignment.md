@@ -1,6 +1,6 @@
 # Month-End Alignment
 
-Last updated: 2026-05-14
+Last updated: 2026-05-15
 
 ## Current Repo Meanings
 
@@ -30,12 +30,13 @@ Last updated: 2026-05-14
   - `parking_ticker`: `XLK`
   - `parking_shares`: `15.1158`
   - `parking_avg_cost`: `$178.62`
+  - `parking_highest_high_since_entry`: `$178.62`
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
 - Meaning of parking fields: XLK is tracked as the optional waiting/parking asset while the real TQQQ strategy is out of TQQQ. Because `parking_shares` is above zero, the month-end real path should include XLK value plus cash.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
-- Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 60`.
-- Fresh buys and re-buys also require `RSI14 <= 60`, based on the 2026-05-12 RSI guard research.
-- Parabolic-stretch checks were added as Telegram advisory warnings only. They are not automatic sell rules for the month-end test.
+- Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 65`.
+- Fresh buys and re-buys also require `RSI14 <= 65`.
+- Current high-risk/high-reward TQQQ strategy uses a 14% true ratcheting TQQQ trailing stop, +20% profit target, 5-day >= 25% parabolic auto-exit when a profitable TQQQ position is open, the 3-of-5 early-warning exit layer, XLK waiting-asset behavior, and a 5% XLK ratcheting stop while parked.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
 
 ### `swing-stock-alert`
@@ -51,15 +52,15 @@ Last updated: 2026-05-14
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-14:
+- Current state inspected locally on 2026-05-15:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
   - allocated cash: `$1,000`
   - cash: `$1,000`
   - positions: `[]`
-  - latest candidates: `INTC`, `AMD`
-  - latest skipped repeat-stretched candidates: `[]`
+  - latest candidates: `MRVL`, `MU`
+  - latest skipped repeat-stretched candidates: `INTC`, `AMD`
   - latest market risk: `NORMAL`, score `1`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
@@ -107,7 +108,7 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: keep the optimized TQQQ strategy with the RSI14 re-entry guard and manual safety timeout; parabolic-stretch warnings are advisory only. Current real state is manual safety mode with tracked XLK waiting-asset exposure after `manual_parking_bought`.
+  - TQQQ repo: keep the selected high-risk/high-reward TQQQ strategy: 14% TQQQ ratchet, RSI14 <= 65 re-entry cap, +20% profit target, 5-day >= 25% profitable parabolic auto-exit, 3-of-5 early-warning exits, XLK waiting asset, and 5% XLK ratcheting stop. Current real state is manual safety mode with tracked XLK waiting-asset exposure after `manual_parking_bought`.
   - Swing repo: keep as paper/demo weekly stock comparison only.
   - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, and `score_no_extension`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
