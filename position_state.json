@@ -2,20 +2,18 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-14T21:31:45.141239+00:00",
-  "last_scan_date": "2026-05-14",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-15T13:46:34.325783+00:00",
+  "last_scan_date": "2026-05-15",
   "latest_candidates": [
-    "ARM",
-    "DDOG"
+    "MRVL",
+    "MU"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [
-      "QQQ hot RSI"
-    ],
-    "score": 1
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 1000.0,
   "latest_skipped_candidates": [
