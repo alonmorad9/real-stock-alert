@@ -1,15 +1,15 @@
 # REAL STOCK SYSTEM Report - 2026-05-18
 
-Mode: `opening`
+Mode: `daily`
 Profile: `turbo`
 Max positions: `2`
 Rank policy: `skip_repeat_stretched`
-Data source: `daily Yahoo bars with intraday 1-minute opening snapshot`
+Data source: `daily Yahoo bars`
 
 ## Market Filter
 
-- QQQ close: $707.59
-- QQQ SMA200: $610.56
+- QQQ close: $705.88
+- QQQ SMA200: $610.55
 - Market filter: ON
 
 ## Market Risk Overlay
@@ -42,26 +42,26 @@ No confirmed real positions are currently tracked.
 
 ## Buy Candidates
 
-Repeat-stretch memory from previous scan: `DDOG, ARM, INTC, AMD`.
+Repeat-stretch memory from previous scan: `MU, MRVL, INTC, AMD`.
 
 ## Skipped Repeat Stretched Candidates
 
-- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 55% above SMA50).
-- `AMD` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 51% above SMA50).
+- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 53% above SMA50).
+- `AMD` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 48% above SMA50).
 
 | Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | MU | $729.00 | $500.00 | $500.00 | $641.52 | 64.6% | 62.6% |
-| 2 | MRVL | $174.69 | $500.00 | $500.00 | $153.73 | 103.4% | 18.2% |
+| 1 | DDOG | $208.82 | $500.00 | $500.00 | $183.76 | 52.8% | 61.0% |
+| 2 | PANW | $247.55 | $500.00 | $500.00 | $222.39 | 33.9% | 46.0% |
 
 ## Explicit Buy Instructions
 
-- `MU`: suggested buy amount $500.00 (about 0.6859 shares at $729.00). Initial stop reference: $641.52.
-- `MRVL`: suggested buy amount $500.00 (about 2.8622 shares at $174.69). Initial stop reference: $153.73.
+- `DDOG`: suggested buy amount $500.00 (about 2.3944 shares at $208.82). Initial stop reference: $183.76.
+- `PANW`: suggested buy amount $500.00 (about 2.0198 shares at $247.55). Initial stop reference: $222.39.
 
 ## Overextension Warnings
 
-- `MU`: HOT BUT STRETCHED: 48% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
-- `MRVL`: HOT BUT STRETCHED: 35% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `DDOG`: HOT BUT STRETCHED: RSI14 90, 52% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `PANW`: HOT BUT STRETCHED: RSI14 96, 40% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
 
 These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.
