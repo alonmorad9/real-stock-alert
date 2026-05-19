@@ -2,18 +2,20 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-18T21:31:32.773875+00:00",
-  "last_scan_date": "2026-05-18",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-19T13:46:36.293853+00:00",
+  "last_scan_date": "2026-05-19",
   "latest_candidates": [
-    "DDOG",
-    "PANW"
+    "MRVL",
+    "MU"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [],
-    "score": 0
+    "reasons": [
+      "QQQ below SMA10"
+    ],
+    "score": 1
   },
   "latest_portfolio_value": 1000.0,
   "latest_skipped_candidates": [
