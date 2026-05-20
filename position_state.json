@@ -2,12 +2,12 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-19T21:31:43.687492+00:00",
-  "last_scan_date": "2026-05-19",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-20T13:46:48.737108+00:00",
+  "last_scan_date": "2026-05-20",
   "latest_candidates": [
-    "DDOG",
-    "ARM"
+    "MRVL",
+    "MU"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
