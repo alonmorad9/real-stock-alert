@@ -1,10 +1,10 @@
 {
   "active_profile": "turbo",
-  "allocated_cash": 1000.0,
-  "cash": 1000.0,
+  "allocated_cash": 2699.66,
   "capital_mode": "TQQQ-out swing mode",
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-14T21:31:45.141239+00:00",
+  "cash": 2699.66,
+  "last_action": "set_cash 2699.66",
+  "last_action_at": "2026-05-20T15:20:24.486947+00:00",
   "last_scan_date": "2026-05-14",
   "latest_candidates": [
     "ARM",
@@ -18,7 +18,7 @@
     ],
     "score": 1
   },
-  "latest_portfolio_value": 1000.0,
+  "latest_portfolio_value": 2699.66,
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",
