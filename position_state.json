@@ -4,11 +4,11 @@
   "capital_mode": "TQQQ-out swing mode",
   "cash": 2699.66,
   "last_action": "daily_scan",
-  "last_action_at": "2026-05-20T15:23:29.341669+00:00",
+  "last_action_at": "2026-05-20T21:31:30.523632+00:00",
   "last_scan_date": "2026-05-20",
   "latest_candidates": [
-    "MRVL",
-    "MU"
+    "DDOG",
+    "ARM"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
