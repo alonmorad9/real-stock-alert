@@ -13,6 +13,29 @@ on:
           - daily
           - weekly
           - manual
+          - set_cash
+          - manual_bought
+          - manual_sold
+      cash_amount:
+        description: Cash amount for set_cash mode
+        required: false
+        type: string
+      ticker:
+        description: Ticker for manual_bought/manual_sold
+        required: false
+        type: string
+      shares:
+        description: Shares for manual_bought/manual_sold
+        required: false
+        type: string
+      fill_price:
+        description: Fill price for manual_bought/manual_sold
+        required: false
+        type: string
+      trade_date:
+        description: Optional trade date YYYY-MM-DD
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -34,7 +57,30 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python script.py "${{ inputs.mode }}"
+          MODE: ${{ inputs.mode }}
+          CASH_AMOUNT: ${{ inputs.cash_amount }}
+          TICKER: ${{ inputs.ticker }}
+          SHARES: ${{ inputs.shares }}
+          FILL_PRICE: ${{ inputs.fill_price }}
+          TRADE_DATE: ${{ inputs.trade_date }}
+        run: |
+          if [ "$MODE" = "set_cash" ]; then
+            python script.py set_cash "$CASH_AMOUNT"
+          elif [ "$MODE" = "manual_bought" ]; then
+            if [ -n "$TRADE_DATE" ]; then
+              python script.py manual_bought "$TICKER" "$SHARES" "$FILL_PRICE" --date "$TRADE_DATE"
+            else
+              python script.py manual_bought "$TICKER" "$SHARES" "$FILL_PRICE"
+            fi
+          elif [ "$MODE" = "manual_sold" ]; then
+            if [ -n "$TRADE_DATE" ]; then
+              python script.py manual_sold "$TICKER" "$SHARES" "$FILL_PRICE" --date "$TRADE_DATE"
+            else
+              python script.py manual_sold "$TICKER" "$SHARES" "$FILL_PRICE"
+            fi
+          else
+            python script.py "$MODE"
+          fi
 
       - name: Commit updated state and reports
         run: |

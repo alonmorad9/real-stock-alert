@@ -27,6 +27,8 @@ STATE_FILE = Path("position_state.json")
 REPORTS_DIR = Path("reports")
 LATEST_REPORT = REPORTS_DIR / "latest_report.md"
 SYSTEM_LABEL = "REAL STOCK SYSTEM"
+CAPITAL_MODE = "TQQQ-out swing mode"
+MASTER_RULE = "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ."
 
 
 def money(value):
@@ -188,6 +190,35 @@ def manual_sold(args):
     print(f"Confirmed manual sell: {ticker} {shares} shares at {money(fill_price)}")
 
 
+def set_cash(args):
+    state = load_state()
+    amount = float(args.amount)
+    if amount < 0:
+        raise SystemExit("amount must be non-negative")
+    if state.get("positions"):
+        raise SystemExit("Cannot reset cash while positions are tracked. Sell and confirm positions first.")
+
+    state["allocated_cash"] = round(amount, 2)
+    state["cash"] = round(amount, 2)
+    state["realized_pnl"] = 0.0
+    state["latest_portfolio_value"] = round(amount, 2)
+    state["latest_unrealized_pnl"] = 0.0
+    state["capital_mode"] = CAPITAL_MODE
+    state["master_rule"] = MASTER_RULE
+    state["last_action"] = f"set_cash {amount:.2f}"
+    save_state(state)
+    send_telegram(
+        "\n".join([
+            "🧩 Real-Stock Cash Bucket Set",
+            "─" * 30,
+            f"Tracked cash: {money(amount)}",
+            f"Mode: {CAPITAL_MODE}",
+            "TQQQ has priority. If tqqq-alert sends a re-buy signal, sell real-stock positions and move back to TQQQ.",
+        ])
+    )
+    print(f"Set real-stock cash bucket to {money(amount)}")
+
+
 def build_report(mode):
     state = load_state()
     data, qqq, errors = load_universe(UNIVERSE)
@@ -263,6 +294,8 @@ def build_report(mode):
         f"# {SYSTEM_LABEL} Report - {asof}",
         "",
         f"Mode: `{mode}`",
+        f"Capital mode: `{state.get('capital_mode', CAPITAL_MODE)}`",
+        f"Master rule: {state.get('master_rule', MASTER_RULE)}",
         f"Profile: `{profile}`",
         f"Max positions: `{max_positions}`",
         f"Rank policy: `{rank_policy}`",
@@ -294,6 +327,7 @@ def build_report(mode):
         "- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.",
         "- `skip_repeat_stretched` means a recent recommended or skipped target is skipped again if it is still stretched.",
         "- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.",
+        "- This real-stock bucket is temporary while TQQQ is out. If `tqqq-alert` sends a TQQQ re-entry signal, TQQQ takes priority.",
     ])
     lines.extend([
         "",
@@ -427,6 +461,9 @@ def parse_args():
     sold.add_argument("shares", type=float)
     sold.add_argument("fill_price", type=float)
     sold.add_argument("--date")
+
+    reset = subparsers.add_parser("set_cash")
+    reset.add_argument("amount", type=float)
     return parser.parse_args()
 
 
@@ -436,6 +473,8 @@ def main():
         manual_bought(args)
     elif args.command == "manual_sold":
         manual_sold(args)
+    elif args.command == "set_cash":
+        set_cash(args)
     else:
         build_report(args.command or "manual")
 

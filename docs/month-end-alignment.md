@@ -1,6 +1,8 @@
 # Month-End Alignment
 
-Last updated: 2026-05-15
+Last updated: 2026-05-20
+
+Latest decision: use `real-stock-alert` as the temporary real-stock swing engine while `tqqq-alert` says TQQQ is out/waiting. TQQQ is the master controller. If `tqqq-alert` sends a TQQQ re-buy signal, sell all real-stock positions, confirm them here, then move the bucket back to TQQQ.
 
 ## Current Repo Meanings
 
@@ -108,9 +110,10 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: keep the selected high-risk/high-reward TQQQ strategy: 14% TQQQ ratchet, RSI14 <= 65 re-entry cap, +20% profit target, 5-day >= 25% profitable parabolic auto-exit, 3-of-5 early-warning exits, XLK waiting asset, and 5% XLK ratcheting stop. Current real state is manual safety mode with tracked XLK waiting-asset exposure after `manual_parking_bought`.
+  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 60 re-entry cap, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, 3-of-5 early-warning exits, and cash/no-XLK as the core waiting state. Current real state still has legacy tracked XLK exposure until it is sold and recorded with `manual_parking_sold`.
   - Swing repo: keep as paper/demo weekly stock comparison only.
-  - Real-stock repo: keep Turbo top-2 momentum as the live stock pilot, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, and `score_no_extension`.
+  - Real-stock repo: keep Turbo top-2 momentum as the live stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, and `score_no_extension`.
+- Before using real-stock as the TQQQ-out engine, reset its cash bucket with `set_cash <actual freed cash amount>`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.

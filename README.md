@@ -13,6 +13,14 @@ The bot sends candidate and exit instructions, but it never assumes a trade happ
 
 Active live profile: `turbo` max 2.
 
+Current capital mode: **TQQQ-out swing mode**.
+
+This means the TQQQ repo is the master controller:
+
+- When `tqqq-alert` says TQQQ is out/waiting, this repo can manage the freed cash in top-2 real swing stocks.
+- When `tqqq-alert` sends a TQQQ buy/re-buy signal, TQQQ takes priority. Sell all real-stock positions, confirm the sales here with `manual_sold`, then use the cash to buy TQQQ and confirm that buy in `tqqq-alert`.
+- The stock bot's normal sell rules still apply while TQQQ is waiting. If a stock sell fires and TQQQ still says wait, sell that stock and follow the next real-stock candidate/cash instruction.
+
 - Trade liquid large-cap and growth stocks.
 - Hold at most 2 stocks.
 - Allow new buys only when `QQQ` is above SMA200.
@@ -24,7 +32,7 @@ Active live profile: `turbo` max 2.
 - Run a weekly full buy scan after Friday close.
 - Sell when price closes below SMA50, the trailing stop is hit, or a holding drops out of the weekly top list.
 
-The initial state uses a small pilot allocation of `$1,000`. Edit `position_state.json` before going live if the real allocation is different.
+The old initial state used a small pilot allocation of `$1,000`. In TQQQ-out swing mode, reset the cash bucket to the actual freed TQQQ cash after selling XLK/TQQQ.
 
 ## Manual Trade Flow
 
@@ -46,6 +54,18 @@ Daily exit check:
 python3 script.py daily
 ```
 
+Set the real-stock cash bucket after selling XLK or after TQQQ exits:
+
+```bash
+python3 script.py set_cash AMOUNT
+```
+
+Example:
+
+```bash
+python3 script.py set_cash 2726.11
+```
+
 Confirm a real buy after you manually buy:
 
 ```bash
@@ -57,6 +77,8 @@ Confirm a real sell after you manually sell:
 ```bash
 python3 script.py manual_sold TICKER SHARES FILL_PRICE --date YYYY-MM-DD
 ```
+
+If `tqqq-alert` sends a TQQQ re-buy signal, sell every open real-stock position and confirm each sale with `manual_sold` before buying TQQQ.
 
 Generated reports:
 

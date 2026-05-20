@@ -2,18 +2,19 @@
   "active_profile": "turbo",
   "allocated_cash": 1000.0,
   "cash": 1000.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-20T13:46:48.737108+00:00",
-  "last_scan_date": "2026-05-20",
+  "capital_mode": "TQQQ-out swing mode",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-14T21:31:45.141239+00:00",
+  "last_scan_date": "2026-05-14",
   "latest_candidates": [
-    "MRVL",
-    "MU"
+    "ARM",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
     "reasons": [
-      "QQQ below SMA10"
+      "QQQ hot RSI"
     ],
     "score": 1
   },
@@ -29,6 +30,7 @@
     }
   ],
   "latest_unrealized_pnl": 0.0,
+  "master_rule": "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.",
   "positions": [],
   "realized_pnl": 0.0,
   "settings": {

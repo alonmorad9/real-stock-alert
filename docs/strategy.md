@@ -1,10 +1,14 @@
 # Real Stock Strategy
 
-Last updated: 2026-05-05
+Last updated: 2026-05-20
 
 ## Purpose
 
 This repo manages alerts and durable state for a real-money stock pilot. It is not a paper portfolio and it is not the TQQQ strategy.
+
+Current role: **TQQQ-out swing mode**.
+
+The TQQQ repo is the master controller. This repo manages real swing stocks only while `tqqq-alert` says the TQQQ strategy is out/waiting. If `tqqq-alert` sends a TQQQ buy or re-buy signal, sell all real-stock positions, confirm the sales here, then move the bucket back to TQQQ.
 
 ## Universe
 
@@ -73,17 +77,20 @@ The current Turbo score does not give extra points for being far above SMA50. SM
 
 ## Position Sizing
 
-Default pilot sizing:
+Sizing in TQQQ-out swing mode:
 
-- allocated cash: `$1,000`,
+- allocated cash: the current freed TQQQ cash bucket after selling TQQQ/XLK,
 - max positions: `2`,
-- about 50% of available stock-pilot cash per position,
+- about 50% of available cash per position,
 - no margin.
+
+Use `python3 script.py set_cash AMOUNT` after selling XLK or after a TQQQ exit to reset this repo's tracked cash bucket before following buy candidates.
 
 ## Sell Rules
 
 Positions are flagged for sale if:
 
+- `tqqq-alert` sends a TQQQ re-entry signal,
 - QQQ closes below SMA200,
 - the stock closes below SMA50,
 - the trailing stop is hit,
