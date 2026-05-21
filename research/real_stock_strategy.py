@@ -538,7 +538,13 @@ def score_candidate(row, qrow, variant):
 def score_candidate_weights(row, qrow, weights):
     rs63 = row["RET63"] - qrow["RET63"]
     above_sma50 = row["Close"] / row["SMA50"] - 1
-    return rs63 * weights["rs63"] + row["RET20"] * weights["ret20"] + above_sma50 * weights["above_sma50"]
+    atr_pct = row["ATR14"] / row["Close"]
+    return (
+        rs63 * weights["rs63"]
+        + row["RET20"] * weights["ret20"]
+        + above_sma50 * weights["above_sma50"]
+        - atr_pct * weights.get("atr_pct", 0)
+    )
 
 
 def sector_for(ticker):
@@ -1117,6 +1123,7 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
     stop_policy = options.get("stop_policy", "turbo")
     exit_policy = options.get("exit_policy", "sma50")
     max_open_gap = options.get("max_open_gap")
+    max_atr_pct = options.get("max_atr_pct")
     profit_lock = options.get("profit_lock")
     profit_target = options.get("profit_target")
     sector_limit = bool(options.get("sector_limit", False))
@@ -1152,8 +1159,12 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
                 row = data[ticker].loc[date]
                 prev_close = row["PREV_CLOSE"]
                 opening_gap = row["Open"] / prev_close - 1 if prev_close else 0.0
+                atr_pct = row["ATR14"] / row["Close"]
                 if max_open_gap is not None and opening_gap > max_open_gap:
                     trades.append((date, ticker, "skip", row["Open"], f"open_gap_{opening_gap:.2%}"))
+                    continue
+                if max_atr_pct is not None and atr_pct > max_atr_pct:
+                    trades.append((date, ticker, "skip", row["Open"], f"atr_pct_{atr_pct:.2%}"))
                     continue
                 sector = sector_for(ticker)
                 if sector_limit and sector in active_sectors:
@@ -1225,6 +1236,8 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
                     continue
                 if rank_policy == "skip_repeat_stretched" and ticker in previous_targets and is_stretched(row):
                     continue
+                if max_atr_pct is not None and row["ATR14"] / row["Close"] > max_atr_pct:
+                    continue
                 if sector_limit and sector_for(ticker) in held_sectors:
                     continue
                 ranked.append((float(score_candidate_weights(row, qrow, weights)), ticker))
@@ -1247,6 +1260,7 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
             "exit_policy": exit_policy,
             "profit_target": profit_target or "none",
             "max_open_gap": max_open_gap if max_open_gap is not None else "none",
+            "max_atr_pct": max_atr_pct if max_atr_pct is not None else "none",
             "sector_limit": sector_limit,
         },
         values,
@@ -1264,6 +1278,11 @@ def run_strategy_idea_pack(data, qqq, start="2018-01-01"):
         ("score_20d_heavy", {"weights": {"rs63": 70, "ret20": 120, "above_sma50": 25}}),
         ("score_rs63_heavy", {"weights": {"rs63": 130, "ret20": 55, "above_sma50": 25}}),
         ("score_no_extension", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}}),
+        ("score_vol_penalty_50", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0, "atr_pct": 50}}),
+        ("score_vol_penalty_100", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0, "atr_pct": 100}}),
+        ("score_vol_penalty_150", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0, "atr_pct": 150}}),
+        ("atr_cap_8pct", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.08}),
+        ("atr_cap_10pct", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.10}),
         ("exit_ema21", {"exit_policy": "ema21"}),
         ("exit_sma20", {"exit_policy": "sma20"}),
         ("stop_tight", {"stop_policy": "tight"}),
@@ -1316,6 +1335,7 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "stop_policy": result.get("stop_policy", "n/a"),
                 "exit_policy": result.get("exit_policy", "n/a"),
                 "max_open_gap": result.get("max_open_gap", "n/a"),
+                "max_atr_pct": result.get("max_atr_pct", "n/a"),
                 "sector_limit": result.get("sector_limit", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
