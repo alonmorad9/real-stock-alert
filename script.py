@@ -56,12 +56,27 @@ def send_telegram(message):
         print("Telegram secrets missing; skipping send.")
         return
 
-    response = requests.post(
-        f"https://api.telegram.org/bot{token}/sendMessage",
-        json={"chat_id": chat_id, "text": message, "disable_web_page_preview": True},
-        timeout=30,
-    )
-    response.raise_for_status()
+    chunks = []
+    current = []
+    current_len = 0
+    for line in message.splitlines():
+        addition = len(line) + 1
+        if current and current_len + addition > 3900:
+            chunks.append("\n".join(current))
+            current = []
+            current_len = 0
+        current.append(line)
+        current_len += addition
+    if current:
+        chunks.append("\n".join(current))
+
+    for chunk in chunks:
+        response = requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            json={"chat_id": chat_id, "text": chunk, "disable_web_page_preview": True},
+            timeout=30,
+        )
+        response.raise_for_status()
 
 
 def report_path(asof):
@@ -332,6 +347,15 @@ def build_report(mode):
         "- `skip_repeat_stretched` means a recent recommended or skipped target is skipped again if it is still stretched.",
         "- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.",
         "- This real-stock bucket is temporary while TQQQ is out. The TQQQ repo itself waits in cash; if `tqqq-alert` sends a TQQQ re-entry signal, TQQQ takes priority.",
+        "",
+        "## הסבר קצר בעברית",
+        "",
+        "- `turbo`: מצב מומנטום אגרסיבי. הוא מחפש מניות מובילות, לא מניות זולות אחרי ירידה.",
+        "- הניקוד מבוסס על חוזק יחסי ל-63 יום ומומנטום ל-20 יום.",
+        "- מסנן ATR: מניה עם ATR14 מעל 10% מהמחיר תידחה לקנייה חדשה כי היא תנודתית מדי.",
+        f"- רמת סיכון `{risk['level']}` / ניקוד `{risk['score']}` משפיעים רק על גודל הקנייה. בריצה הזו משתמשים ב-{pct(risk['allocation_multiplier'])} מגודל רגיל.",
+        "- אם יש כבר 2 פוזיציות מאושרות, לא קונים מניות חדשות רק בגלל המלצה חדשה.",
+        "- אם `tqqq-alert` נותן איתות כניסה ל-TQQQ, ה-TQQQ קודם למניות האלה.",
     ])
     lines.extend([
         "",
@@ -374,6 +398,10 @@ def build_report(mode):
             lines.append(
                 f"- SELL CANDIDATE: `{status['ticker']}` because {', '.join(status['reasons'])}. "
                 "If you sell manually, confirm with `manual_sold`."
+            )
+            lines.append(
+                f"- בעברית: `{status['ticker']}` מועמדת למכירה בגלל {', '.join(status['reasons'])}. "
+                "אם מכרת ידנית, אשר עם `manual_sold`."
             )
         lines.append("")
 
@@ -428,6 +456,14 @@ def build_report(mode):
                     f"(about {approx_shares:.4f} shares at {money(candidate['close'])}). "
                     f"Initial stop reference: {money(candidate['initial_stop'])}."
                 )
+            lines.extend(["", "## הוראות קנייה בעברית", ""])
+            for candidate in buy_candidates:
+                approx_shares = risk_adjusted_cash_per_slot / candidate["close"] if candidate["close"] else 0.0
+                lines.append(
+                    f"- `{candidate['ticker']}`: סכום קנייה מוצע {money(risk_adjusted_cash_per_slot)} "
+                    f"(בערך {approx_shares:.4f} מניות במחיר {money(candidate['close'])}). "
+                    f"סטופ התחלתי למעקב: {money(candidate['initial_stop'])}."
+                )
             stretched = [candidate for candidate in buy_candidates if candidate["extension_warning"] != "OK"]
             if stretched:
                 lines.extend(["", "## Overextension Warnings", ""])
@@ -449,7 +485,7 @@ def build_report(mode):
             lines.append(f"- {item['ticker']}: {item['error']}")
 
     content = write_report(asof, lines)
-    send_telegram(content[:3900])
+    send_telegram(content)
     print(content)
 
 
