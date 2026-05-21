@@ -3,20 +3,18 @@
   "allocated_cash": 0.0,
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-21T13:46:48.908492+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-21T21:31:27.272865+00:00",
   "last_scan_date": "2026-05-21",
   "latest_candidates": [
-    "ARM",
-    "DDOG"
+    "MRVL",
+    "MU"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [
-      "QQQ below SMA10"
-    ],
-    "score": 1
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
@@ -26,7 +24,7 @@
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "AMD"
+      "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,
