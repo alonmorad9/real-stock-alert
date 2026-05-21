@@ -1,8 +1,8 @@
 {
   "active_profile": "turbo",
-  "allocated_cash": 2699.99,
-  "capital_mode": "TQQQ-out swing mode",
-  "cash": 2699.99,
+  "allocated_cash": 0.0,
+  "capital_mode": "inactive while TQQQ position is open",
+  "cash": 0.0,
   "last_action": "daily_scan",
   "last_action_at": "2026-05-21T09:21:33.572743+00:00",
   "last_scan_date": "2026-05-20",
@@ -16,7 +16,7 @@
     "reasons": [],
     "score": 0
   },
-  "latest_portfolio_value": 2699.99,
+  "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",

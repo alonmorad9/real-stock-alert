@@ -6,9 +6,11 @@ Last updated: 2026-05-21
 
 This repo manages alerts and durable state for a real-money stock pilot. It is not a paper portfolio and it is not the TQQQ strategy.
 
-Current role: **TQQQ-out swing mode**.
+Current role: **inactive while TQQQ position is open**.
 
 The TQQQ repo is the master controller. This repo manages real swing stocks only while `tqqq-alert` says the TQQQ strategy is out/waiting. If `tqqq-alert` sends a TQQQ buy or re-buy signal, sell all real-stock positions, confirm the sales here, then move the bucket back to TQQQ.
+
+As of the current 2026-05-21 alignment, TQQQ is open again, so this repo should have no deployable stock cash. Use this strategy again only after a future TQQQ exit and a fresh `set_cash <actual freed cash amount>`.
 
 ## Universe
 
