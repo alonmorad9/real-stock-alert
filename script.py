@@ -238,6 +238,7 @@ def build_report(mode):
         )
     )
     rank_policy = settings.get("rank_policy", "skip_repeat_stretched")
+    max_atr_pct = settings.get("max_atr_pct")
     raw_candidates = scan_candidates(data, qqq, asof, max_positions, profile)
     candidates, skipped_candidates = scan_candidates(
         data,
@@ -248,6 +249,7 @@ def build_report(mode):
         rank_policy,
         previous_targets,
         True,
+        max_atr_pct,
     )
     buy_scan_modes = {"weekly", "opening", "daily"}
     top_tickers = [item["ticker"] for item in raw_candidates] if mode in {"weekly", "opening"} else []
@@ -299,6 +301,7 @@ def build_report(mode):
         f"Profile: `{profile}`",
         f"Max positions: `{max_positions}`",
         f"Rank policy: `{rank_policy}`",
+        f"ATR cap: `{pct(max_atr_pct)}`" if max_atr_pct is not None else "ATR cap: `none`",
         f"Data source: `{data_source}`",
         "",
         "## Market Filter",
@@ -322,6 +325,7 @@ def build_report(mode):
         "",
         "- `turbo`: aggressive momentum mode. It buys leaders, not cheap/dip names.",
         "- Score formula: 63d relative strength plus 20d momentum. Extra distance above SMA50 is no longer rewarded.",
+        "- ATR cap: fresh buy candidates with ATR14 above 10% of price are skipped; this tested better than the prior live score.",
         f"- Risk `{risk['level']}` / score `{risk['score']}` controls size only. This run uses {pct(risk['allocation_multiplier'])} of normal new-buy size.",
         "- Reasons explain market-wide QQQ warnings; they do not pick the stocks.",
         "- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.",
@@ -387,12 +391,19 @@ def build_report(mode):
             lines.append(f"Repeat-stretch memory from previous scan: `{', '.join(previous_targets)}`.")
             lines.append("")
         if visible_skips:
-            lines.extend(["## Skipped Repeat Stretched Candidates", ""])
+            lines.extend(["## Skipped Candidates", ""])
             for candidate in visible_skips[:max_positions]:
-                lines.append(
-                    f"- `{candidate['ticker']}` skipped: it was already a recent target and is still stretched "
-                    f"({candidate['extension_warning']})."
-                )
+                if candidate.get("skip_reason", "").startswith("ATR14"):
+                    atr_pct = candidate["atr14"] / candidate["close"] if candidate["close"] else 0.0
+                    lines.append(
+                        f"- `{candidate['ticker']}` skipped: ATR14 is {pct(atr_pct)}, above the "
+                        f"{pct(max_atr_pct)} fresh-buy cap."
+                    )
+                else:
+                    lines.append(
+                        f"- `{candidate['ticker']}` skipped: it was already a recent target and is still stretched "
+                        f"({candidate['extension_warning']})."
+                    )
             lines.append("")
         if not buy_candidates:
             lines.append("No qualified new buy candidates.")

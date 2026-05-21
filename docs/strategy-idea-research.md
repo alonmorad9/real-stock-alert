@@ -86,3 +86,18 @@ Added research-only volatility variants:
 | `atr_cap_10pct` | Keep current score, but skip fresh buys where ATR14 is above 10% of price. |
 
 Decision rule: these should replace live scoring only if they beat `score_no_extension` on return or materially improve drawdown without giving up too much return.
+
+## 2026-05-21 Result
+
+The best volatility idea was `atr_cap_10pct`.
+
+| Idea | Final multiple | CAGR | Max drawdown | Decision |
+| --- | ---: | ---: | ---: | --- |
+| `atr_cap_10pct` | 47.12x | 58.4% | -31.2% | Implement live |
+| `atr_cap_8pct` | 47.02x | 58.3% | -31.2% | Reject, slightly lower return |
+| `score_no_extension` | 45.10x | 57.6% | -31.2% | Replaced |
+| `score_vol_penalty_100` | 44.02x | 57.1% | -32.4% | Reject |
+| `score_vol_penalty_50` | 41.90x | 56.2% | -32.4% | Reject |
+| `score_vol_penalty_150` | 37.08x | 53.9% | -32.4% | Reject |
+
+Decision: keep the current `score_no_extension` formula, but add a fresh-buy ATR cap. Live buy scans should skip candidates where ATR14 is above 10% of price.

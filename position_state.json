@@ -35,6 +35,7 @@
     "daily_exit_check": true,
     "manual_trade_confirmation_required": true,
     "max_positions": 2,
+    "max_atr_pct": 0.1,
     "profile": "turbo",
     "qqq_below_sma200_action": "sell_all",
     "rank_policy": "skip_repeat_stretched",

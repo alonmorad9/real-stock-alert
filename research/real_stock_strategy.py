@@ -477,6 +477,7 @@ def scan_candidates(
     rank_policy="none",
     previous_targets=None,
     return_skipped=False,
+    max_atr_pct=None,
 ):
     candidates = []
     skipped = []
@@ -488,6 +489,10 @@ def scan_candidates(
     ranked = sorted(candidates, key=lambda item: item["score"], reverse=True)
     filtered = []
     for candidate in ranked:
+        atr_pct = candidate["atr14"] / candidate["close"] if candidate["close"] else 0.0
+        if max_atr_pct is not None and atr_pct > max_atr_pct:
+            skipped.append({**candidate, "skip_reason": f"ATR14 above {max_atr_pct:.0%} cap"})
+            continue
         repeat_stretched = (
             rank_policy == "skip_repeat_stretched"
             and candidate["ticker"] in previous_targets

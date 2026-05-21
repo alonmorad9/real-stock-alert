@@ -75,6 +75,8 @@ Ranking favors:
 
 The current Turbo score does not give extra points for being far above SMA50. SMA50 extension is still used for filters and overextension warnings, but the 2026-05-12 research found that removing it from the score improved the historical result and reduced drawdown.
 
+Fresh buy candidates also use the tested `atr_cap_10pct` filter. If ATR14 is above 10% of price, the candidate is skipped as too volatile for a fresh buy. The 2026-05-21 research found this beat `score_no_extension` while keeping max drawdown about the same.
+
 ## Position Sizing
 
 Sizing in TQQQ-out swing mode:
