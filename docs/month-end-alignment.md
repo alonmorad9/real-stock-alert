@@ -32,8 +32,8 @@ Latest decision: use `real-stock-alert` as the optional temporary real-stock swi
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
 - Meaning of cash state: the TQQQ repo is currently out of TQQQ and waiting in cash. No XLK parking asset is part of the selected TQQQ strategy.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
-- Manual safety timeout rule: after 3 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 60`.
-- Fresh buys and re-buys also require `RSI14 <= 60`.
+- Manual safety timeout rule: after 3 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 70`.
+- Fresh buys and re-buys also require `RSI14 <= 70`.
 - Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, the 3-of-5 early-warning exit layer, and cash as the waiting state.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
 
@@ -57,7 +57,7 @@ Latest decision: use `real-stock-alert` as the optional temporary real-stock swi
   - allocated cash: `$2,699.99`
   - cash: `$2,699.99`
   - positions: `[]`
-  - latest candidates: `DDOG`, `ARM`
+  - latest candidates: `MRVL`, `MU`
   - latest skipped repeat-stretched candidates: `INTC`, `AMD`
   - latest market risk: `NORMAL`, score `0`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
@@ -107,7 +107,7 @@ At month end, compare the three systems separately:
 - Some older `tqqq-alert` history may describe previous XLK/early-warning states. Read current `script.py`, current docs, and `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 60 re-entry cap, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, 3-of-5 early-warning exits, and cash/no-XLK as the waiting state.
+  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 70 re-entry cap, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, 3-of-5 early-warning exits, and cash/no-XLK as the waiting state.
   - Swing repo: keep as paper/demo weekly stock comparison only.
   - Real-stock repo: keep Turbo top-2 momentum as the live stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, and the tested `atr_cap_10pct` fresh-buy volatility filter.
 - Before using real-stock as the TQQQ-out engine, reset its cash bucket with `set_cash <actual freed cash amount>`. As of the current TQQQ source state, that cash amount is `$2,699.99`.
