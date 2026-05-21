@@ -101,3 +101,24 @@ The best volatility idea was `atr_cap_10pct`.
 | `score_vol_penalty_150` | 37.08x | 53.9% | -32.4% | Reject |
 
 Decision: keep the current `score_no_extension` formula, but add a fresh-buy ATR cap. Live buy scans should skip candidates where ATR14 is above 10% of price.
+
+## 2026-05-21 Stop Management Result
+
+Tested proposed open-trade management changes against the current best `atr_cap_10pct` setup:
+
+- tighter initial stop: higher of 8% below entry or 2.0x ATR14 below entry,
+- tighter trailing stop: higher of 12% below highest high or 3.0x ATR14 below highest high,
+- breakeven floor after the trade moves 1.5x entry ATR14 in profit,
+- adaptive trailing ladder that tightens after +10% and +20% profit,
+- combinations of those rules.
+
+| Idea | Final multiple | CAGR | Max drawdown | Decision |
+| --- | ---: | ---: | ---: | --- |
+| `atr_cap_10pct` | 47.12x | 58.4% | -31.2% | Keep live |
+| `atr_cap_10pct_tight_recommended_stops` | 20.54x | 43.4% | -22.9% | Reject for high-risk/high-reward mode |
+| `atr_cap_10pct_breakeven_1_5atr` | 34.89x | 52.8% | -31.6% | Reject |
+| `atr_cap_10pct_adaptive_trail` | 5.66x | 23.0% | -30.3% | Reject |
+| `atr_cap_10pct_breakeven_adaptive` | 4.41x | 19.4% | -37.6% | Reject |
+| `atr_cap_10pct_all_tight_changes` | 4.34x | 19.2% | -22.8% | Reject |
+
+Decision: do not change live stop rules. Tighter stops reduce drawdown in some variants, but they cut the historical compounding too much. For the stated high-risk/high-reward goal, the current `atr_cap_10pct` setup remains the best tested live stock strategy.
