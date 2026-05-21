@@ -25,7 +25,7 @@ Date,RiskScore,Reasons
 2018-04-10,3,QQQ below SMA20; 20d drawdown
 2018-04-11,3,QQQ below SMA20; 20d drawdown
 2018-04-24,5,QQQ below SMA20; QQQ below SMA10; QQQ 5d drop; 20d drawdown
-2018-04-25,4,QQQ below SMA20; QQQ below SMA10; QQQ 5d drop
+2018-04-25,5,QQQ below SMA20; QQQ below SMA10; QQQ 5d drop; 20d drawdown
 2018-04-30,3,QQQ below SMA20; QQQ below SMA10
 2018-06-25,4,QQQ below SMA20; QQQ below SMA10; distribution days
 2018-06-26,4,QQQ below SMA20; QQQ below SMA10; distribution days
