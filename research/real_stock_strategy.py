@@ -64,6 +64,7 @@ class BacktestPosition:
     entry_date: object
     highest_high: float
     stop: float
+    entry_atr14: float = 0.0
 
 
 def fetch_yahoo_chart(ticker):
@@ -1106,9 +1107,26 @@ def run_universe_pack(start="2018-01-01"):
 def idea_trailing_stop(highest_high, atr14, stop_policy):
     if stop_policy == "tight":
         return max(highest_high * 0.88, highest_high - 2.5 * atr14)
+    if stop_policy == "tight_recommended":
+        return max(highest_high * 0.88, highest_high - 3.0 * atr14)
     if stop_policy == "loose":
         return max(highest_high * 0.78, highest_high - 4.0 * atr14)
     return variant_trailing_stop(highest_high, atr14, "turbo")
+
+
+def idea_initial_stop(entry_price, atr14, initial_stop_policy):
+    if initial_stop_policy == "tight_recommended":
+        return max(entry_price * 0.92, entry_price - 2.0 * atr14)
+    return variant_initial_stop(entry_price, atr14, "turbo")
+
+
+def adaptive_trailing_stop(entry_price, highest_high, atr14):
+    progress = highest_high / entry_price - 1
+    if progress >= 0.20:
+        return max(highest_high * 0.92, highest_high - 1.5 * atr14)
+    if progress >= 0.10:
+        return max(highest_high * 0.88, highest_high - 2.5 * atr14)
+    return max(highest_high * 0.82, highest_high - 3.5 * atr14)
 
 
 def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", options=None):
@@ -1126,11 +1144,14 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
     weights = options.get("weights", {"rs63": 90, "ret20": 80, "above_sma50": 35})
     rank_policy = options.get("rank_policy", "skip_repeat_stretched")
     stop_policy = options.get("stop_policy", "turbo")
+    initial_stop_policy = options.get("initial_stop_policy", "turbo")
     exit_policy = options.get("exit_policy", "sma50")
     max_open_gap = options.get("max_open_gap")
     max_atr_pct = options.get("max_atr_pct")
     profit_lock = options.get("profit_lock")
     profit_target = options.get("profit_target")
+    breakeven_atr_trigger = options.get("breakeven_atr_trigger")
+    adaptive_trail = bool(options.get("adaptive_trail", False))
     sector_limit = bool(options.get("sector_limit", False))
 
     for idx, date in enumerate(dates):
@@ -1182,8 +1203,8 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
                     continue
                 shares = allocation / row["Open"]
                 cash -= allocation
-                stop = variant_initial_stop(float(row["Open"]), float(row["ATR14"]), "turbo")
-                positions[ticker] = BacktestPosition(ticker, shares, row["Open"], date, row["High"], stop)
+                stop = idea_initial_stop(float(row["Open"]), float(row["ATR14"]), initial_stop_policy)
+                positions[ticker] = BacktestPosition(ticker, shares, row["Open"], date, row["High"], stop, float(row["ATR14"]))
                 active_sectors.add(sector)
                 trades.append((date, ticker, "buy", row["Open"], label))
                 buys_this_rebalance += 1
@@ -1195,7 +1216,13 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
             row = data[ticker].loc[date]
             pos = positions[ticker]
             pos.highest_high = max(pos.highest_high, row["High"])
-            pos.stop = max(pos.stop, idea_trailing_stop(float(pos.highest_high), float(row["ATR14"]), stop_policy))
+            if adaptive_trail:
+                pos.stop = max(pos.stop, adaptive_trailing_stop(float(pos.entry_price), float(pos.highest_high), float(row["ATR14"])))
+            else:
+                pos.stop = max(pos.stop, idea_trailing_stop(float(pos.highest_high), float(row["ATR14"]), stop_policy))
+            if breakeven_atr_trigger and pos.entry_atr14 > 0:
+                if pos.highest_high >= pos.entry_price + float(breakeven_atr_trigger) * pos.entry_atr14:
+                    pos.stop = max(pos.stop, pos.entry_price)
             if profit_lock and pos.highest_high >= pos.entry_price * (1 + profit_lock["trigger"]):
                 pos.stop = max(pos.stop, pos.highest_high * (1 - profit_lock["trail"]))
             if profit_target and row["High"] >= pos.entry_price * (1 + profit_target):
@@ -1261,11 +1288,14 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
             "entry_limit": "none",
             "entry_decision": label,
             "entry_system": "strategy_idea",
+            "initial_stop_policy": initial_stop_policy,
             "stop_policy": stop_policy,
             "exit_policy": exit_policy,
             "profit_target": profit_target or "none",
             "max_open_gap": max_open_gap if max_open_gap is not None else "none",
             "max_atr_pct": max_atr_pct if max_atr_pct is not None else "none",
+            "breakeven_atr_trigger": breakeven_atr_trigger if breakeven_atr_trigger is not None else "none",
+            "adaptive_trail": adaptive_trail,
             "sector_limit": sector_limit,
         },
         values,
@@ -1288,6 +1318,50 @@ def run_strategy_idea_pack(data, qqq, start="2018-01-01"):
         ("score_vol_penalty_150", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0, "atr_pct": 150}}),
         ("atr_cap_8pct", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.08}),
         ("atr_cap_10pct", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.10}),
+        (
+            "atr_cap_10pct_tight_recommended_stops",
+            {
+                "weights": {"rs63": 100, "ret20": 90, "above_sma50": 0},
+                "max_atr_pct": 0.10,
+                "initial_stop_policy": "tight_recommended",
+                "stop_policy": "tight_recommended",
+            },
+        ),
+        (
+            "atr_cap_10pct_breakeven_1_5atr",
+            {
+                "weights": {"rs63": 100, "ret20": 90, "above_sma50": 0},
+                "max_atr_pct": 0.10,
+                "breakeven_atr_trigger": 1.5,
+            },
+        ),
+        (
+            "atr_cap_10pct_adaptive_trail",
+            {
+                "weights": {"rs63": 100, "ret20": 90, "above_sma50": 0},
+                "max_atr_pct": 0.10,
+                "adaptive_trail": True,
+            },
+        ),
+        (
+            "atr_cap_10pct_breakeven_adaptive",
+            {
+                "weights": {"rs63": 100, "ret20": 90, "above_sma50": 0},
+                "max_atr_pct": 0.10,
+                "breakeven_atr_trigger": 1.5,
+                "adaptive_trail": True,
+            },
+        ),
+        (
+            "atr_cap_10pct_all_tight_changes",
+            {
+                "weights": {"rs63": 100, "ret20": 90, "above_sma50": 0},
+                "max_atr_pct": 0.10,
+                "initial_stop_policy": "tight_recommended",
+                "adaptive_trail": True,
+                "breakeven_atr_trigger": 1.5,
+            },
+        ),
         ("exit_ema21", {"exit_policy": "ema21"}),
         ("exit_sma20", {"exit_policy": "sma20"}),
         ("stop_tight", {"stop_policy": "tight"}),
@@ -1338,9 +1412,12 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "loaded_tickers": result.get("loaded_tickers", "n/a"),
                 "data_errors": result.get("data_errors", "n/a"),
                 "stop_policy": result.get("stop_policy", "n/a"),
+                "initial_stop_policy": result.get("initial_stop_policy", "n/a"),
                 "exit_policy": result.get("exit_policy", "n/a"),
                 "max_open_gap": result.get("max_open_gap", "n/a"),
                 "max_atr_pct": result.get("max_atr_pct", "n/a"),
+                "breakeven_atr_trigger": result.get("breakeven_atr_trigger", "n/a"),
+                "adaptive_trail": result.get("adaptive_trail", "n/a"),
                 "sector_limit": result.get("sector_limit", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
