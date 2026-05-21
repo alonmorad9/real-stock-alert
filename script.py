@@ -327,7 +327,7 @@ def build_report(mode):
         "- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.",
         "- `skip_repeat_stretched` means a recent recommended or skipped target is skipped again if it is still stretched.",
         "- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.",
-        "- This real-stock bucket is temporary while TQQQ is out. If `tqqq-alert` sends a TQQQ re-entry signal, TQQQ takes priority.",
+        "- This real-stock bucket is temporary while TQQQ is out. The TQQQ repo itself waits in cash; if `tqqq-alert` sends a TQQQ re-entry signal, TQQQ takes priority.",
     ])
     lines.extend([
         "",

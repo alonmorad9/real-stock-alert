@@ -1,8 +1,8 @@
 # Month-End Alignment
 
-Last updated: 2026-05-20
+Last updated: 2026-05-21
 
-Latest decision: use `real-stock-alert` as the temporary real-stock swing engine while `tqqq-alert` says TQQQ is out/waiting. TQQQ is the master controller. If `tqqq-alert` sends a TQQQ re-buy signal, sell all real-stock positions, confirm them here, then move the bucket back to TQQQ.
+Latest decision: use `real-stock-alert` as the optional temporary real-stock swing engine while `tqqq-alert` says TQQQ is out/waiting. TQQQ is the master controller. The TQQQ repo itself is TQQQ-only and waits in cash while out of TQQQ. If `tqqq-alert` sends a TQQQ re-buy signal, sell all real-stock positions, confirm them here, then move the bucket back to TQQQ.
 
 ## Current Repo Meanings
 
@@ -17,11 +17,11 @@ Latest decision: use `real-stock-alert` as the temporary real-stock swing engine
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-14:
+- Current state inspected locally on 2026-05-21:
   - `position_open`: `false`
   - `shares`: `0.0`
-  - `cash`: `$26.13`
-  - `last_action`: `manual_sold`
+  - `cash`: `$2,699.66`
+  - `last_action`: `manual_cash_set`
   - `manual_exit_mode`: `true`
   - `manual_exit_price`: `$67.37`
   - `manual_exit_date`: `2026-05-05`
@@ -29,16 +29,12 @@ Latest decision: use `real-stock-alert` as the temporary real-stock swing engine
   - `early_exit_price`: `null`
   - `early_exit_date`: `null`
   - `waiting_for_early_reentry`: `false`
-  - `parking_ticker`: `XLK`
-  - `parking_shares`: `15.1158`
-  - `parking_avg_cost`: `$178.62`
-  - `parking_highest_high_since_entry`: `$178.62`
 - Meaning: the bot assumes no open TQQQ position and is in manual safety mode. It should not immediately re-buy just because TQQQ is above SMA200.
-- Meaning of parking fields: XLK is tracked as the optional waiting/parking asset while the real TQQQ strategy is out of TQQQ. Because `parking_shares` is above zero, the month-end real path should include XLK value plus cash.
+- Meaning of cash state: the TQQQ repo is currently out of TQQQ and waiting in cash. No XLK parking asset is part of the selected TQQQ strategy.
 - Manual safety re-buy rule: re-buy after a 7.5% pullback from `$67.37` while still above SMA200, or after price first goes below SMA200 and later crosses back above SMA200.
-- Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 65`.
-- Fresh buys and re-buys also require `RSI14 <= 65`.
-- Current high-risk/high-reward TQQQ strategy uses a 14% true ratcheting TQQQ trailing stop, +20% profit target, 5-day >= 25% parabolic auto-exit when a profitable TQQQ position is open, the 3-of-5 early-warning exit layer, XLK waiting-asset behavior, and a 5% XLK ratcheting stop while parked.
+- Manual safety timeout rule: after 20 trading days in manual safety cash mode, allow re-entry above SMA200 if `RSI14 <= 60`.
+- Fresh buys and re-buys also require `RSI14 <= 60`.
+- Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, the 3-of-5 early-warning exit layer, and cash as the waiting state.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
 
 ### `swing-stock-alert`
@@ -54,14 +50,14 @@ Latest decision: use `real-stock-alert` as the temporary real-stock swing engine
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-15:
+- Current state inspected locally on 2026-05-21:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
-  - allocated cash: `$1,000`
-  - cash: `$1,000`
+  - allocated cash: `$2,699.66`
+  - cash: `$2,699.66`
   - positions: `[]`
-  - latest candidates: `MRVL`, `MU`
+  - latest candidates: `ARM`, `DDOG`
   - latest skipped repeat-stretched candidates: `INTC`, `AMD`
   - latest market risk: `NORMAL`, score `1`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
@@ -86,7 +82,7 @@ At month end, compare the three systems separately:
    - Inspect `position_state.json`.
    - Confirm real TQQQ cash/shares match the brokerage account.
    - Check whether manual safety mode caused a re-buy, continued cash, or a new state.
-   - If `parking_shares` is above zero, include XLK value in the real path.
+   - Treat the selected TQQQ waiting state as cash unless `position_state.json` later says otherwise.
    - Compare real path against `bot_strategy_state.json`, which is only a paper benchmark.
    - Review action history and Telegram/GitHub Actions behavior.
 
@@ -107,13 +103,13 @@ At month end, compare the three systems separately:
 
 - `tqqq-alert` is no longer in an open TQQQ trade as of the inspected state.
 - `tqqq-alert` is currently manual safety cash/re-entry mode, not early-warning cash/re-entry mode.
-- Some older `tqqq-alert` docs still describe the previous early-warning cash state. Read `position_state.json` as the source of truth.
+- Some older `tqqq-alert` history may describe previous XLK/early-warning states. Read current `script.py`, current docs, and `position_state.json` as the source of truth.
 - Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 60 re-entry cap, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, 3-of-5 early-warning exits, and cash/no-XLK as the core waiting state. Current real state still has legacy tracked XLK exposure until it is sold and recorded with `manual_parking_sold`.
+  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 60 re-entry cap, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, 3-of-5 early-warning exits, and cash/no-XLK as the waiting state.
   - Swing repo: keep as paper/demo weekly stock comparison only.
   - Real-stock repo: keep Turbo top-2 momentum as the live stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, and `score_no_extension`.
-- Before using real-stock as the TQQQ-out engine, reset its cash bucket with `set_cash <actual freed cash amount>`.
+- Before using real-stock as the TQQQ-out engine, reset its cash bucket with `set_cash <actual freed cash amount>`. As of the latest rebased real-stock state, that cash amount is `$2,699.66`.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.

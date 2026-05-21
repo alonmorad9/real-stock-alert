@@ -32,7 +32,7 @@ This means the TQQQ repo is the master controller:
 - Run a weekly full buy scan after Friday close.
 - Sell when price closes below SMA50, the trailing stop is hit, or a holding drops out of the weekly top list.
 
-The old initial state used a small pilot allocation of `$1,000`. In TQQQ-out swing mode, reset the cash bucket to the actual freed TQQQ cash after selling XLK/TQQQ.
+The old initial state used a small pilot allocation of `$1,000`. In TQQQ-out swing mode, reset the cash bucket to the actual freed TQQQ cash after TQQQ exits. The TQQQ repo itself now waits in cash while out of TQQQ; this repo is the optional real-stock swing bucket during that waiting period.
 
 ## Manual Trade Flow
 
@@ -54,7 +54,7 @@ Daily exit check:
 python3 script.py daily
 ```
 
-Set the real-stock cash bucket after selling XLK or after TQQQ exits:
+Set the real-stock cash bucket after TQQQ exits:
 
 ```bash
 python3 script.py set_cash AMOUNT

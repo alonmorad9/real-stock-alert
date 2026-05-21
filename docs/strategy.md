@@ -1,6 +1,6 @@
 # Real Stock Strategy
 
-Last updated: 2026-05-20
+Last updated: 2026-05-21
 
 ## Purpose
 
@@ -79,12 +79,12 @@ The current Turbo score does not give extra points for being far above SMA50. SM
 
 Sizing in TQQQ-out swing mode:
 
-- allocated cash: the current freed TQQQ cash bucket after selling TQQQ/XLK,
+- allocated cash: the current freed TQQQ cash bucket after TQQQ exits,
 - max positions: `2`,
 - about 50% of available cash per position,
 - no margin.
 
-Use `python3 script.py set_cash AMOUNT` after selling XLK or after a TQQQ exit to reset this repo's tracked cash bucket before following buy candidates.
+Use `python3 script.py set_cash AMOUNT` after a TQQQ exit to reset this repo's tracked cash bucket before following buy candidates. The TQQQ repo is TQQQ-only and waits in cash while out; it no longer treats XLK as the selected waiting asset.
 
 ## Sell Rules
 
