@@ -1,73 +1,81 @@
-# REAL STOCK SYSTEM Report - 2026-05-22
+📊 Real Stock Daily Report — 22/05/2026
+──────────────────────────────
+Action: 👀 WATCHLIST — Planning only while TQQQ is open
+Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
+──────────────────────────────
+Mode:          daily
+Capital Mode:  inactive while TQQQ position is open
+Profile:       turbo — aggressive momentum leaders, not dip buys
+Max Positions: 2
+Data Source:   daily Yahoo bars
+──────────────────────────────
+🧭 Market Filter
+Meaning: controls whether new stock buys are allowed.
+What to do: if this is OFF, do not start new stock positions.
+QQQ:           $720.63
+SMA200:        $613.61
+Status:        ON
+──────────────────────────────
+🛡️ Market Risk Overlay
+Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
+What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
+Risk Level:    NORMAL
+Risk Score:    0
+Buy Size:      100.0% of normal
+Reasons:       none
+Action:        Use normal suggested allocation.
+──────────────────────────────
+⚙️ Strategy Settings
+Meaning: these rules decide which stocks appear in the candidate list.
+What to do: use the score and warnings together; the highest score is not a guarantee.
+Turbo:         ranks strong momentum leaders
+Score:         63d relative strength vs QQQ + 20d return
+Rank Policy:   skip_repeat_stretched
+ATR Cap:       10.0% max ATR14/price for fresh buys
+Repeat Rule:   recent stretched names are skipped so the list does not chase the same hot ticker forever
+──────────────────────────────
+💼 Real Stock Bucket
+Allocated:     $0.00
+Tracked Cash:  $0.00
+Planning Cash: $2,699.99 — used only to size suggestions in this message
+Open:          0 confirmed positions
+Value Est.:    $0.00
+Realized P&L:  $0.00
+──────────────────────────────
+📦 Open Positions
+No confirmed real stock positions are currently tracked.
+──────────────────────────────
+🧾 Buy Candidates
+Repeat Memory: ARM, MRVL, INTC, DDOG
+Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
-Mode: `daily`
-Capital mode: `inactive while TQQQ position is open`
-Master rule: TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.
-Profile: `turbo`
-Max positions: `2`
-Rank policy: `skip_repeat_stretched`
-ATR cap: `10.0%`
-Data source: `daily Yahoo bars`
+Skipped Candidates
+INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 59% above SMA50).
+ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 71% above SMA50).
 
-## Market Filter
+🥇 AMD
+Price:         $470.93
+Score:         151.42 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (2.8667 shares)
+Normal Slot:   $1,349.99
+Initial Stop:  $414.42
+63d RS:        119.6%
+20d Return:    35.4%
+Stretch:       HOT BUT STRETCHED: 55% above SMA50
 
-- QQQ close: $720.19
-- QQQ SMA200: $613.61
-- Market filter: ON
-- Meaning: new stock buys are allowed only when QQQ is above its SMA200. If this is OFF, do not start new stock positions.
+🥈 CRWD
+Price:         $670.58
+Score:         116.11 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (2.0132 shares)
+Normal Slot:   $1,349.99
+Initial Stop:  $602.80
+63d RS:        71.4%
+20d Return:    49.6%
+Stretch:       HOT BUT STRETCHED: RSI14 95, 45% above SMA50
 
-## Market Risk Overlay
-
-- Risk level: `NORMAL`
-- Risk score: `0`
-- Suggested new-buy size: `100.0%` of normal
-- Action: Use normal suggested allocation.
-- Reasons: none
-
-## Strategy Notes
-
-- Turbo profile: aggressive momentum mode. It looks for current leaders, not cheap/dip names.
-- Candidate score: higher is better. It combines 63-day relative strength versus QQQ and 20-day return. Extra distance above SMA50 is not rewarded.
-- Rank policy `skip_repeat_stretched`: if a recent recommendation is still overextended, skip it and show the next qualified stock instead.
-- ATR cap `10.0%`: skip fresh buys when ATR14 is too large versus price. Current live cap is 10%.
-- Market risk `NORMAL` / score `0`: this controls position size only. NORMAL means use 100% of the normal suggested buy amount.
-- Overextension warnings: stock-specific caution flags. They do not block the recommendation unless the ticker is also a repeat-stretched candidate.
-- TQQQ priority: if the TQQQ repo gives a buy/re-buy signal, TQQQ remains the master system.
-
-## Real Account State
-
-- Allocated cash: $0.00
-- Tracked cash: $0.00
-- Planning cash used for suggested buys: $2,699.99
-- Portfolio value estimate: $0.00
-- Realized P&L: $0.00
-
-## Open Positions
-
-No confirmed real positions are currently tracked.
-
-## Buy Candidates
-
-Repeat-stretch memory from previous scan: `DDOG, AMD, INTC`.
-
-## Skipped Candidates
-
-- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 59% above SMA50).
-- `DDOG` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 89, 52% above SMA50).
-
-| Rank | Ticker | Close | Score | Normal Allocation | Suggested Buy | Initial Stop | 63d RS | 20d Return |
-| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | ARM | $314.08 | 164.22 | $1,349.99 | $1,349.99 | $276.39 | 133.8% | 33.8% |
-| 2 | MRVL | $197.30 | 151.93 | $1,349.99 | $1,349.99 | $173.62 | 133.9% | 20.1% |
-
-## Explicit Buy Instructions
-
-- `ARM`: suggested buy amount $1,349.99 (about 4.2983 shares at $314.08). Initial stop reference: $276.39.
-- `MRVL`: suggested buy amount $1,349.99 (about 6.8423 shares at $197.30). Initial stop reference: $173.62.
-
-## Overextension Warnings
-
-- `ARM`: HOT BUT STRETCHED: 72% above SMA50. This means the stock is already hot. The recommendation can still be valid, but avoid chasing if the live open is far above the shown price.
-- `MRVL`: HOT BUT STRETCHED: 43% above SMA50. This means the stock is already hot. The recommendation can still be valid, but avoid chasing if the live open is far above the shown price.
-
-These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.
+⚠️ Overextension Warnings
+Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
+AMD: HOT BUT STRETCHED: 55% above SMA50
+CRWD: HOT BUT STRETCHED: RSI14 95, 45% above SMA50
+──────────────────────────────
+These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.

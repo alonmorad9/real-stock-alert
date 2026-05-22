@@ -4,11 +4,11 @@
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
   "last_action": "daily_scan",
-  "last_action_at": "2026-05-22T15:04:07.318671+00:00",
+  "last_action_at": "2026-05-22T15:09:20.997655+00:00",
   "last_scan_date": "2026-05-22",
   "latest_candidates": [
-    "ARM",
-    "MRVL"
+    "AMD",
+    "CRWD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -24,7 +24,7 @@
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "DDOG"
+      "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,
