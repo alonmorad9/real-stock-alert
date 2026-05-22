@@ -29,6 +29,7 @@ LATEST_REPORT = REPORTS_DIR / "latest_report.md"
 SYSTEM_LABEL = "REAL STOCK SYSTEM"
 CAPITAL_MODE = "TQQQ-out swing mode"
 MASTER_RULE = "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ."
+REFERENCE_CASH = 2699.99
 
 
 def money(value):
@@ -304,7 +305,9 @@ def build_report(mode):
     open_positions = state.get("positions", [])
     open_tickers = {position["ticker"] for position in open_positions}
     slots = max(0, max_positions - len(open_positions))
-    cash_per_slot = float(state.get("cash", 0.0)) / slots if slots else 0.0
+    tracked_cash = float(state.get("cash", 0.0))
+    planning_cash = tracked_cash if tracked_cash > 0 else REFERENCE_CASH
+    cash_per_slot = planning_cash / slots if slots else 0.0
     risk_adjusted_cash_per_slot = cash_per_slot * risk["allocation_multiplier"]
 
     lines = [
@@ -324,6 +327,7 @@ def build_report(mode):
         f"- QQQ close: {money(market['close'])}",
         f"- QQQ SMA200: {money(market['sma200'])}",
         f"- Market filter: {'ON' if market['market_on'] else 'OFF'}",
+        "- Meaning: new stock buys are allowed only when QQQ is above its SMA200. If this is OFF, do not start new stock positions.",
         "",
         "## Market Risk Overlay",
         "",
@@ -334,28 +338,19 @@ def build_report(mode):
     ]
     if risk["reasons"]:
         lines.append(f"- Reasons: {', '.join(risk['reasons'])}")
+    else:
+        lines.append("- Reasons: none")
     lines.extend([
         "",
-        "## Quick Meaning",
+        "## Strategy Notes",
         "",
-        "- `turbo`: aggressive momentum mode. It buys leaders, not cheap/dip names.",
-        "- Score formula: 63d relative strength plus 20d momentum. Extra distance above SMA50 is no longer rewarded.",
-        "- ATR cap: fresh buy candidates with ATR14 above 10% of price are skipped; this tested better than the prior live score.",
-        f"- Risk `{risk['level']}` / score `{risk['score']}` controls size only. This run uses {pct(risk['allocation_multiplier'])} of normal new-buy size.",
-        "- Reasons explain market-wide QQQ warnings; they do not pick the stocks.",
-        "- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.",
-        "- `skip_repeat_stretched` means a recent recommended or skipped target is skipped again if it is still stretched.",
-        "- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.",
-        "- This real-stock bucket is temporary while TQQQ is out. The TQQQ repo itself waits in cash; if `tqqq-alert` sends a TQQQ re-entry signal, TQQQ takes priority.",
-        "",
-        "## הסבר קצר בעברית",
-        "",
-        "- `turbo`: מצב מומנטום אגרסיבי. הוא מחפש מניות מובילות, לא מניות זולות אחרי ירידה.",
-        "- הניקוד מבוסס על חוזק יחסי ל-63 יום ומומנטום ל-20 יום.",
-        "- מסנן ATR: מניה עם ATR14 מעל 10% מהמחיר תידחה לקנייה חדשה כי היא תנודתית מדי.",
-        f"- רמת סיכון `{risk['level']}` / ניקוד `{risk['score']}` משפיעים רק על גודל הקנייה. בריצה הזו משתמשים ב-{pct(risk['allocation_multiplier'])} מגודל רגיל.",
-        "- אם יש כבר 2 פוזיציות מאושרות, לא קונים מניות חדשות רק בגלל המלצה חדשה.",
-        "- אם `tqqq-alert` נותן איתות כניסה ל-TQQQ, ה-TQQQ קודם למניות האלה.",
+        "- Turbo profile: aggressive momentum mode. It looks for current leaders, not cheap/dip names.",
+        "- Candidate score: higher is better. It combines 63-day relative strength versus QQQ and 20-day return. Extra distance above SMA50 is not rewarded.",
+        f"- Rank policy `{rank_policy}`: if a recent recommendation is still overextended, skip it and show the next qualified stock instead.",
+        f"- ATR cap `{pct(max_atr_pct) if max_atr_pct is not None else 'none'}`: skip fresh buys when ATR14 is too large versus price. Current live cap is 10%.",
+        f"- Market risk `{risk['level']}` / score `{risk['score']}`: this controls position size only. NORMAL means use 100% of the normal suggested buy amount.",
+        "- Overextension warnings: stock-specific caution flags. They do not block the recommendation unless the ticker is also a repeat-stretched candidate.",
+        "- TQQQ priority: if the TQQQ repo gives a buy/re-buy signal, TQQQ remains the master system.",
     ])
     lines.extend([
         "",
@@ -363,6 +358,7 @@ def build_report(mode):
         "",
         f"- Allocated cash: {money(state.get('allocated_cash', 0.0))}",
         f"- Tracked cash: {money(state.get('cash', 0.0))}",
+        f"- Planning cash used for suggested buys: {money(planning_cash)}",
         f"- Portfolio value estimate: {money(portfolio_value)}",
         f"- Realized P&L: {money(state.get('realized_pnl', 0.0))}",
         "",
@@ -399,10 +395,6 @@ def build_report(mode):
                 f"- SELL CANDIDATE: `{status['ticker']}` because {', '.join(status['reasons'])}. "
                 "If you sell manually, confirm with `manual_sold`."
             )
-            lines.append(
-                f"- בעברית: `{status['ticker']}` מועמדת למכירה בגלל {', '.join(status['reasons'])}. "
-                "אם מכרת ידנית, אשר עם `manual_sold`."
-            )
         lines.append("")
 
     lines.extend(["## Buy Candidates", ""])
@@ -438,13 +430,14 @@ def build_report(mode):
         else:
             lines.extend(
                 [
-                    "| Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |",
-                    "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+                    "| Rank | Ticker | Close | Score | Normal Allocation | Suggested Buy | Initial Stop | 63d RS | 20d Return |",
+                    "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
                 ]
             )
             for idx, candidate in enumerate(buy_candidates, start=1):
                 lines.append(
                     f"| {idx} | {candidate['ticker']} | {money(candidate['close'])} | "
+                    f"{candidate['score']:.2f} | "
                     f"{money(cash_per_slot)} | {money(risk_adjusted_cash_per_slot)} | {money(candidate['initial_stop'])} | "
                     f"{pct(candidate['rs63'])} | {pct(candidate['ret20'])} |"
                 )
@@ -456,21 +449,13 @@ def build_report(mode):
                     f"(about {approx_shares:.4f} shares at {money(candidate['close'])}). "
                     f"Initial stop reference: {money(candidate['initial_stop'])}."
                 )
-            lines.extend(["", "## הוראות קנייה בעברית", ""])
-            for candidate in buy_candidates:
-                approx_shares = risk_adjusted_cash_per_slot / candidate["close"] if candidate["close"] else 0.0
-                lines.append(
-                    f"- `{candidate['ticker']}`: סכום קנייה מוצע {money(risk_adjusted_cash_per_slot)} "
-                    f"(בערך {approx_shares:.4f} מניות במחיר {money(candidate['close'])}). "
-                    f"סטופ התחלתי למעקב: {money(candidate['initial_stop'])}."
-                )
             stretched = [candidate for candidate in buy_candidates if candidate["extension_warning"] != "OK"]
             if stretched:
                 lines.extend(["", "## Overextension Warnings", ""])
                 for candidate in stretched:
                     lines.append(
                         f"- `{candidate['ticker']}`: {candidate['extension_warning']}. "
-                        "Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched."
+                        "This means the stock is already hot. The recommendation can still be valid, but avoid chasing if the live open is far above the shown price."
                     )
             lines.extend(
                 [
