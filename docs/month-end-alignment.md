@@ -58,9 +58,9 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `MRVL`, `MU`
+  - latest candidates: `ARM`, `DDOG`
   - latest skipped repeat-stretched candidates: `INTC`, `AMD`
-  - latest market risk: `NORMAL`, score `0`
+  - latest market risk: `NORMAL`, score `1`, reason `QQQ below SMA10`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
 - latest research decision:
