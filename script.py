@@ -310,94 +310,103 @@ def build_report(mode):
     cash_per_slot = planning_cash / slots if slots else 0.0
     risk_adjusted_cash_per_slot = cash_per_slot * risk["allocation_multiplier"]
 
-    lines = [
-        f"# {SYSTEM_LABEL} Report - {asof}",
-        "",
-        f"Mode: `{mode}`",
-        f"Capital mode: `{state.get('capital_mode', CAPITAL_MODE)}`",
-        f"Master rule: {state.get('master_rule', MASTER_RULE)}",
-        f"Profile: `{profile}`",
-        f"Max positions: `{max_positions}`",
-        f"Rank policy: `{rank_policy}`",
-        f"ATR cap: `{pct(max_atr_pct)}`" if max_atr_pct is not None else "ATR cap: `none`",
-        f"Data source: `{data_source}`",
-        "",
-        "## Market Filter",
-        "",
-        f"- QQQ close: {money(market['close'])}",
-        f"- QQQ SMA200: {money(market['sma200'])}",
-        f"- Market filter: {'ON' if market['market_on'] else 'OFF'}",
-        "- Meaning: new stock buys are allowed only when QQQ is above its SMA200. If this is OFF, do not start new stock positions.",
-        "",
-        "## Market Risk Overlay",
-        "",
-        f"- Risk level: `{risk['level']}`",
-        f"- Risk score: `{risk['score']}`",
-        f"- Suggested new-buy size: `{pct(risk['allocation_multiplier'])}` of normal",
-        f"- Action: {risk['action']}",
-    ]
-    if risk["reasons"]:
-        lines.append(f"- Reasons: {', '.join(risk['reasons'])}")
+    sep = "─" * 30
+    report_date = asof.strftime("%d/%m/%Y")
+    capital_mode = state.get("capital_mode", CAPITAL_MODE)
+    atr_cap_text = pct(max_atr_pct) if max_atr_pct is not None else "none"
+    risk_reasons = ", ".join(risk["reasons"]) if risk["reasons"] else "none"
+    position_word = "position" if len(open_positions) == 1 else "positions"
+    if mode not in buy_scan_modes:
+        action = "ℹ️ INFO — Buy scan was not requested"
+    elif not market["market_on"]:
+        action = "⏸️ NO STOCK BUY — QQQ below SMA200"
+    elif slots <= 0:
+        action = "✅ HOLD — Max stock positions already filled"
+    elif tracked_cash <= 0:
+        action = "👀 WATCHLIST — Planning only while TQQQ is open"
     else:
-        lines.append("- Reasons: none")
-    lines.extend([
-        "",
-        "## Strategy Notes",
-        "",
-        "- Turbo profile: aggressive momentum mode. It looks for current leaders, not cheap/dip names.",
-        "- Candidate score: higher is better. It combines 63-day relative strength versus QQQ and 20-day return. Extra distance above SMA50 is not rewarded.",
-        f"- Rank policy `{rank_policy}`: if a recent recommendation is still overextended, skip it and show the next qualified stock instead.",
-        f"- ATR cap `{pct(max_atr_pct) if max_atr_pct is not None else 'none'}`: skip fresh buys when ATR14 is too large versus price. Current live cap is 10%.",
-        f"- Market risk `{risk['level']}` / score `{risk['score']}`: this controls position size only. NORMAL means use 100% of the normal suggested buy amount.",
-        "- Overextension warnings: stock-specific caution flags. They do not block the recommendation unless the ticker is also a repeat-stretched candidate.",
-        "- TQQQ priority: if the TQQQ repo gives a buy/re-buy signal, TQQQ remains the master system.",
-    ])
-    lines.extend([
-        "",
-        "## Real Account State",
-        "",
-        f"- Allocated cash: {money(state.get('allocated_cash', 0.0))}",
-        f"- Tracked cash: {money(state.get('cash', 0.0))}",
-        f"- Planning cash used for suggested buys: {money(planning_cash)}",
-        f"- Portfolio value estimate: {money(portfolio_value)}",
-        f"- Realized P&L: {money(state.get('realized_pnl', 0.0))}",
-        "",
-    ])
+        action = "🟢 REVIEW BUYS — Candidates available"
+
+    lines = [
+        f"📊 Real Stock {mode.title()} Report — {report_date}",
+        sep,
+        f"Action: {action}",
+        "Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.",
+        sep,
+        f"Mode:          {mode}",
+        f"Capital Mode:  {capital_mode}",
+        f"Profile:       {profile} — aggressive momentum leaders, not dip buys",
+        f"Max Positions: {max_positions}",
+        f"Data Source:   {data_source}",
+        sep,
+        "🧭 Market Filter",
+        "Meaning: controls whether new stock buys are allowed.",
+        "What to do: if this is OFF, do not start new stock positions.",
+        f"QQQ:           {money(market['close'])}",
+        f"SMA200:        {money(market['sma200'])}",
+        f"Status:        {'ON' if market['market_on'] else 'OFF'}",
+        sep,
+        "🛡️ Market Risk Overlay",
+        "Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.",
+        "What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.",
+        f"Risk Level:    {risk['level']}",
+        f"Risk Score:    {risk['score']}",
+        f"Buy Size:      {pct(risk['allocation_multiplier'])} of normal",
+        f"Reasons:       {risk_reasons}",
+        f"Action:        {risk['action']}",
+        sep,
+        "⚙️ Strategy Settings",
+        "Meaning: these rules decide which stocks appear in the candidate list.",
+        "What to do: use the score and warnings together; the highest score is not a guarantee.",
+        f"Turbo:         ranks strong momentum leaders",
+        f"Score:         63d relative strength vs QQQ + 20d return",
+        f"Rank Policy:   {rank_policy}",
+        f"ATR Cap:       {atr_cap_text} max ATR14/price for fresh buys",
+        "Repeat Rule:   recent stretched names are skipped so the list does not chase the same hot ticker forever",
+        sep,
+        "💼 Real Stock Bucket",
+        f"Allocated:     {money(state.get('allocated_cash', 0.0))}",
+        f"Tracked Cash:  {money(tracked_cash)}",
+        f"Planning Cash: {money(planning_cash)} — used only to size suggestions in this message",
+        f"Open:          {len(open_positions)} confirmed {position_word}",
+        f"Value Est.:    {money(portfolio_value)}",
+        f"Realized P&L:  {money(state.get('realized_pnl', 0.0))}",
+        sep,
+    ]
 
     if not open_positions:
-        lines.extend(["## Open Positions", "", "No confirmed real positions are currently tracked.", ""])
+        lines.extend(["📦 Open Positions", "No confirmed real stock positions are currently tracked.", sep])
     else:
-        lines.extend(
-            [
-                "## Open Positions",
-                "",
-                "| Ticker | Shares | Entry | Close | Stop | Return | Status |",
-                "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
-            ]
-        )
+        lines.extend(["📦 Open Positions"])
         status_by_ticker = {status["ticker"]: status for status in exit_statuses}
         for position in open_positions:
             status = status_by_ticker.get(position["ticker"], {})
             close = status.get("close", position["entry_price"])
             ret = close / float(position["entry_price"]) - 1
             note = "SELL: " + ", ".join(status["reasons"]) if status.get("sell") else "Hold"
-            lines.append(
-                f"| {position['ticker']} | {position['shares']} | {money(position['entry_price'])} | "
-                f"{money(close)} | {money(position['stop'])} | {pct(ret)} | {note} |"
-            )
-        lines.append("")
+            lines.extend([
+                f"{position['ticker']}",
+                f"Shares:        {position['shares']}",
+                f"Entry:         {money(position['entry_price'])}",
+                f"Close:         {money(close)}",
+                f"Stop:          {money(position['stop'])}",
+                f"Return:        {pct(ret)}",
+                f"Status:        {note}",
+                "",
+            ])
+        lines.append(sep)
 
     sell_alerts = [status for status in exit_statuses if status["sell"]]
     if sell_alerts:
-        lines.extend(["## Sell Instructions", ""])
+        lines.extend(["🚨 Sell Instructions"])
         for status in sell_alerts:
             lines.append(
-                f"- SELL CANDIDATE: `{status['ticker']}` because {', '.join(status['reasons'])}. "
-                "If you sell manually, confirm with `manual_sold`."
+                f"{status['ticker']}: SELL CANDIDATE because {', '.join(status['reasons'])}. "
+                "If you sell manually, confirm with manual_sold."
             )
-        lines.append("")
+        lines.append(sep)
 
-    lines.extend(["## Buy Candidates", ""])
+    lines.extend(["🧾 Buy Candidates"])
     if mode not in buy_scan_modes:
         lines.append("Buy scan was not requested on this run.")
     elif not market["market_on"]:
@@ -408,64 +417,59 @@ def build_report(mode):
         buy_candidates = [candidate for candidate in candidates if candidate["ticker"] not in open_tickers][:slots]
         visible_skips = [candidate for candidate in skipped_candidates if candidate["ticker"] not in open_tickers]
         if rank_policy == "skip_repeat_stretched" and previous_targets:
-            lines.append(f"Repeat-stretch memory from previous scan: `{', '.join(previous_targets)}`.")
+            lines.append(f"Repeat Memory: {', '.join(previous_targets)}")
+            lines.append("Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.")
             lines.append("")
         if visible_skips:
-            lines.extend(["## Skipped Candidates", ""])
+            lines.extend(["Skipped Candidates"])
             for candidate in visible_skips[:max_positions]:
                 if candidate.get("skip_reason", "").startswith("ATR14"):
                     atr_pct = candidate["atr14"] / candidate["close"] if candidate["close"] else 0.0
                     lines.append(
-                        f"- `{candidate['ticker']}` skipped: ATR14 is {pct(atr_pct)}, above the "
+                        f"{candidate['ticker']}: skipped because ATR14 is {pct(atr_pct)}, above the "
                         f"{pct(max_atr_pct)} fresh-buy cap."
                     )
                 else:
                     lines.append(
-                        f"- `{candidate['ticker']}` skipped: it was already a recent target and is still stretched "
+                        f"{candidate['ticker']}: skipped because it was already a recent target and is still stretched "
                         f"({candidate['extension_warning']})."
                     )
             lines.append("")
         if not buy_candidates:
             lines.append("No qualified new buy candidates.")
         else:
-            lines.extend(
-                [
-                    "| Rank | Ticker | Close | Score | Normal Allocation | Suggested Buy | Initial Stop | 63d RS | 20d Return |",
-                    "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
-                ]
-            )
             for idx, candidate in enumerate(buy_candidates, start=1):
-                lines.append(
-                    f"| {idx} | {candidate['ticker']} | {money(candidate['close'])} | "
-                    f"{candidate['score']:.2f} | "
-                    f"{money(cash_per_slot)} | {money(risk_adjusted_cash_per_slot)} | {money(candidate['initial_stop'])} | "
-                    f"{pct(candidate['rs63'])} | {pct(candidate['ret20'])} |"
-                )
-            lines.extend(["", "## Explicit Buy Instructions", ""])
-            for candidate in buy_candidates:
                 approx_shares = risk_adjusted_cash_per_slot / candidate["close"] if candidate["close"] else 0.0
-                lines.append(
-                    f"- `{candidate['ticker']}`: suggested buy amount {money(risk_adjusted_cash_per_slot)} "
-                    f"(about {approx_shares:.4f} shares at {money(candidate['close'])}). "
-                    f"Initial stop reference: {money(candidate['initial_stop'])}."
-                )
+                medal = "🥇" if idx == 1 else "🥈" if idx == 2 else f"{idx}."
+                lines.extend([
+                    f"{medal} {candidate['ticker']}",
+                    f"Price:         {money(candidate['close'])}",
+                    f"Score:         {candidate['score']:.2f} — higher means stronger momentum rank",
+                    f"Suggested Buy: {money(risk_adjusted_cash_per_slot)} ({approx_shares:.4f} shares)",
+                    f"Normal Slot:   {money(cash_per_slot)}",
+                    f"Initial Stop:  {money(candidate['initial_stop'])}",
+                    f"63d RS:        {pct(candidate['rs63'])}",
+                    f"20d Return:    {pct(candidate['ret20'])}",
+                    f"Stretch:       {candidate['extension_warning']}",
+                    "",
+                ])
             stretched = [candidate for candidate in buy_candidates if candidate["extension_warning"] != "OK"]
             if stretched:
-                lines.extend(["", "## Overextension Warnings", ""])
+                lines.extend(["⚠️ Overextension Warnings"])
+                lines.append("Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.")
                 for candidate in stretched:
                     lines.append(
-                        f"- `{candidate['ticker']}`: {candidate['extension_warning']}. "
-                        "This means the stock is already hot. The recommendation can still be valid, but avoid chasing if the live open is far above the shown price."
+                        f"{candidate['ticker']}: {candidate['extension_warning']}"
                     )
             lines.extend(
                 [
-                    "",
-                    "These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.",
+                    sep,
+                    "These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.",
                 ]
             )
 
     if errors:
-        lines.extend(["", "## Data Warnings", ""])
+        lines.extend([sep, "⚠️ Data Warnings"])
         for item in errors[:10]:
             lines.append(f"- {item['ticker']}: {item['error']}")
 
