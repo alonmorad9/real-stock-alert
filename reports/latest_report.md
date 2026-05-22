@@ -1,9 +1,9 @@
-📊 Real Stock Daily Report — 22/05/2026
+📊 Real Stock Weekly Report — 22/05/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          daily
+Mode:          weekly
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
@@ -12,8 +12,8 @@ Data Source:   daily Yahoo bars
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $720.63
-SMA200:        $613.61
+QQQ:           $717.54
+SMA200:        $613.60
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -46,36 +46,36 @@ Realized P&L:  $0.00
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: ARM, MRVL, INTC, DDOG
+Repeat Memory: AMD, CRWD, INTC, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 59% above SMA50).
-ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 71% above SMA50).
+INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 57% above SMA50).
+ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 68% above SMA50).
 
-🥇 AMD
-Price:         $470.93
-Score:         151.42 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (2.8667 shares)
+🥇 DDOG
+Price:         $222.32
+Score:         161.73 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (6.0723 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $414.42
-63d RS:        119.6%
-20d Return:    35.4%
-Stretch:       HOT BUT STRETCHED: 55% above SMA50
+Initial Stop:  $195.64
+63d RS:        97.2%
+20d Return:    71.7%
+Stretch:       HOT BUT STRETCHED: RSI14 89, 53% above SMA50
 
-🥈 CRWD
-Price:         $670.58
-Score:         116.11 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (2.0132 shares)
+🥈 MRVL
+Price:         $196.33
+Score:         150.59 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (6.8762 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $602.80
-63d RS:        71.4%
-20d Return:    49.6%
-Stretch:       HOT BUT STRETCHED: RSI14 95, 45% above SMA50
+Initial Stop:  $172.77
+63d RS:        133.1%
+20d Return:    19.5%
+Stretch:       HOT BUT STRETCHED: 43% above SMA50
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-AMD: HOT BUT STRETCHED: 55% above SMA50
-CRWD: HOT BUT STRETCHED: RSI14 95, 45% above SMA50
+DDOG: HOT BUT STRETCHED: RSI14 89, 53% above SMA50
+MRVL: HOT BUT STRETCHED: 43% above SMA50
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.
