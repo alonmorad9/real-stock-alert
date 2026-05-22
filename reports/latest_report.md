@@ -1,19 +1,20 @@
 # REAL STOCK SYSTEM Report - 2026-05-22
 
-Mode: `opening`
+Mode: `daily`
 Capital mode: `inactive while TQQQ position is open`
 Master rule: TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.
 Profile: `turbo`
 Max positions: `2`
 Rank policy: `skip_repeat_stretched`
 ATR cap: `10.0%`
-Data source: `daily Yahoo bars with intraday 1-minute opening snapshot`
+Data source: `daily Yahoo bars`
 
 ## Market Filter
 
-- QQQ close: $719.88
+- QQQ close: $720.19
 - QQQ SMA200: $613.61
 - Market filter: ON
+- Meaning: new stock buys are allowed only when QQQ is above its SMA200. If this is OFF, do not start new stock positions.
 
 ## Market Risk Overlay
 
@@ -21,32 +22,23 @@ Data source: `daily Yahoo bars with intraday 1-minute opening snapshot`
 - Risk score: `0`
 - Suggested new-buy size: `100.0%` of normal
 - Action: Use normal suggested allocation.
+- Reasons: none
 
-## Quick Meaning
+## Strategy Notes
 
-- `turbo`: aggressive momentum mode. It buys leaders, not cheap/dip names.
-- Score formula: 63d relative strength plus 20d momentum. Extra distance above SMA50 is no longer rewarded.
-- ATR cap: fresh buy candidates with ATR14 above 10% of price are skipped; this tested better than the prior live score.
-- Risk `NORMAL` / score `0` controls size only. This run uses 100.0% of normal new-buy size.
-- Reasons explain market-wide QQQ warnings; they do not pick the stocks.
-- Overextension warnings are stock-specific. They warn about chasing hot names, but they do not add points to the score.
-- `skip_repeat_stretched` means a recent recommended or skipped target is skipped again if it is still stretched.
-- A hard down day may not remove a ticker if its 20d/63d momentum is still strongest.
-- This real-stock bucket is temporary while TQQQ is out. The TQQQ repo itself waits in cash; if `tqqq-alert` sends a TQQQ re-entry signal, TQQQ takes priority.
-
-## הסבר קצר בעברית
-
-- `turbo`: מצב מומנטום אגרסיבי. הוא מחפש מניות מובילות, לא מניות זולות אחרי ירידה.
-- הניקוד מבוסס על חוזק יחסי ל-63 יום ומומנטום ל-20 יום.
-- מסנן ATR: מניה עם ATR14 מעל 10% מהמחיר תידחה לקנייה חדשה כי היא תנודתית מדי.
-- רמת סיכון `NORMAL` / ניקוד `0` משפיעים רק על גודל הקנייה. בריצה הזו משתמשים ב-100.0% מגודל רגיל.
-- אם יש כבר 2 פוזיציות מאושרות, לא קונים מניות חדשות רק בגלל המלצה חדשה.
-- אם `tqqq-alert` נותן איתות כניסה ל-TQQQ, ה-TQQQ קודם למניות האלה.
+- Turbo profile: aggressive momentum mode. It looks for current leaders, not cheap/dip names.
+- Candidate score: higher is better. It combines 63-day relative strength versus QQQ and 20-day return. Extra distance above SMA50 is not rewarded.
+- Rank policy `skip_repeat_stretched`: if a recent recommendation is still overextended, skip it and show the next qualified stock instead.
+- ATR cap `10.0%`: skip fresh buys when ATR14 is too large versus price. Current live cap is 10%.
+- Market risk `NORMAL` / score `0`: this controls position size only. NORMAL means use 100% of the normal suggested buy amount.
+- Overextension warnings: stock-specific caution flags. They do not block the recommendation unless the ticker is also a repeat-stretched candidate.
+- TQQQ priority: if the TQQQ repo gives a buy/re-buy signal, TQQQ remains the master system.
 
 ## Real Account State
 
 - Allocated cash: $0.00
 - Tracked cash: $0.00
+- Planning cash used for suggested buys: $2,699.99
 - Portfolio value estimate: $0.00
 - Realized P&L: $0.00
 
@@ -56,30 +48,26 @@ No confirmed real positions are currently tracked.
 
 ## Buy Candidates
 
-Repeat-stretch memory from previous scan: `MRVL, MU, INTC, ARM`.
+Repeat-stretch memory from previous scan: `DDOG, AMD, INTC`.
 
 ## Skipped Candidates
 
-- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 56% above SMA50).
+- `INTC` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: 59% above SMA50).
+- `DDOG` skipped: it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 89, 52% above SMA50).
 
-| Rank | Ticker | Close | Normal Allocation | Risk-Adjusted Buy | Initial Stop | 63d RS | 20d Return |
-| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | DDOG | $224.05 | $0.00 | $0.00 | $197.17 | 98.5% | 73.0% |
-| 2 | AMD | $469.16 | $0.00 | $0.00 | $412.86 | 118.8% | 34.9% |
+| Rank | Ticker | Close | Score | Normal Allocation | Suggested Buy | Initial Stop | 63d RS | 20d Return |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | ARM | $314.08 | 164.22 | $1,349.99 | $1,349.99 | $276.39 | 133.8% | 33.8% |
+| 2 | MRVL | $197.30 | 151.93 | $1,349.99 | $1,349.99 | $173.62 | 133.9% | 20.1% |
 
 ## Explicit Buy Instructions
 
-- `DDOG`: suggested buy amount $0.00 (about 0.0000 shares at $224.05). Initial stop reference: $197.17.
-- `AMD`: suggested buy amount $0.00 (about 0.0000 shares at $469.16). Initial stop reference: $412.86.
-
-## הוראות קנייה בעברית
-
-- `DDOG`: סכום קנייה מוצע $0.00 (בערך 0.0000 מניות במחיר $224.05). סטופ התחלתי למעקב: $197.17.
-- `AMD`: סכום קנייה מוצע $0.00 (בערך 0.0000 מניות במחיר $469.16). סטופ התחלתי למעקב: $412.86.
+- `ARM`: suggested buy amount $1,349.99 (about 4.2983 shares at $314.08). Initial stop reference: $276.39.
+- `MRVL`: suggested buy amount $1,349.99 (about 6.8423 shares at $197.30). Initial stop reference: $173.62.
 
 ## Overextension Warnings
 
-- `DDOG`: HOT BUT STRETCHED: RSI14 89, 55% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
-- `AMD`: HOT BUT STRETCHED: 55% above SMA50. Momentum rank stays valid, but consider hold/not-add discipline if the open is too stretched.
+- `ARM`: HOT BUT STRETCHED: 72% above SMA50. This means the stock is already hot. The recommendation can still be valid, but avoid chasing if the live open is far above the shown price.
+- `MRVL`: HOT BUT STRETCHED: 43% above SMA50. This means the stock is already hot. The recommendation can still be valid, but avoid chasing if the live open is far above the shown price.
 
 These are instructions only. The repo does not mark a buy as real until `manual_bought` is run with the actual fill.
