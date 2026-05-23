@@ -5,7 +5,7 @@ Real-money stock alert system for a small, manually executed pilot.
 This repo is intentionally separate from:
 
 - `tqqq-alert`, the real TQQQ/manual safety strategy repo.
-- `swing-stock-alert`, the demo/paper weekly stock swing repo.
+- `swing-stock-alert`, the paused old demo/paper weekly stock swing archive.
 
 The bot sends candidate and exit instructions, but it never assumes a trade happened until the real fill is confirmed with a manual command.
 
@@ -22,7 +22,7 @@ This means the TQQQ repo is the master controller:
 - When `tqqq-alert` says TQQQ is out/waiting, this repo can manage the freed cash in top-2 real swing stocks.
 - When `tqqq-alert` sends a TQQQ buy/re-buy signal, TQQQ takes priority. Sell all real-stock positions, confirm the sales here with `manual_sold`, then use the cash to buy TQQQ and confirm that buy in `tqqq-alert`.
 - The stock bot's normal sell rules still apply while TQQQ is waiting. If a stock sell fires and TQQQ still says wait, sell that stock and follow the next real-stock candidate/cash instruction.
-- As of the current 2026-05-21 alignment, TQQQ is open again, so this repo should show `$0` deployable stock cash until a future TQQQ exit.
+- As of the current 2026-05-23 alignment, TQQQ is open, so this repo should show `$0` deployable stock cash until a future TQQQ exit.
 
 - Trade liquid large-cap and growth stocks.
 - Hold at most 2 stocks.

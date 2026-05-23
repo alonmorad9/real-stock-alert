@@ -1,16 +1,16 @@
 # Month-End Alignment
 
-Last updated: 2026-05-21
+Last updated: 2026-05-23
 
-Latest decision: `tqqq-alert` is the master controller and currently has an open TQQQ position. `real-stock-alert` is the optional temporary real-stock swing engine only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash. If `tqqq-alert` later exits TQQQ and waits in cash, reset this repo with `set_cash <actual freed cash amount>` before following stock candidates.
+Latest decision: `tqqq-alert` is the master controller and currently has an open TQQQ position. `real-stock-alert` is the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash. If `tqqq-alert` later exits TQQQ and waits in cash, reset this repo with `set_cash <actual freed cash amount>` before following stock candidates.
 
 ## Current Repo Meanings
 
 | Repo | Meaning | Money Mode | Source of Truth |
 | --- | --- | --- | --- |
 | `tqqq-alert` | Real TQQQ strategy, currently open TQQQ position | Real | `position_state.json` |
-| `swing-stock-alert` | Weekly stock swing demo/paper tracker | Paper/demo | `pilot_state.json` and `reports/` |
-| `real-stock-alert` | Real stock-buying turbo swing pilot | Real | `position_state.json` |
+| `real-stock-alert` | Real stock-buying turbo swing pilot plus bot-only stock benchmark | Real + benchmark | `position_state.json` |
+| `swing-stock-alert` | Paused old demo stock swing archive | Historical paper/demo only | `pilot_state.json` and `reports/` |
 
 ## Current Known Status
 
@@ -40,29 +40,32 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 
 ### `swing-stock-alert`
 
-- Demo/paper repo.
-- Current state inspected locally on 2026-05-07:
+- Paused research archive.
+- Current state inspected locally on 2026-05-23:
   - paper positions: `INTC`, `MRVL`
   - paper start date: `2026-05-04`
-  - latest paper value: `1.046144`
-  - latest paper return: `4.6144%`
-- Meaning: this is a paper/demo comparison only. It should not be treated as real holdings.
+  - latest paper value: `1.184576`
+  - latest paper return: `18.4576%`
+  - repo status: `paused_research_archive`
+  - active decision source: `false`
+- Meaning: this is optional historical context only. It should not send active alerts and should not be treated as real holdings.
 
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-21:
+- Current state inspected locally on 2026-05-23:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `ARM`, `MRVL`
+  - latest candidates: `AMD`, `CRWD`
   - latest skipped repeat-stretched candidates: `INTC`, `DDOG`
   - latest market risk: `NORMAL`, score `0`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
+  - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
 - latest research decision:
   - Turbo remains the live stock strategy.
   - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.
@@ -78,7 +81,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 
 ## Month-End Review Plan
 
-At month end, compare the three systems separately:
+At month end, compare the two active systems first, and use the old swing demo only as optional historical context:
 
 1. `tqqq-alert`
    - Inspect `position_state.json`.
@@ -88,30 +91,30 @@ At month end, compare the three systems separately:
    - Compare real path against `bot_strategy_state.json`, which is only a paper benchmark.
    - Review action history and Telegram/GitHub Actions behavior.
 
-2. `swing-stock-alert`
-   - Inspect `pilot_state.json`.
-   - Inspect `reports/latest_report.md` and dated reports.
-   - Treat all positions as paper/demo assumptions.
-   - Do not compare this as real-money performance.
-
-3. `real-stock-alert`
+2. `real-stock-alert`
    - Inspect `position_state.json`.
    - Confirm real stock cash/shares match the brokerage account.
    - Confirm any real buys/sells were manually confirmed with actual fills.
-   - Review turbo profile performance separately from the swing demo.
+   - Review turbo profile performance and the bot-only benchmark separately from confirmed real fills.
    - Keep buy-the-dip as research/watchlist only unless a future test beats Turbo.
+
+3. `swing-stock-alert`
+   - Optional only.
+   - Inspect `pilot_state.json` and `reports/latest_report.md` only if we want the old May paper-pilot history.
+   - Treat all positions as paper/demo assumptions.
+   - Do not compare this as real-money performance and do not use it as an active decision source.
 
 ## Known Alignment Notes
 
 - `tqqq-alert` is currently in an open TQQQ trade as of the inspected state.
 - `tqqq-alert` is not currently in manual safety cash/re-entry mode.
 - Some older `tqqq-alert` history may describe previous XLK/early-warning states. Read current `script.py`, current docs, and `position_state.json` as the source of truth.
-- Some older `swing-stock-alert` text still refers to the "current open TQQQ trade." Read that as historical/stale wording; the live TQQQ state is the source of truth.
+- `swing-stock-alert` is paused as of 2026-05-23. Its Cloudflare cron is disabled and the Worker has a pause guard.
 - Strategy choices are currently aligned as:
   - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 70 re-entry cap, -5% re-buy pullback, 15-trading-day profit re-buy timeout, +20% profit target, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash/no-XLK as the waiting state.
   - TQQQ warning layer: early-warning signals are advisory only and no longer auto-sell. Current warning inputs are VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, RSI falling from 70+.
-  - Swing repo: keep as paper/demo weekly stock comparison only.
-  - Real-stock repo: keep Turbo top-2 momentum as the live stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, and the tested `atr_cap_10pct` fresh-buy volatility filter.
+  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, and the stock bot-only benchmark in reports.
+  - Swing repo: keep paused as old paper/demo archive only.
 - Before using real-stock as the TQQQ-out engine again, reset its cash bucket with `set_cash <actual freed cash amount>` after a future TQQQ exit. As of the current TQQQ source state, deployable real-stock cash should be `$0.00` because the bucket is in TQQQ.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
