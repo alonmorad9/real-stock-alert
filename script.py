@@ -134,6 +134,104 @@ def risk_guidance(qqq, asof):
     }
 
 
+def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, market, risk, max_positions, profile):
+    benchmark = state.get("bot_only_benchmark") or {}
+    initial_cash = float(
+        benchmark.get("initial_cash")
+        or state.get("allocated_cash")
+        or REFERENCE_CASH
+    )
+    cash = float(benchmark.get("cash", initial_cash))
+    positions = benchmark.get("positions", [])
+    realized_pnl = float(benchmark.get("realized_pnl", 0.0))
+    actions = []
+
+    kept_positions = []
+    for position in positions:
+        status = position_exit_status(position, data, qqq, asof, top_tickers, profile)
+        if not status:
+            kept_positions.append(position)
+            continue
+
+        position["highest_high_since_entry"] = round(status["highest_high_since_entry"], 4)
+        position["stop"] = round(status["stop"], 4)
+        if status["sell"]:
+            proceeds = float(position["shares"]) * status["close"]
+            realized_pnl += float(position["shares"]) * (status["close"] - float(position["entry_price"]))
+            cash += proceeds
+            actions.append(f"sold {position['ticker']} ({', '.join(status['reasons'])})")
+        else:
+            kept_positions.append(position)
+
+    positions = kept_positions
+    if market["market_on"] and len(positions) < max_positions and cash > 0:
+        open_tickers = {position["ticker"] for position in positions}
+        for candidate in candidates:
+            if len(positions) >= max_positions or cash <= 0:
+                break
+            if candidate["ticker"] in open_tickers:
+                continue
+
+            slots_left = max_positions - len(positions)
+            allocation = min(cash, (cash / slots_left) * risk["allocation_multiplier"])
+            if allocation <= 0:
+                continue
+            ticker = candidate["ticker"]
+            close = float(candidate["close"])
+            row = data[ticker].loc[asof]
+            shares = allocation / close
+            positions.append(
+                {
+                    "ticker": ticker,
+                    "entry_date": asof.isoformat(),
+                    "entry_price": round(close, 4),
+                    "shares": round(shares, 8),
+                    "highest_high_since_entry": round(max(close, float(row["High"])), 4),
+                    "stop": round(float(candidate["initial_stop"]), 4),
+                    "allocation": round(allocation, 2),
+                    "last_signal": "bot_only_bought",
+                }
+            )
+            cash -= allocation
+            open_tickers.add(ticker)
+            actions.append(f"bought {ticker}")
+
+    value = cash
+    position_details = []
+    for position in positions:
+        ticker = position["ticker"]
+        if ticker in data and asof in data[ticker].index:
+            close = float(data[ticker].loc[asof]["Close"])
+        else:
+            close = float(position["entry_price"])
+        position_value = float(position["shares"]) * close
+        value += position_value
+        position_details.append(
+            {
+                "ticker": ticker,
+                "value": round(position_value, 2),
+                "return": round(close / float(position["entry_price"]) - 1, 6),
+            }
+        )
+
+    benchmark.update(
+        {
+            "initial_cash": round(initial_cash, 2),
+            "cash": round(cash, 2),
+            "positions": positions,
+            "position_details": position_details,
+            "value": round(value, 2),
+            "return": round(value / initial_cash - 1, 6) if initial_cash else 0.0,
+            "realized_pnl": round(realized_pnl, 2),
+            "last_scan_date": asof.isoformat(),
+            "last_actions": actions or ["held"],
+            "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
+        }
+    )
+    state["bot_only_benchmark"] = benchmark
+    return benchmark
+
+
 def manual_bought(args):
     state = load_state()
     ticker = args.ticker.upper()
@@ -298,6 +396,19 @@ def build_report(mode):
         "reasons": risk["reasons"],
         "allocation_multiplier": risk["allocation_multiplier"],
     }
+    benchmark_candidates = candidates if mode in buy_scan_modes else []
+    bot_benchmark = update_bot_only_benchmark(
+        state,
+        data,
+        qqq,
+        asof,
+        benchmark_candidates,
+        top_tickers,
+        market,
+        risk,
+        max_positions,
+        profile,
+    )
     state["active_profile"] = profile
     state["last_action"] = f"{mode}_scan"
     save_state(state)
@@ -309,6 +420,14 @@ def build_report(mode):
     planning_cash = tracked_cash if tracked_cash > 0 else REFERENCE_CASH
     cash_per_slot = planning_cash / slots if slots else 0.0
     risk_adjusted_cash_per_slot = cash_per_slot * risk["allocation_multiplier"]
+    benchmark_value = float(bot_benchmark.get("value", 0.0))
+    benchmark_initial = float(bot_benchmark.get("initial_cash", REFERENCE_CASH))
+    benchmark_return = float(bot_benchmark.get("return", 0.0))
+    benchmark_gap = portfolio_value - benchmark_value
+    benchmark_gap_pct = benchmark_gap / benchmark_value if benchmark_value else 0.0
+    benchmark_holdings = ", ".join(
+        item["ticker"] for item in bot_benchmark.get("positions", [])
+    ) or "cash"
 
     sep = "─" * 30
     report_date = asof.strftime("%d/%m/%Y")
@@ -371,6 +490,17 @@ def build_report(mode):
         f"Open:          {len(open_positions)} confirmed {position_word}",
         f"Value Est.:    {money(portfolio_value)}",
         f"Realized P&L:  {money(state.get('realized_pnl', 0.0))}",
+        sep,
+        "🧪 Bot-Only Benchmark",
+        "Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.",
+        "What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.",
+        f"Start Cash:    {money(benchmark_initial)}",
+        f"Bot Value:     {money(benchmark_value)} ({pct(benchmark_return)})",
+        f"Real Bucket:   {money(portfolio_value)}",
+        f"Vs Bot-Only:   {money(benchmark_gap)} ({pct(benchmark_gap_pct)})",
+        f"Bot Cash:      {money(bot_benchmark.get('cash', 0.0))}",
+        f"Bot Holding:   {benchmark_holdings}",
+        f"Bot Actions:   {', '.join(bot_benchmark.get('last_actions', ['held']))}",
         sep,
     ]
 

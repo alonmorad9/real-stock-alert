@@ -9,6 +9,8 @@ This repo is intentionally separate from:
 
 The bot sends candidate and exit instructions, but it never assumes a trade happened until the real fill is confirmed with a manual command.
 
+Reports also include a bot-only benchmark. That is a paper path showing what this stock bot would track if its own buy/sell instructions were followed automatically, so the confirmed real bucket can be compared against the bot behavior.
+
 ## Strategy
 
 Active live profile: `turbo` max 2.
@@ -100,6 +102,7 @@ It tracks:
 - stop levels
 - realized P&L
 - last scan and action
+- bot-only benchmark value, holdings, and last simulated actions
 
 ## Automation
 

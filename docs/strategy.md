@@ -115,3 +115,14 @@ Trailing stop:
 The bot does not mark a candidate as owned. It only tracks a real position after `manual_bought` records the actual ticker, shares, fill price, and fill date.
 
 The same applies to sells: cash and realized P&L only update after `manual_sold`.
+
+## Bot-Only Benchmark
+
+Every report includes a paper benchmark for the real-stock bot. This benchmark assumes the bot followed its own stock buy/sell instructions automatically, using the same Turbo candidates, market filter, risk sizing, stops, and sell rules.
+
+The benchmark does not change the confirmed real account state. It exists only to compare:
+
+- confirmed real-stock bucket value,
+- versus the stock bot-only path.
+
+While TQQQ is open and this repo has `$0` deployable stock cash, the benchmark can still show the planning path using the reference cash amount. That keeps the daily message useful without pretending real stock trades happened.
