@@ -1,14 +1,61 @@
 {
   "active_profile": "turbo",
   "allocated_cash": 0.0,
+  "bot_only_benchmark": {
+    "cash": 0.0,
+    "initial_cash": 2699.99,
+    "last_actions": [
+      "bought ARM",
+      "bought MRVL"
+    ],
+    "last_scan_date": "2026-05-22",
+    "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
+    "position_details": [
+      {
+        "return": 0.0,
+        "ticker": "ARM",
+        "value": 1350.0
+      },
+      {
+        "return": 0.0,
+        "ticker": "MRVL",
+        "value": 1349.99
+      }
+    ],
+    "positions": [
+      {
+        "allocation": 1349.99,
+        "entry_date": "2026-05-22",
+        "entry_price": 306.51,
+        "highest_high_since_entry": 315.0,
+        "last_signal": "bot_only_bought",
+        "shares": 4.40440755,
+        "stop": 269.7288,
+        "ticker": "ARM"
+      },
+      {
+        "allocation": 1349.99,
+        "entry_date": "2026-05-22",
+        "entry_price": 196.33,
+        "highest_high_since_entry": 198.4,
+        "last_signal": "bot_only_bought",
+        "shares": 6.87615233,
+        "stop": 172.7704,
+        "ticker": "MRVL"
+      }
+    ],
+    "realized_pnl": 0.0,
+    "return": 0.0,
+    "value": 2699.99
+  },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
   "last_action": "daily_scan",
-  "last_action_at": "2026-05-23T10:10:14.900731+00:00",
+  "last_action_at": "2026-05-23T10:17:04.883437+00:00",
   "last_scan_date": "2026-05-22",
   "latest_candidates": [
-    "AMD",
-    "CRWD"
+    "ARM",
+    "MRVL"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
