@@ -1,9 +1,9 @@
-📊 Real Stock Weekly Report — 22/05/2026
+📊 Real Stock Daily Report — 22/05/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          weekly
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
@@ -46,36 +46,36 @@ Realized P&L:  $0.00
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: AMD, CRWD, INTC, ARM
+Repeat Memory: DDOG, MRVL, INTC, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
 INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 57% above SMA50).
-ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 68% above SMA50).
+DDOG: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 89, 53% above SMA50).
 
-🥇 DDOG
-Price:         $222.32
-Score:         161.73 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (6.0723 shares)
+🥇 AMD
+Price:         $467.51
+Score:         149.31 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (2.8876 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $195.64
-63d RS:        97.2%
-20d Return:    71.7%
-Stretch:       HOT BUT STRETCHED: RSI14 89, 53% above SMA50
+Initial Stop:  $411.41
+63d RS:        118.3%
+20d Return:    34.4%
+Stretch:       HOT BUT STRETCHED: 54% above SMA50
 
-🥈 MRVL
-Price:         $196.33
-Score:         150.59 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (6.8762 shares)
+🥈 CRWD
+Price:         $663.46
+Score:         113.17 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (2.0348 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $172.77
-63d RS:        133.1%
-20d Return:    19.5%
-Stretch:       HOT BUT STRETCHED: 43% above SMA50
+Initial Stop:  $595.40
+63d RS:        69.9%
+20d Return:    48.1%
+Stretch:       HOT BUT STRETCHED: RSI14 94, 43% above SMA50
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-DDOG: HOT BUT STRETCHED: RSI14 89, 53% above SMA50
-MRVL: HOT BUT STRETCHED: 43% above SMA50
+AMD: HOT BUT STRETCHED: 54% above SMA50
+CRWD: HOT BUT STRETCHED: RSI14 94, 43% above SMA50
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.
