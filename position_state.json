@@ -5,10 +5,7 @@
     "cash": 0.0,
     "initial_cash": 2699.99,
     "last_actions": [
-      "sold ARM (dropped out of weekly top list)",
-      "sold MRVL (dropped out of weekly top list)",
-      "bought AMD",
-      "bought CRWD"
+      "held"
     ],
     "last_scan_date": "2026-05-22",
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
@@ -52,12 +49,12 @@
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-25T13:46:10.173591+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-25T21:31:03.926947+00:00",
   "last_scan_date": "2026-05-22",
   "latest_candidates": [
-    "AMD",
-    "CRWD"
+    "ARM",
+    "MRVL"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
