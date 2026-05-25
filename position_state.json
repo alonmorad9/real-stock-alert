@@ -5,57 +5,59 @@
     "cash": 0.0,
     "initial_cash": 2699.99,
     "last_actions": [
-      "bought ARM",
-      "bought MRVL"
+      "sold ARM (dropped out of weekly top list)",
+      "sold MRVL (dropped out of weekly top list)",
+      "bought AMD",
+      "bought CRWD"
     ],
     "last_scan_date": "2026-05-22",
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
         "return": 0.0,
-        "ticker": "ARM",
-        "value": 1350.0
+        "ticker": "AMD",
+        "value": 1349.99
       },
       {
         "return": 0.0,
-        "ticker": "MRVL",
+        "ticker": "CRWD",
         "value": 1349.99
       }
     ],
     "positions": [
       {
-        "allocation": 1349.99,
+        "allocation": 1350.0,
         "entry_date": "2026-05-22",
-        "entry_price": 306.51,
-        "highest_high_since_entry": 315.0,
+        "entry_price": 467.51,
+        "highest_high_since_entry": 481.41,
         "last_signal": "bot_only_bought",
-        "shares": 4.40440755,
-        "stop": 269.7288,
-        "ticker": "ARM"
+        "shares": 2.88762801,
+        "stop": 411.4088,
+        "ticker": "AMD"
       },
       {
-        "allocation": 1349.99,
+        "allocation": 1350.0,
         "entry_date": "2026-05-22",
-        "entry_price": 196.33,
-        "highest_high_since_entry": 198.4,
+        "entry_price": 663.46,
+        "highest_high_since_entry": 674.84,
         "last_signal": "bot_only_bought",
-        "shares": 6.87615233,
-        "stop": 172.7704,
-        "ticker": "MRVL"
+        "shares": 2.03477972,
+        "stop": 595.397,
+        "ticker": "CRWD"
       }
     ],
     "realized_pnl": 0.0,
-    "return": 0.0,
+    "return": -0.0,
     "value": 2699.99
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-23T10:17:04.883437+00:00",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-25T13:46:10.173591+00:00",
   "last_scan_date": "2026-05-22",
   "latest_candidates": [
-    "ARM",
-    "MRVL"
+    "AMD",
+    "CRWD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
