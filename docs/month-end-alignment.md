@@ -1,6 +1,6 @@
 # Month-End Alignment
 
-Last updated: 2026-05-23
+Last updated: 2026-05-26
 
 Latest decision: `tqqq-alert` is the master controller and currently has an open TQQQ position. `real-stock-alert` is the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash. If `tqqq-alert` later exits TQQQ and waits in cash, reset this repo with `set_cash <actual freed cash amount>` before following stock candidates.
 
@@ -17,13 +17,14 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-21:
+- Current state inspected locally on 2026-05-26:
   - `position_open`: `true`
   - `shares`: `35.6658`
   - `avg_cost`: `$75.20`
   - `entry_date`: `2026-05-21`
   - `cash`: `$0.00`
   - `last_action`: `manual_broker_buy_sync`
+  - `last_report_key`: `2026-05-22:close`
   - `manual_exit_mode`: `false`
   - `manual_exit_price`: `null`
   - `manual_exit_date`: `null`
@@ -41,7 +42,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 ### `swing-stock-alert`
 
 - Paused research archive.
-- Current state inspected locally on 2026-05-23:
+- Current state inspected locally on 2026-05-26:
   - paper positions: `INTC`, `MRVL`
   - paper start date: `2026-05-04`
   - latest paper value: `1.184576`
@@ -53,19 +54,21 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-23:
+- Current state inspected locally on 2026-05-26:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `AMD`, `CRWD`
-  - latest skipped repeat-stretched candidates: `INTC`, `DDOG`
+  - latest candidates: `ARM`, `DDOG`
+  - latest skipped repeat-stretched candidates: `INTC`, `MRVL`
   - latest market risk: `NORMAL`, score `0`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
   - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
+  - bot-only benchmark holdings: `AMD`, `MU`
+  - bot-only benchmark value: `$2,804.38`
 - latest research decision:
   - Turbo remains the live stock strategy.
   - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.
@@ -77,6 +80,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
   - The 2026-05-21 volatility test improved this with `atr_cap_10pct`: `47.12x`, `58.4%` CAGR, `-31.2%` max drawdown.
   - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded. Fresh buy candidates with ATR14 above 10% of price are skipped.
   - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
+  - Scheduled opening/daily/weekly reports now skip US market holidays, matching the TQQQ repo behavior.
 - Meaning: no real stock position exists, and no real-stock cash should be deployed while TQQQ is open.
 
 ## Month-End Review Plan

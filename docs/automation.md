@@ -1,6 +1,6 @@
 # Automation
 
-Last updated: 2026-05-07
+Last updated: 2026-05-26
 
 ## Schedule
 
@@ -29,6 +29,8 @@ The Worker maps the `21:30 UTC` after-close run to:
 
 - Monday through Thursday: `daily`
 - Friday: `weekly`
+
+The Worker and `script.py` both skip scheduled opening/daily/weekly reports on US market holidays. This matches the TQQQ repo behavior: if a weekday has no US trading session, no Telegram scan should be sent.
 
 ## GitHub Action
 

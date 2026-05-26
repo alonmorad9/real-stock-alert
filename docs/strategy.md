@@ -1,6 +1,6 @@
 # Real Stock Strategy
 
-Last updated: 2026-05-23
+Last updated: 2026-05-26
 
 ## Purpose
 
@@ -10,7 +10,7 @@ Current role: **inactive while TQQQ position is open**.
 
 The TQQQ repo is the master controller. This repo manages real swing stocks only while `tqqq-alert` says the TQQQ strategy is out/waiting. If `tqqq-alert` sends a TQQQ buy or re-buy signal, sell all real-stock positions, confirm the sales here, then move the bucket back to TQQQ.
 
-As of the current 2026-05-23 alignment, TQQQ is open, so this repo should have no deployable stock cash. Use this strategy again only after a future TQQQ exit and a fresh `set_cash <actual freed cash amount>`.
+As of the current 2026-05-26 alignment, TQQQ is open, so this repo should have no deployable stock cash. Use this strategy again only after a future TQQQ exit and a fresh `set_cash <actual freed cash amount>`.
 
 ## Universe
 
@@ -78,6 +78,8 @@ Ranking favors:
 The current Turbo score does not give extra points for being far above SMA50. SMA50 extension is still used for filters and overextension warnings, but the 2026-05-12 research found that removing it from the score improved the historical result and reduced drawdown.
 
 Fresh buy candidates also use the tested `atr_cap_10pct` filter. If ATR14 is above 10% of price, the candidate is skipped as too volatile for a fresh buy. The 2026-05-21 research found this beat `score_no_extension` while keeping max drawdown about the same.
+
+Opening, daily, and weekly scheduled reports skip US market holidays so this repo stays quiet on non-trading weekdays, matching the TQQQ repo behavior.
 
 ## Position Sizing
 
