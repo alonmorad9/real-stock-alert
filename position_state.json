@@ -5,23 +5,35 @@
     "cash": 0.0,
     "initial_cash": 2699.99,
     "last_actions": [
-      "sold AMD (dropped out of weekly top list)",
-      "sold CRWD (dropped out of weekly top list)",
-      "bought AMD",
-      "bought MU"
+      "held"
     ],
     "last_scan_date": "2026-05-26",
+    "last_trade_messages": [
+      "BOT HOLD: no bot-only buy or sell this run."
+    ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "return": 0.0,
+        "current_price": 493.4401,
+        "entry_date": "2026-05-26",
+        "entry_price": 490.23,
+        "return": 0.006548,
+        "shares": 2.82210403,
+        "status": "HOLD",
+        "stop": 431.4024,
         "ticker": "AMD",
-        "value": 1383.48
+        "value": 1392.54
       },
       {
-        "return": 0.0,
+        "current_price": 877.6289,
+        "entry_date": "2026-05-26",
+        "entry_price": 860.0,
+        "return": 0.020499,
+        "shares": 1.60869778,
+        "status": "HOLD",
+        "stop": 756.8,
         "ticker": "MU",
-        "value": 1383.48
+        "value": 1411.84
       }
     ],
     "positions": [
@@ -29,7 +41,7 @@
         "allocation": 1383.48,
         "entry_date": "2026-05-26",
         "entry_price": 490.23,
-        "highest_high_since_entry": 490.23,
+        "highest_high_since_entry": 495.4199,
         "last_signal": "bot_only_bought",
         "shares": 2.82210403,
         "stop": 431.4024,
@@ -39,7 +51,7 @@
         "allocation": 1383.48,
         "entry_date": "2026-05-26",
         "entry_price": 860.0,
-        "highest_high_since_entry": 861.47,
+        "highest_high_since_entry": 879.22,
         "last_signal": "bot_only_bought",
         "shares": 1.60869778,
         "stop": 756.8,
@@ -47,17 +59,17 @@
       }
     ],
     "realized_pnl": 66.97,
-    "return": 0.024804,
-    "value": 2766.96
+    "return": 0.038663,
+    "value": 2804.38
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-26T13:46:39.982910+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-26T14:28:33.634455+00:00",
   "last_scan_date": "2026-05-26",
   "latest_candidates": [
-    "AMD",
-    "MU"
+    "ARM",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
