@@ -2,8 +2,9 @@
 import argparse
 import json
 import os
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -30,6 +31,88 @@ SYSTEM_LABEL = "REAL STOCK SYSTEM"
 CAPITAL_MODE = "TQQQ-out swing mode"
 MASTER_RULE = "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ."
 REFERENCE_CASH = 2699.99
+MARKET_TZ = ZoneInfo("America/New_York")
+
+
+def observed_fixed_holiday(year, month, day):
+    holiday = datetime(year, month, day).date()
+    if holiday.weekday() == 5:
+        return holiday - timedelta(days=1)
+    if holiday.weekday() == 6:
+        return holiday + timedelta(days=1)
+    return holiday
+
+
+def nth_weekday(year, month, weekday, n):
+    day = datetime(year, month, 1).date()
+    while day.weekday() != weekday:
+        day += timedelta(days=1)
+    return day + timedelta(days=7 * (n - 1))
+
+
+def last_weekday(year, month, weekday):
+    if month == 12:
+        day = datetime(year + 1, 1, 1).date() - timedelta(days=1)
+    else:
+        day = datetime(year, month + 1, 1).date() - timedelta(days=1)
+    while day.weekday() != weekday:
+        day -= timedelta(days=1)
+    return day
+
+
+def easter_date(year):
+    a = year % 19
+    b = year // 100
+    c = year % 100
+    d = b // 4
+    e = b % 4
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i = c // 4
+    k = c % 4
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month = (h + l - 7 * m + 114) // 31
+    day = ((h + l - 7 * m + 114) % 31) + 1
+    return datetime(year, month, day).date()
+
+
+def market_holidays(year):
+    return {
+        observed_fixed_holiday(year, 1, 1),
+        nth_weekday(year, 1, 0, 3),
+        nth_weekday(year, 2, 0, 3),
+        easter_date(year) - timedelta(days=2),
+        last_weekday(year, 5, 0),
+        observed_fixed_holiday(year, 6, 19),
+        observed_fixed_holiday(year, 7, 4),
+        nth_weekday(year, 9, 0, 1),
+        nth_weekday(year, 11, 3, 4),
+        observed_fixed_holiday(year, 12, 25),
+        observed_fixed_holiday(year + 1, 1, 1),
+    }
+
+
+def is_market_trading_day(trading_day):
+    return trading_day.weekday() < 5 and trading_day not in market_holidays(trading_day.year)
+
+
+def current_market_date(now_utc=None):
+    now_utc = now_utc or datetime.now(UTC)
+    return now_utc.astimezone(MARKET_TZ).date()
+
+
+def skip_scheduled_report_if_market_closed(mode):
+    if mode not in {"opening", "daily", "weekly"}:
+        return False
+
+    market_date = current_market_date()
+    if is_market_trading_day(market_date):
+        return False
+
+    print(f"[SKIP] US market is closed on {market_date}; no {mode} Telegram report sent.")
+    return True
 
 
 def money(value):
@@ -697,7 +780,10 @@ def main():
     elif args.command == "set_cash":
         set_cash(args)
     else:
-        build_report(args.command or "manual")
+        mode = args.command or "manual"
+        if skip_scheduled_report_if_market_closed(mode):
+            return
+        build_report(mode)
 
 
 if __name__ == "__main__":
