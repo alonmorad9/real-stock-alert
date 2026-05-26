@@ -5,56 +5,59 @@
     "cash": 0.0,
     "initial_cash": 2699.99,
     "last_actions": [
-      "held"
+      "sold AMD (dropped out of weekly top list)",
+      "sold CRWD (dropped out of weekly top list)",
+      "bought AMD",
+      "bought MU"
     ],
-    "last_scan_date": "2026-05-22",
+    "last_scan_date": "2026-05-26",
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
         "return": 0.0,
         "ticker": "AMD",
-        "value": 1349.99
+        "value": 1383.48
       },
       {
         "return": 0.0,
-        "ticker": "CRWD",
-        "value": 1349.99
+        "ticker": "MU",
+        "value": 1383.48
       }
     ],
     "positions": [
       {
-        "allocation": 1350.0,
-        "entry_date": "2026-05-22",
-        "entry_price": 467.51,
-        "highest_high_since_entry": 481.41,
+        "allocation": 1383.48,
+        "entry_date": "2026-05-26",
+        "entry_price": 490.23,
+        "highest_high_since_entry": 490.23,
         "last_signal": "bot_only_bought",
-        "shares": 2.88762801,
-        "stop": 411.4088,
+        "shares": 2.82210403,
+        "stop": 431.4024,
         "ticker": "AMD"
       },
       {
-        "allocation": 1350.0,
-        "entry_date": "2026-05-22",
-        "entry_price": 663.46,
-        "highest_high_since_entry": 674.84,
+        "allocation": 1383.48,
+        "entry_date": "2026-05-26",
+        "entry_price": 860.0,
+        "highest_high_since_entry": 861.47,
         "last_signal": "bot_only_bought",
-        "shares": 2.03477972,
-        "stop": 595.397,
-        "ticker": "CRWD"
+        "shares": 1.60869778,
+        "stop": 756.8,
+        "ticker": "MU"
       }
     ],
-    "realized_pnl": 0.0,
-    "return": -0.0,
-    "value": 2699.99
+    "realized_pnl": 66.97,
+    "return": 0.024804,
+    "value": 2766.96
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-25T21:31:03.926947+00:00",
-  "last_scan_date": "2026-05-22",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-26T13:46:39.982910+00:00",
+  "last_scan_date": "2026-05-26",
   "latest_candidates": [
-    "ARM",
-    "MRVL"
+    "AMD",
+    "MU"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -70,7 +73,7 @@
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "DDOG"
+      "ticker": "MRVL"
     }
   ],
   "latest_unrealized_pnl": 0.0,
