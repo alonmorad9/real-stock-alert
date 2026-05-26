@@ -145,6 +145,7 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
     positions = benchmark.get("positions", [])
     realized_pnl = float(benchmark.get("realized_pnl", 0.0))
     actions = []
+    trade_messages = []
 
     kept_positions = []
     for position in positions:
@@ -156,10 +157,21 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
         position["highest_high_since_entry"] = round(status["highest_high_since_entry"], 4)
         position["stop"] = round(status["stop"], 4)
         if status["sell"]:
-            proceeds = float(position["shares"]) * status["close"]
-            realized_pnl += float(position["shares"]) * (status["close"] - float(position["entry_price"]))
+            shares = float(position["shares"])
+            entry_price = float(position["entry_price"])
+            close = float(status["close"])
+            proceeds = shares * close
+            trade_pnl = shares * (close - entry_price)
+            trade_return = close / entry_price - 1 if entry_price else 0.0
+            reasons = ", ".join(status["reasons"])
+            realized_pnl += trade_pnl
             cash += proceeds
-            actions.append(f"sold {position['ticker']} ({', '.join(status['reasons'])})")
+            actions.append(f"sold {position['ticker']}")
+            trade_messages.append(
+                f"BOT SELL {position['ticker']}: {shares:.4f} shares at {money(close)}; "
+                f"proceeds {money(proceeds)}; P&L {money(trade_pnl)} ({pct(trade_return)}). "
+                f"Reason: {reasons}."
+            )
         else:
             kept_positions.append(position)
 
@@ -195,6 +207,10 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
             cash -= allocation
             open_tickers.add(ticker)
             actions.append(f"bought {ticker}")
+            trade_messages.append(
+                f"BOT BUY {ticker}: {money(allocation)} at {money(close)} = {shares:.4f} shares. "
+                f"Initial stop {money(candidate['initial_stop'])}."
+            )
 
     value = cash
     position_details = []
@@ -205,14 +221,24 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
         else:
             close = float(position["entry_price"])
         position_value = float(position["shares"]) * close
+        entry_price = float(position["entry_price"])
         value += position_value
         position_details.append(
             {
                 "ticker": ticker,
+                "shares": round(float(position["shares"]), 8),
+                "entry_date": position.get("entry_date"),
+                "entry_price": round(entry_price, 4),
+                "current_price": round(close, 4),
+                "stop": round(float(position.get("stop", 0.0)), 4),
                 "value": round(position_value, 2),
-                "return": round(close / float(position["entry_price"]) - 1, 6),
+                "return": round(close / entry_price - 1, 6) if entry_price else 0.0,
+                "status": "HOLD",
             }
         )
+
+    if not trade_messages:
+        trade_messages = ["BOT HOLD: no bot-only buy or sell this run."]
 
     benchmark.update(
         {
@@ -225,6 +251,7 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
             "realized_pnl": round(realized_pnl, 2),
             "last_scan_date": asof.isoformat(),
             "last_actions": actions or ["held"],
+            "last_trade_messages": trade_messages,
             "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
         }
     )
@@ -502,7 +529,35 @@ def build_report(mode):
         f"Bot Holding:   {benchmark_holdings}",
         f"Bot Actions:   {', '.join(bot_benchmark.get('last_actions', ['held']))}",
         sep,
+        "🤖 Bot-Only Trade Log",
+        "Meaning: simulated paper events only. These show what the bot path did, not what happened in your broker.",
     ]
+
+    for message in bot_benchmark.get("last_trade_messages", ["BOT HOLD: no bot-only buy or sell this run."]):
+        lines.append(f"- {message}")
+
+    lines.extend([
+        sep,
+        "📌 Bot-Only Holdings",
+    ])
+
+    bot_position_details = bot_benchmark.get("position_details", [])
+    if not bot_position_details:
+        lines.extend(["Bot-only benchmark is in cash.", sep])
+    else:
+        for detail in bot_position_details:
+            lines.extend([
+                f"{detail['ticker']}",
+                f"Shares:        {float(detail.get('shares', 0.0)):.4f}",
+                f"Entry:         {money(detail.get('entry_price', 0.0))}",
+                f"Current:       {money(detail.get('current_price', 0.0))}",
+                f"Stop:          {money(detail.get('stop', 0.0))}",
+                f"Value:         {money(detail.get('value', 0.0))}",
+                f"Return:        {pct(detail.get('return', 0.0))}",
+                f"Status:        {detail.get('status', 'HOLD')}",
+                "",
+            ])
+        lines.append(sep)
 
     if not open_positions:
         lines.extend(["📦 Open Positions", "No confirmed real stock positions are currently tracked.", sep])

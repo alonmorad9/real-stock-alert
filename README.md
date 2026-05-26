@@ -102,7 +102,7 @@ It tracks:
 - stop levels
 - realized P&L
 - last scan and action
-- bot-only benchmark value, holdings, and last simulated actions
+- bot-only benchmark value, holdings, paper trade log, and last simulated actions
 
 ## Automation
 
