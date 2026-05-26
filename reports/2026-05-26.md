@@ -12,7 +12,7 @@ Data Source:   daily Yahoo bars
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $730.08
+QQQ:           $730.28
 SMA200:        $614.41
 Status:        ON
 ──────────────────────────────
@@ -46,9 +46,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,699.99
-Bot Value:     $2,804.38 (3.9%)
+Bot Value:     $2,863.23 (6.0%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,804.38 (-100.0%)
+Vs Bot-Only:   $-2,863.23 (-100.0%)
 Bot Cash:      $0.00
 Bot Holding:   AMD, MU
 Bot Actions:   held
@@ -61,19 +61,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        2.8221
 Entry:         $490.23
-Current:       $493.44
+Current:       $503.89
 Stop:          $431.40
-Value:         $1,392.54
-Return:        0.7%
+Value:         $1,422.03
+Return:        2.8%
 Status:        HOLD
 
 MU
 Shares:        1.6087
 Entry:         $860.00
-Current:       $877.63
+Current:       $895.88
 Stop:          $756.80
-Value:         $1,411.84
-Return:        2.0%
+Value:         $1,441.20
+Return:        4.2%
 Status:        HOLD
 
 ──────────────────────────────
@@ -81,36 +81,36 @@ Status:        HOLD
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: AMD, MU, INTC, MRVL
+Repeat Memory: ARM, DDOG, INTC, MRVL
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 57% above SMA50).
-MRVL: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 49% above SMA50).
+INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 58% above SMA50).
+ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 73% above SMA50).
 
-🥇 ARM
-Price:         $312.32
-Score:         163.68 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (4.3225 shares)
+🥇 AMD
+Price:         $503.89
+Score:         160.87 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (2.6791 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $274.84
-63d RS:        123.5%
-20d Return:    44.7%
-Stretch:       HOT BUT STRETCHED: 68% above SMA50
+Initial Stop:  $443.42
+63d RS:        115.3%
+20d Return:    50.6%
+Stretch:       HOT BUT STRETCHED: 63% above SMA50
 
-🥈 DDOG
-Price:         $221.44
-Score:         152.02 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (6.0964 shares)
+🥈 MU
+Price:         $895.88
+Score:         157.83 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (1.5069 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $194.87
-63d RS:        91.8%
-20d Return:    66.9%
-Stretch:       HOT BUT STRETCHED: RSI14 89, 51% above SMA50
+Initial Stop:  $788.37
+63d RS:        94.1%
+20d Return:    70.8%
+Stretch:       HOT BUT STRETCHED: 70% above SMA50, 19% above prior close
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-ARM: HOT BUT STRETCHED: 68% above SMA50
-DDOG: HOT BUT STRETCHED: RSI14 89, 51% above SMA50
+AMD: HOT BUT STRETCHED: 63% above SMA50
+MU: HOT BUT STRETCHED: 70% above SMA50, 19% above prior close
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.

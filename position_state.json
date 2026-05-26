@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 493.4401,
+        "current_price": 503.89,
         "entry_date": "2026-05-26",
         "entry_price": 490.23,
-        "return": 0.006548,
+        "return": 0.027865,
         "shares": 2.82210403,
         "status": "HOLD",
         "stop": 431.4024,
         "ticker": "AMD",
-        "value": 1392.54
+        "value": 1422.03
       },
       {
-        "current_price": 877.6289,
+        "current_price": 895.88,
         "entry_date": "2026-05-26",
         "entry_price": 860.0,
-        "return": 0.020499,
+        "return": 0.041721,
         "shares": 1.60869778,
         "status": "HOLD",
         "stop": 756.8,
         "ticker": "MU",
-        "value": 1411.84
+        "value": 1441.2
       }
     ],
     "positions": [
@@ -41,7 +41,7 @@
         "allocation": 1383.48,
         "entry_date": "2026-05-26",
         "entry_price": 490.23,
-        "highest_high_since_entry": 495.4199,
+        "highest_high_since_entry": 506.96,
         "last_signal": "bot_only_bought",
         "shares": 2.82210403,
         "stop": 431.4024,
@@ -51,7 +51,7 @@
         "allocation": 1383.48,
         "entry_date": "2026-05-26",
         "entry_price": 860.0,
-        "highest_high_since_entry": 879.22,
+        "highest_high_since_entry": 916.76,
         "last_signal": "bot_only_bought",
         "shares": 1.60869778,
         "stop": 756.8,
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 66.97,
-    "return": 0.038663,
-    "value": 2804.38
+    "return": 0.06046,
+    "value": 2863.23
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
   "last_action": "daily_scan",
-  "last_action_at": "2026-05-26T14:28:33.634455+00:00",
+  "last_action_at": "2026-05-26T21:31:09.051713+00:00",
   "last_scan_date": "2026-05-26",
   "latest_candidates": [
-    "ARM",
-    "DDOG"
+    "AMD",
+    "MU"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -85,7 +85,7 @@
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "MRVL"
+      "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,
