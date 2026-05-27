@@ -80,7 +80,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
   - The 2026-05-21 volatility test improved this with `atr_cap_10pct`: `47.12x`, `58.4%` CAGR, `-31.2%` max drawdown.
   - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded. Fresh buy candidates with ATR14 above 10% of price are skipped.
   - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
-  - Rank-based sell rotation is weekly only. Opening/daily scans can show candidates, but they do not sell a holding only because another ticker temporarily ranks higher.
+  - Rank-based sell rotation is disabled after the 2026-05-27 rotation-buffer research. Rankings choose fresh buys for empty slots, but holdings are kept until SMA50, stop, QQQ SMA200, or TQQQ-priority rules break.
   - Scheduled opening/daily/weekly reports now skip US market holidays, matching the TQQQ repo behavior.
 - Meaning: no real stock position exists, and no real-stock cash should be deployed while TQQQ is open.
 
@@ -118,7 +118,7 @@ At month end, compare the two active systems first, and use the old swing demo o
 - Strategy choices are currently aligned as:
   - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 70 re-entry cap, -5% re-buy pullback, 15-trading-day profit re-buy timeout, +20% profit target, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash/no-XLK as the waiting state.
   - TQQQ warning layer: early-warning signals are advisory only and no longer auto-sell. Current warning inputs are VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, RSI falling from 70+.
-  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, and the stock bot-only benchmark in reports.
+  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, `hold_unless_broken` position management, and the stock bot-only benchmark in reports.
   - Swing repo: keep paused as old paper/demo archive only.
 - Before using real-stock as the TQQQ-out engine again, reset its cash bucket with `set_cash <actual freed cash amount>` after a future TQQQ exit. As of the current TQQQ source state, deployable real-stock cash should be `$0.00` because the bucket is in TQQQ.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:

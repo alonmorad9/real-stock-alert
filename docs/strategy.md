@@ -99,10 +99,9 @@ Positions are flagged for sale if:
 - `tqqq-alert` sends a TQQQ re-entry signal,
 - QQQ closes below SMA200,
 - the stock closes below SMA50,
-- the trailing stop is hit,
-- the stock drops out of the weekly top list on a weekly rebalance.
+- the trailing stop is hit.
 
-Opening and daily reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher during that scan. This keeps the real-trade behavior cleaner: intraday/daily scans manage risk and information, while weekly scans handle rank-based rotation.
+Opening, daily, and weekly reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher. This matches the best-tested `hold_unless_broken` behavior: rankings choose new buys for empty slots, while existing holdings are kept until risk/trend rules break.
 
 ## Stops
 

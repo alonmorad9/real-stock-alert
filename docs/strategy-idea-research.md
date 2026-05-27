@@ -122,3 +122,17 @@ Tested proposed open-trade management changes against the current best `atr_cap_
 | `atr_cap_10pct_all_tight_changes` | 4.34x | 19.2% | -22.8% | Reject |
 
 Decision: do not change live stop rules. Tighter stops reduce drawdown in some variants, but they cut the historical compounding too much. For the stated high-risk/high-reward goal, the current `atr_cap_10pct` setup remains the best tested live stock strategy.
+
+## 2026-05-27 Rank Rotation Result
+
+Tested whether rank-based sell rotation improves the current best `atr_cap_10pct` setup.
+
+| Idea | Final multiple | CAGR | Max drawdown | Trades | Decision |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `atr_cap_10pct` / `hold_unless_broken` | 50.67x | 59.6% | -31.2% | 277 | Keep live |
+| `strict_weekly_top2_rotation` | 38.10x | 54.3% | -42.2% | 660 | Reject |
+| `two_week_rank_confirm` | 35.99x | 53.2% | -41.3% | 505 | Reject |
+| `weekly_top5_buffer` | 31.90x | 51.0% | -28.0% | 478 | Reject for high-risk/high-reward mode |
+| `weekly_top4_buffer` | 31.88x | 51.0% | -26.7% | 506 | Reject for high-risk/high-reward mode |
+
+Decision: do not force-sell a holding just because a different stock ranks higher. Rankings should choose fresh buys for empty slots. Existing holdings should be kept until a real risk/trend rule breaks: QQQ below SMA200, stock below SMA50, trailing stop, or TQQQ-priority exit.

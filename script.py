@@ -506,7 +506,7 @@ def build_report(mode):
         max_atr_pct,
     )
     buy_scan_modes = {"weekly", "opening", "daily"}
-    top_tickers = [item["ticker"] for item in raw_candidates] if mode == "weekly" else []
+    top_tickers = []
     market = market_filter(qqq, asof)
     risk = risk_guidance(qqq, asof)
 
