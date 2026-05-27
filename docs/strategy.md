@@ -102,6 +102,8 @@ Positions are flagged for sale if:
 - the trailing stop is hit,
 - the stock drops out of the weekly top list on a weekly rebalance.
 
+Opening and daily reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher during that scan. This keeps the real-trade behavior cleaner: intraday/daily scans manage risk and information, while weekly scans handle rank-based rotation.
+
 ## Stops
 
 Initial stop:

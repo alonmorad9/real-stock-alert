@@ -33,7 +33,7 @@ This means the TQQQ repo is the master controller:
 - Run an opening turbo candidate scan 15 minutes after US market open on market weekdays.
 - Run a daily close exit check for confirmed positions and include Turbo buy candidates.
 - Run a weekly full buy scan after Friday close.
-- Sell when price closes below SMA50, the trailing stop is hit, or a holding drops out of the weekly top list.
+- Sell when price closes below SMA50, the trailing stop is hit, or on the weekly rebalance a holding drops out of the weekly top list.
 
 The old initial state used a small pilot allocation of `$1,000`. When TQQQ is out, reset the cash bucket to the actual freed TQQQ cash after TQQQ exits. The TQQQ repo itself waits in cash while out of TQQQ; this repo is the optional real-stock swing bucket during that waiting period.
 

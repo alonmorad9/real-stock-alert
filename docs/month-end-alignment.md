@@ -80,6 +80,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
   - The 2026-05-21 volatility test improved this with `atr_cap_10pct`: `47.12x`, `58.4%` CAGR, `-31.2%` max drawdown.
   - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded. Fresh buy candidates with ATR14 above 10% of price are skipped.
   - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
+  - Rank-based sell rotation is weekly only. Opening/daily scans can show candidates, but they do not sell a holding only because another ticker temporarily ranks higher.
   - Scheduled opening/daily/weekly reports now skip US market holidays, matching the TQQQ repo behavior.
 - Meaning: no real stock position exists, and no real-stock cash should be deployed while TQQQ is open.
 
