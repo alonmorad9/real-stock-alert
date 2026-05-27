@@ -1153,6 +1153,10 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
     breakeven_atr_trigger = options.get("breakeven_atr_trigger")
     adaptive_trail = bool(options.get("adaptive_trail", False))
     sector_limit = bool(options.get("sector_limit", False))
+    rotation_policy = options.get("rotation_policy", "hold_unless_broken")
+    rotation_buffer_rank = options.get("rotation_buffer_rank")
+    rotation_confirm_weeks = int(options.get("rotation_confirm_weeks", 1))
+    out_of_rank_counts = {}
 
     for idx, date in enumerate(dates):
         qrow = qqq.loc[date]
@@ -1257,9 +1261,43 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
         is_week_end = idx == len(dates) - 1 or pd.Timestamp(dates[idx + 1]).isocalendar().week != pd.Timestamp(date).isocalendar().week
         if is_week_end:
             held = [ticker for ticker in positions if ticker in data and date in data[ticker].index]
+            all_ranked = []
+            held_sectors = {sector_for(ticker) for ticker in held}
+            for ticker, df in data.items():
+                if date not in df.index:
+                    continue
+                row = df.loc[date]
+                if not qualifies_for_variant(row, qrow, "turbo"):
+                    continue
+                if max_atr_pct is not None and row["ATR14"] / row["Close"] > max_atr_pct and ticker not in positions:
+                    continue
+                all_ranked.append((float(score_candidate_weights(row, qrow, weights)), ticker))
+            all_ranked.sort(reverse=True)
+            ranked_all_tickers = [ticker for _, ticker in all_ranked]
+
+            if rotation_policy == "strict_top2":
+                keep = set(ranked_all_tickers[:2])
+            elif rotation_policy == "top4_buffer":
+                keep = set(ranked_all_tickers[:4])
+            elif rotation_policy == "top5_buffer":
+                keep = set(ranked_all_tickers[:5])
+            elif rotation_policy == "two_week_confirm":
+                keep = set()
+                top_set = set(ranked_all_tickers[:2])
+                for ticker in held:
+                    if ticker in top_set:
+                        out_of_rank_counts[ticker] = 0
+                        keep.add(ticker)
+                    else:
+                        out_of_rank_counts[ticker] = out_of_rank_counts.get(ticker, 0) + 1
+                        if out_of_rank_counts[ticker] < rotation_confirm_weeks:
+                            keep.add(ticker)
+            else:
+                keep = set(held)
+
+            held = [ticker for ticker in held if ticker in keep]
             ranked = []
             previous_targets = set(target_tickers)
-            held_sectors = {sector_for(ticker) for ticker in held}
             for ticker, df in data.items():
                 if ticker in positions or date not in df.index:
                     continue
@@ -1297,6 +1335,9 @@ def run_strategy_idea_backtest(data, qqq, start="2018-01-01", label="baseline", 
             "breakeven_atr_trigger": breakeven_atr_trigger if breakeven_atr_trigger is not None else "none",
             "adaptive_trail": adaptive_trail,
             "sector_limit": sector_limit,
+            "rotation_policy": rotation_policy,
+            "rotation_buffer_rank": rotation_buffer_rank if rotation_buffer_rank is not None else "none",
+            "rotation_confirm_weeks": rotation_confirm_weeks,
         },
         values,
         trades,
@@ -1372,6 +1413,10 @@ def run_strategy_idea_pack(data, qqq, start="2018-01-01"):
         ("open_gap_max_8pct", {"max_open_gap": 0.08}),
         ("open_gap_max_12pct", {"max_open_gap": 0.12}),
         ("sector_limit", {"sector_limit": True}),
+        ("strict_weekly_top2_rotation", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.10, "rotation_policy": "strict_top2"}),
+        ("weekly_top4_buffer", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.10, "rotation_policy": "top4_buffer", "rotation_buffer_rank": 4}),
+        ("weekly_top5_buffer", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.10, "rotation_policy": "top5_buffer", "rotation_buffer_rank": 5}),
+        ("two_week_rank_confirm", {"weights": {"rs63": 100, "ret20": 90, "above_sma50": 0}, "max_atr_pct": 0.10, "rotation_policy": "two_week_confirm", "rotation_confirm_weeks": 2}),
     ]
     return [run_strategy_idea_backtest(data, qqq, start, label, options) for label, options in specs]
 
@@ -1419,6 +1464,9 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
                 "breakeven_atr_trigger": result.get("breakeven_atr_trigger", "n/a"),
                 "adaptive_trail": result.get("adaptive_trail", "n/a"),
                 "sector_limit": result.get("sector_limit", "n/a"),
+                "rotation_policy": result.get("rotation_policy", "n/a"),
+                "rotation_buffer_rank": result.get("rotation_buffer_rank", "n/a"),
+                "rotation_confirm_weeks": result.get("rotation_confirm_weeks", "n/a"),
                 "start": result["start"],
                 "end": result["end"],
                 "final": result["final"],
