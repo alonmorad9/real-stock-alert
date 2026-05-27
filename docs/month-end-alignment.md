@@ -42,7 +42,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 ### `swing-stock-alert`
 
 - Paused research archive.
-- Current state inspected locally on 2026-05-26:
+- Current state inspected locally on 2026-05-27:
   - paper positions: `INTC`, `MRVL`
   - paper start date: `2026-05-04`
   - latest paper value: `1.184576`
@@ -67,8 +67,9 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
   - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
-  - bot-only benchmark holdings: `AMD`, `MU`
-  - bot-only benchmark value: `$2,804.38`
+  - bot-only benchmark holdings: none, reset to cash
+  - bot-only benchmark value: `$2,699.99`
+  - bot-only benchmark action: `reset`
 - latest research decision:
   - Turbo remains the live stock strategy.
   - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.
@@ -77,7 +78,7 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
   - Best dip variant: `14.46x`, `37.8%` CAGR, `-34.9%` max drawdown.
   - Turbo baseline in the same dip test: `43.59x`, `57.2%` CAGR, `-35.8%` max drawdown.
   - The 2026-05-12 strategy-idea test selected `score_no_extension`: `45.21x`, `57.8%` CAGR, `-31.2%` max drawdown versus `baseline_live` `32.84x`, `51.9%` CAGR, `-32.7%` max drawdown.
-  - The 2026-05-21 volatility test improved this with `atr_cap_10pct`: `47.12x`, `58.4%` CAGR, `-31.2%` max drawdown.
+  - The latest 2026-05-27 strategy-idea test keeps `atr_cap_10pct` / `hold_unless_broken` as best: `50.67x`, `59.6%` CAGR, `-31.2%` max drawdown.
   - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded. Fresh buy candidates with ATR14 above 10% of price are skipped.
   - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
   - Rank-based sell rotation is disabled after the 2026-05-27 rotation-buffer research. Rankings choose fresh buys for empty slots, but holdings are kept until SMA50, stop, QQQ SMA200, or TQQQ-priority rules break.
