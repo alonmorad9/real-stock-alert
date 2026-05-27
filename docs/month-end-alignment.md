@@ -1,6 +1,6 @@
 # Month-End Alignment
 
-Last updated: 2026-05-26
+Last updated: 2026-05-27
 
 Latest decision: `tqqq-alert` is the master controller and currently has an open TQQQ position. `real-stock-alert` is the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash. If `tqqq-alert` later exits TQQQ and waits in cash, reset this repo with `set_cash <actual freed cash amount>` before following stock candidates.
 
@@ -17,14 +17,14 @@ Latest decision: `tqqq-alert` is the master controller and currently has an open
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-26:
+- Current state inspected locally on 2026-05-27:
   - `position_open`: `true`
   - `shares`: `35.6658`
   - `avg_cost`: `$75.20`
   - `entry_date`: `2026-05-21`
   - `cash`: `$0.00`
   - `last_action`: `manual_broker_buy_sync`
-  - `last_report_key`: `2026-05-22:close`
+  - `last_report_key`: `2026-05-26:close`
   - `manual_exit_mode`: `false`
   - `manual_exit_price`: `null`
   - `manual_exit_date`: `null`
