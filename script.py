@@ -443,6 +443,36 @@ def set_cash(args):
     print(f"Set real-stock cash bucket to {money(amount)}")
 
 
+def reset_bot_benchmark(_args):
+    state = load_state()
+    state["bot_only_benchmark"] = {
+        "initial_cash": REFERENCE_CASH,
+        "cash": REFERENCE_CASH,
+        "positions": [],
+        "position_details": [],
+        "value": REFERENCE_CASH,
+        "return": 0.0,
+        "realized_pnl": 0.0,
+        "last_scan_date": None,
+        "last_actions": ["reset"],
+        "last_trade_messages": ["BOT RESET: bot-only benchmark reset to cash."],
+        "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
+    }
+    state["last_action"] = "reset_bot_benchmark"
+    save_state(state)
+    send_telegram(
+        "\n".join([
+            "🧪 Bot-Only Benchmark Reset",
+            "─" * 30,
+            f"Benchmark cash: {money(REFERENCE_CASH)}",
+            "Paper positions cleared.",
+            "Real stock positions and real cash were not changed.",
+            "The next scan will start the paper benchmark fresh under the current rules.",
+        ])
+    )
+    print("Reset bot-only benchmark to cash.")
+
+
 def build_report(mode):
     state = load_state()
     data, qqq, errors = load_universe(UNIVERSE)
@@ -768,6 +798,7 @@ def parse_args():
 
     reset = subparsers.add_parser("set_cash")
     reset.add_argument("amount", type=float)
+    subparsers.add_parser("reset_bot_benchmark")
     return parser.parse_args()
 
 
@@ -779,6 +810,8 @@ def main():
         manual_sold(args)
     elif args.command == "set_cash":
         set_cash(args)
+    elif args.command == "reset_bot_benchmark":
+        reset_bot_benchmark(args)
     else:
         mode = args.command or "manual"
         if skip_scheduled_report_if_market_closed(mode):

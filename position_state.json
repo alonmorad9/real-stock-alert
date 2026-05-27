@@ -2,76 +2,26 @@
   "active_profile": "turbo",
   "allocated_cash": 0.0,
   "bot_only_benchmark": {
-    "cash": 0.0,
+    "cash": 2699.99,
     "initial_cash": 2699.99,
     "last_actions": [
-      "sold AMD",
-      "sold MU",
-      "bought MRVL",
-      "bought DDOG"
+      "reset"
     ],
-    "last_scan_date": "2026-05-27",
+    "last_scan_date": null,
     "last_trade_messages": [
-      "BOT SELL AMD: 2.8221 shares at $496.23; proceeds $1,400.41; P&L $16.93 (1.2%). Reason: dropped out of weekly top list.",
-      "BOT SELL MU: 1.6087 shares at $916.90; proceeds $1,475.02; P&L $91.53 (6.6%). Reason: dropped out of weekly top list.",
-      "BOT BUY MRVL: $1,437.71 at $204.43 = 7.0330 shares. Initial stop $179.89.",
-      "BOT BUY DDOG: $1,437.71 at $222.87 = 6.4509 shares. Initial stop $196.13."
+      "BOT RESET: bot-only benchmark reset to cash."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
-    "position_details": [
-      {
-        "current_price": 204.425,
-        "entry_date": "2026-05-27",
-        "entry_price": 204.425,
-        "return": 0.0,
-        "shares": 7.03296491,
-        "status": "HOLD",
-        "stop": 179.894,
-        "ticker": "MRVL",
-        "value": 1437.71
-      },
-      {
-        "current_price": 222.87,
-        "entry_date": "2026-05-27",
-        "entry_price": 222.87,
-        "return": -0.0,
-        "shares": 6.45090818,
-        "status": "HOLD",
-        "stop": 196.1256,
-        "ticker": "DDOG",
-        "value": 1437.71
-      }
-    ],
-    "positions": [
-      {
-        "allocation": 1437.71,
-        "entry_date": "2026-05-27",
-        "entry_price": 204.425,
-        "highest_high_since_entry": 218.2599,
-        "last_signal": "bot_only_bought",
-        "shares": 7.03296491,
-        "stop": 179.894,
-        "ticker": "MRVL"
-      },
-      {
-        "allocation": 1437.71,
-        "entry_date": "2026-05-27",
-        "entry_price": 222.87,
-        "highest_high_since_entry": 223.035,
-        "last_signal": "bot_only_bought",
-        "shares": 6.45090818,
-        "stop": 196.1256,
-        "ticker": "DDOG"
-      }
-    ],
-    "realized_pnl": 175.44,
-    "return": 0.064977,
-    "value": 2875.43
+    "position_details": [],
+    "positions": [],
+    "realized_pnl": 0.0,
+    "return": 0.0,
+    "value": 2699.99
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-27T13:46:25.490691+00:00",
+  "last_action": "reset_bot_benchmark",
+  "last_action_at": "2026-05-27T15:01:37.775569+00:00",
   "last_scan_date": "2026-05-27",
   "latest_candidates": [
     "MRVL",

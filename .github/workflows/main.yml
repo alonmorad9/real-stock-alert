@@ -14,6 +14,7 @@ on:
           - weekly
           - manual
           - set_cash
+          - reset_bot_benchmark
           - manual_bought
           - manual_sold
       cash_amount:

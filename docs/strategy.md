@@ -132,3 +132,5 @@ The benchmark does not change the confirmed real account state. It exists only t
 The Telegram report shows the benchmark like a small paper account: current bot-only holdings, shares, entry price, current price, stop, value, return, and the latest simulated `BOT BUY`, `BOT SELL`, or `BOT HOLD` message. Those messages are only benchmark events, not real broker confirmations.
 
 While TQQQ is open and this repo has `$0` deployable stock cash, the benchmark can still show the planning path using the reference cash amount. That keeps the daily message useful without pretending real stock trades happened.
+
+If the benchmark needs a clean restart after a strategy-behavior fix, run `python3 script.py reset_bot_benchmark`. This clears only the paper benchmark; it does not touch real positions, real cash, or manual trade confirmations.

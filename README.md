@@ -83,6 +83,14 @@ python3 script.py manual_sold TICKER SHARES FILL_PRICE --date YYYY-MM-DD
 
 If `tqqq-alert` sends a TQQQ re-buy signal, sell every open real-stock position and confirm each sale with `manual_sold` before buying TQQQ.
 
+Reset only the paper bot-only benchmark:
+
+```bash
+python3 script.py reset_bot_benchmark
+```
+
+This does not change confirmed real stock positions or real tracked cash.
+
 Generated reports:
 
 - `reports/latest_report.md`
