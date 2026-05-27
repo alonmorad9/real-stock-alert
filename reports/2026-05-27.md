@@ -1,19 +1,19 @@
-📊 Real Stock Opening Report — 27/05/2026
+📊 Real Stock Daily Report — 27/05/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $728.36
-SMA200:        $615.19
+QQQ:           $729.45
+SMA200:        $615.20
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -46,37 +46,35 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,699.99
-Bot Value:     $2,875.43 (6.5%)
+Bot Value:     $2,699.99 (0.0%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,875.43 (-100.0%)
+Vs Bot-Only:   $-2,699.99 (-100.0%)
 Bot Cash:      $0.00
-Bot Holding:   MRVL, DDOG
-Bot Actions:   sold AMD, sold MU, bought MRVL, bought DDOG
+Bot Holding:   MU, AMD
+Bot Actions:   bought MU, bought AMD
 ──────────────────────────────
 🤖 Bot-Only Trade Log
 Meaning: simulated paper events only. These show what the bot path did, not what happened in your broker.
-- BOT SELL AMD: 2.8221 shares at $496.23; proceeds $1,400.41; P&L $16.93 (1.2%). Reason: dropped out of weekly top list.
-- BOT SELL MU: 1.6087 shares at $916.90; proceeds $1,475.02; P&L $91.53 (6.6%). Reason: dropped out of weekly top list.
-- BOT BUY MRVL: $1,437.71 at $204.43 = 7.0330 shares. Initial stop $179.89.
-- BOT BUY DDOG: $1,437.71 at $222.87 = 6.4509 shares. Initial stop $196.13.
+- BOT BUY MU: $1,349.99 at $928.41 = 1.4541 shares. Initial stop $817.00.
+- BOT BUY AMD: $1,349.99 at $495.54 = 2.7243 shares. Initial stop $436.08.
 ──────────────────────────────
 📌 Bot-Only Holdings
-MRVL
-Shares:        7.0330
-Entry:         $204.43
-Current:       $204.43
-Stop:          $179.89
-Value:         $1,437.71
-Return:        0.0%
+MU
+Shares:        1.4541
+Entry:         $928.41
+Current:       $928.41
+Stop:          $817.00
+Value:         $1,350.00
+Return:        -0.0%
 Status:        HOLD
 
-DDOG
-Shares:        6.4509
-Entry:         $222.87
-Current:       $222.87
-Stop:          $196.13
-Value:         $1,437.71
-Return:        -0.0%
+AMD
+Shares:        2.7243
+Entry:         $495.54
+Current:       $495.54
+Stop:          $436.08
+Value:         $1,350.00
+Return:        0.0%
 Status:        HOLD
 
 ──────────────────────────────
@@ -84,36 +82,35 @@ Status:        HOLD
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: AMD, MU, INTC, ARM
+Repeat Memory: MRVL, DDOG, ARM, INTC
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 65% above SMA50).
-INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 49% above SMA50).
+INTC: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 53% above SMA50).
 
-🥇 MRVL
-Price:         $204.43
+🥇 MU
+Price:         $928.41
+Score:         173.76 — higher means stronger momentum rank
+Suggested Buy: $1,349.99 (1.4541 shares)
+Normal Slot:   $1,349.99
+Initial Stop:  $817.00
+63d RS:        98.1%
+20d Return:    84.1%
+Stretch:       HOT BUT STRETCHED: 73% above SMA50
+
+🥈 AMD
+Price:         $495.54
 Score:         164.56 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (6.6039 shares)
+Suggested Buy: $1,349.99 (2.7243 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $179.89
-63d RS:        134.5%
-20d Return:    33.4%
-Stretch:       HOT BUT STRETCHED: 44% above SMA50
-
-🥈 DDOG
-Price:         $222.87
-Score:         146.22 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (6.0573 shares)
-Normal Slot:   $1,349.99
-Initial Stop:  $196.13
-63d RS:        83.7%
-20d Return:    69.4%
-Stretch:       HOT BUT STRETCHED: RSI14 91, 50% above SMA50
+Initial Stop:  $436.08
+63d RS:        116.6%
+20d Return:    53.3%
+Stretch:       HOT BUT STRETCHED: 57% above SMA50
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-MRVL: HOT BUT STRETCHED: 44% above SMA50
-DDOG: HOT BUT STRETCHED: RSI14 91, 50% above SMA50
+MU: HOT BUT STRETCHED: 73% above SMA50
+AMD: HOT BUT STRETCHED: 57% above SMA50
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.
