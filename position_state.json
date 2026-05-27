@@ -5,71 +5,77 @@
     "cash": 0.0,
     "initial_cash": 2699.99,
     "last_actions": [
-      "held"
+      "sold AMD",
+      "sold MU",
+      "bought MRVL",
+      "bought DDOG"
     ],
-    "last_scan_date": "2026-05-26",
+    "last_scan_date": "2026-05-27",
     "last_trade_messages": [
-      "BOT HOLD: no bot-only buy or sell this run."
+      "BOT SELL AMD: 2.8221 shares at $496.23; proceeds $1,400.41; P&L $16.93 (1.2%). Reason: dropped out of weekly top list.",
+      "BOT SELL MU: 1.6087 shares at $916.90; proceeds $1,475.02; P&L $91.53 (6.6%). Reason: dropped out of weekly top list.",
+      "BOT BUY MRVL: $1,437.71 at $204.43 = 7.0330 shares. Initial stop $179.89.",
+      "BOT BUY DDOG: $1,437.71 at $222.87 = 6.4509 shares. Initial stop $196.13."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 503.89,
-        "entry_date": "2026-05-26",
-        "entry_price": 490.23,
-        "return": 0.027865,
-        "shares": 2.82210403,
+        "current_price": 204.425,
+        "entry_date": "2026-05-27",
+        "entry_price": 204.425,
+        "return": 0.0,
+        "shares": 7.03296491,
         "status": "HOLD",
-        "stop": 431.4024,
-        "ticker": "AMD",
-        "value": 1422.03
+        "stop": 179.894,
+        "ticker": "MRVL",
+        "value": 1437.71
       },
       {
-        "current_price": 895.88,
-        "entry_date": "2026-05-26",
-        "entry_price": 860.0,
-        "return": 0.041721,
-        "shares": 1.60869778,
+        "current_price": 222.87,
+        "entry_date": "2026-05-27",
+        "entry_price": 222.87,
+        "return": -0.0,
+        "shares": 6.45090818,
         "status": "HOLD",
-        "stop": 756.8,
-        "ticker": "MU",
-        "value": 1441.2
+        "stop": 196.1256,
+        "ticker": "DDOG",
+        "value": 1437.71
       }
     ],
     "positions": [
       {
-        "allocation": 1383.48,
-        "entry_date": "2026-05-26",
-        "entry_price": 490.23,
-        "highest_high_since_entry": 506.96,
+        "allocation": 1437.71,
+        "entry_date": "2026-05-27",
+        "entry_price": 204.425,
+        "highest_high_since_entry": 218.2599,
         "last_signal": "bot_only_bought",
-        "shares": 2.82210403,
-        "stop": 431.4024,
-        "ticker": "AMD"
+        "shares": 7.03296491,
+        "stop": 179.894,
+        "ticker": "MRVL"
       },
       {
-        "allocation": 1383.48,
-        "entry_date": "2026-05-26",
-        "entry_price": 860.0,
-        "highest_high_since_entry": 916.76,
+        "allocation": 1437.71,
+        "entry_date": "2026-05-27",
+        "entry_price": 222.87,
+        "highest_high_since_entry": 223.035,
         "last_signal": "bot_only_bought",
-        "shares": 1.60869778,
-        "stop": 756.8,
-        "ticker": "MU"
+        "shares": 6.45090818,
+        "stop": 196.1256,
+        "ticker": "DDOG"
       }
     ],
-    "realized_pnl": 66.97,
-    "return": 0.06046,
-    "value": 2863.23
+    "realized_pnl": 175.44,
+    "return": 0.064977,
+    "value": 2875.43
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-26T21:31:09.051713+00:00",
-  "last_scan_date": "2026-05-26",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-27T13:46:25.490691+00:00",
+  "last_scan_date": "2026-05-27",
   "latest_candidates": [
-    "AMD",
-    "MU"
+    "MRVL",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -81,11 +87,11 @@
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",
-      "ticker": "INTC"
+      "ticker": "ARM"
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "ARM"
+      "ticker": "INTC"
     }
   ],
   "latest_unrealized_pnl": 0.0,
