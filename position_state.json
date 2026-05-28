@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 911.455,
+        "current_price": 923.52,
         "entry_date": "2026-05-27",
         "entry_price": 928.41,
-        "return": -0.018262,
+        "return": -0.005267,
         "shares": 1.4540936,
         "status": "HOLD",
         "stop": 817.0008,
         "ticker": "MU",
-        "value": 1325.34
+        "value": 1342.88
       },
       {
-        "current_price": 497.015,
+        "current_price": 518.09,
         "entry_date": "2026-05-27",
         "entry_price": 495.54,
-        "return": 0.002977,
+        "return": 0.045506,
         "shares": 2.72429063,
         "status": "HOLD",
         "stop": 436.0752,
         "ticker": "AMD",
-        "value": 1354.01
+        "value": 1411.43
       }
     ],
     "positions": [
@@ -51,7 +51,7 @@
         "allocation": 1349.99,
         "entry_date": "2026-05-27",
         "entry_price": 495.54,
-        "highest_high_since_entry": 510.21,
+        "highest_high_since_entry": 527.1999,
         "last_signal": "bot_only_bought",
         "shares": 2.72429063,
         "stop": 436.0752,
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": -0.007643,
-    "value": 2679.35
+    "return": 0.020119,
+    "value": 2754.31
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-28T13:47:01.271877+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-05-28T21:31:29.870497+00:00",
   "last_scan_date": "2026-05-28",
   "latest_candidates": [
-    "ARM",
-    "MRVL"
+    "INTC",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -81,7 +81,7 @@
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",
-      "ticker": "MU"
+      "ticker": "ARM"
     },
     {
       "reason": "repeat stretched candidate",
