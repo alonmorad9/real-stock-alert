@@ -5,37 +5,35 @@
     "cash": 0.0,
     "initial_cash": 2699.99,
     "last_actions": [
-      "bought MU",
-      "bought AMD"
+      "held"
     ],
-    "last_scan_date": "2026-05-27",
+    "last_scan_date": "2026-05-28",
     "last_trade_messages": [
-      "BOT BUY MU: $1,349.99 at $928.41 = 1.4541 shares. Initial stop $817.00.",
-      "BOT BUY AMD: $1,349.99 at $495.54 = 2.7243 shares. Initial stop $436.08."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 928.41,
+        "current_price": 911.455,
         "entry_date": "2026-05-27",
         "entry_price": 928.41,
-        "return": -0.0,
+        "return": -0.018262,
         "shares": 1.4540936,
         "status": "HOLD",
         "stop": 817.0008,
         "ticker": "MU",
-        "value": 1350.0
+        "value": 1325.34
       },
       {
-        "current_price": 495.54,
+        "current_price": 497.015,
         "entry_date": "2026-05-27",
         "entry_price": 495.54,
-        "return": 0.0,
+        "return": 0.002977,
         "shares": 2.72429063,
         "status": "HOLD",
         "stop": 436.0752,
         "ticker": "AMD",
-        "value": 1350.0
+        "value": 1354.01
       }
     ],
     "positions": [
@@ -61,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": 0.0,
-    "value": 2699.99
+    "return": -0.007643,
+    "value": 2679.35
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-27T21:31:16.211206+00:00",
-  "last_scan_date": "2026-05-27",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-28T13:47:01.271877+00:00",
+  "last_scan_date": "2026-05-28",
   "latest_candidates": [
-    "MU",
-    "AMD"
+    "ARM",
+    "MRVL"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -83,7 +81,11 @@
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",
-      "ticker": "INTC"
+      "ticker": "MU"
+    },
+    {
+      "reason": "repeat stretched candidate",
+      "ticker": "AMD"
     }
   ],
   "latest_unrealized_pnl": 0.0,
