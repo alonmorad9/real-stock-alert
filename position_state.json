@@ -1,71 +1,27 @@
 {
   "active_profile": "turbo",
-  "allocated_cash": 0.0,
+  "allocated_cash": 3028.38,
   "bot_only_benchmark": {
-    "cash": 0.0,
-    "initial_cash": 2699.99,
+    "cash": 3028.38,
+    "initial_cash": 3028.38,
     "last_actions": [
-      "held"
+      "reset"
     ],
-    "last_scan_date": "2026-05-29",
+    "last_scan_date": null,
     "last_trade_messages": [
-      "BOT HOLD: no bot-only buy or sell this run."
+      "BOT RESET: bot-only benchmark reset to cash."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
-    "position_details": [
-      {
-        "current_price": 958.7041,
-        "entry_date": "2026-05-27",
-        "entry_price": 928.41,
-        "return": 0.03263,
-        "shares": 1.4540936,
-        "status": "HOLD",
-        "stop": 817.0008,
-        "ticker": "MU",
-        "value": 1394.05
-      },
-      {
-        "current_price": 517.71,
-        "entry_date": "2026-05-27",
-        "entry_price": 495.54,
-        "return": 0.044739,
-        "shares": 2.72429063,
-        "status": "HOLD",
-        "stop": 436.0752,
-        "ticker": "AMD",
-        "value": 1410.39
-      }
-    ],
-    "positions": [
-      {
-        "allocation": 1349.99,
-        "entry_date": "2026-05-27",
-        "entry_price": 928.41,
-        "highest_high_since_entry": 967.43,
-        "last_signal": "bot_only_bought",
-        "shares": 1.4540936,
-        "stop": 817.0008,
-        "ticker": "MU"
-      },
-      {
-        "allocation": 1349.99,
-        "entry_date": "2026-05-27",
-        "entry_price": 495.54,
-        "highest_high_since_entry": 527.1999,
-        "last_signal": "bot_only_bought",
-        "shares": 2.72429063,
-        "stop": 436.0752,
-        "ticker": "AMD"
-      }
-    ],
+    "position_details": [],
+    "positions": [],
     "realized_pnl": 0.0,
-    "return": 0.038685,
-    "value": 2804.44
+    "return": 0.0,
+    "value": 3028.38
   },
-  "capital_mode": "inactive while TQQQ position is open",
-  "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-05-29T13:46:44.731876+00:00",
+  "capital_mode": "TQQQ-out swing mode",
+  "cash": 3028.38,
+  "last_action": "reset_bot_benchmark",
+  "last_action_at": "2026-05-29T15:09:00.570657+00:00",
   "last_scan_date": "2026-05-29",
   "latest_candidates": [
     "MU",
@@ -77,7 +33,7 @@
     "reasons": [],
     "score": 0
   },
-  "latest_portfolio_value": 0.0,
+  "latest_portfolio_value": 3028.38,
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",

@@ -445,12 +445,17 @@ def set_cash(args):
 
 def reset_bot_benchmark(_args):
     state = load_state()
+    benchmark_cash = float(
+        state.get("allocated_cash")
+        or state.get("cash")
+        or REFERENCE_CASH
+    )
     state["bot_only_benchmark"] = {
-        "initial_cash": REFERENCE_CASH,
-        "cash": REFERENCE_CASH,
+        "initial_cash": round(benchmark_cash, 2),
+        "cash": round(benchmark_cash, 2),
         "positions": [],
         "position_details": [],
-        "value": REFERENCE_CASH,
+        "value": round(benchmark_cash, 2),
         "return": 0.0,
         "realized_pnl": 0.0,
         "last_scan_date": None,
@@ -464,7 +469,7 @@ def reset_bot_benchmark(_args):
         "\n".join([
             "🧪 Bot-Only Benchmark Reset",
             "─" * 30,
-            f"Benchmark cash: {money(REFERENCE_CASH)}",
+            f"Benchmark cash: {money(benchmark_cash)}",
             "Paper positions cleared.",
             "Real stock positions and real cash were not changed.",
             "The next scan will start the paper benchmark fresh under the current rules.",
