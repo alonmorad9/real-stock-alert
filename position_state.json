@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-05-28",
+    "last_scan_date": "2026-05-29",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 923.52,
+        "current_price": 958.7041,
         "entry_date": "2026-05-27",
         "entry_price": 928.41,
-        "return": -0.005267,
+        "return": 0.03263,
         "shares": 1.4540936,
         "status": "HOLD",
         "stop": 817.0008,
         "ticker": "MU",
-        "value": 1342.88
+        "value": 1394.05
       },
       {
-        "current_price": 518.09,
+        "current_price": 517.71,
         "entry_date": "2026-05-27",
         "entry_price": 495.54,
-        "return": 0.045506,
+        "return": 0.044739,
         "shares": 2.72429063,
         "status": "HOLD",
         "stop": 436.0752,
         "ticker": "AMD",
-        "value": 1411.43
+        "value": 1410.39
       }
     ],
     "positions": [
@@ -41,7 +41,7 @@
         "allocation": 1349.99,
         "entry_date": "2026-05-27",
         "entry_price": 928.41,
-        "highest_high_since_entry": 956.16,
+        "highest_high_since_entry": 967.43,
         "last_signal": "bot_only_bought",
         "shares": 1.4540936,
         "stop": 817.0008,
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": 0.020119,
-    "value": 2754.31
+    "return": 0.038685,
+    "value": 2804.44
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-05-28T21:31:29.870497+00:00",
-  "last_scan_date": "2026-05-28",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-05-29T13:46:44.731876+00:00",
+  "last_scan_date": "2026-05-29",
   "latest_candidates": [
-    "INTC",
-    "DDOG"
+    "MU",
+    "MRVL"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
