@@ -2,30 +2,76 @@
   "active_profile": "turbo",
   "allocated_cash": 3028.38,
   "bot_only_benchmark": {
-    "cash": 3028.38,
+    "cash": 0.0,
     "initial_cash": 3028.38,
     "last_actions": [
-      "reset"
+      "bought DDOG",
+      "bought INTC"
     ],
-    "last_scan_date": null,
+    "last_scan_date": "2026-05-29",
     "last_trade_messages": [
-      "BOT RESET: bot-only benchmark reset to cash."
+      "BOT BUY DDOG: $1,514.19 at $247.35 = 6.1216 shares. Initial stop $221.95.",
+      "BOT BUY INTC: $1,514.19 at $114.68 = 13.2036 shares. Initial stop $100.92."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
-    "position_details": [],
-    "positions": [],
+    "position_details": [
+      {
+        "current_price": 247.35,
+        "entry_date": "2026-05-29",
+        "entry_price": 247.35,
+        "return": 0.0,
+        "shares": 6.12164933,
+        "status": "HOLD",
+        "stop": 221.9528,
+        "ticker": "DDOG",
+        "value": 1514.19
+      },
+      {
+        "current_price": 114.68,
+        "entry_date": "2026-05-29",
+        "entry_price": 114.68,
+        "return": 0.0,
+        "shares": 13.20361001,
+        "status": "HOLD",
+        "stop": 100.9184,
+        "ticker": "INTC",
+        "value": 1514.19
+      }
+    ],
+    "positions": [
+      {
+        "allocation": 1514.19,
+        "entry_date": "2026-05-29",
+        "entry_price": 247.35,
+        "highest_high_since_entry": 249.8071,
+        "last_signal": "bot_only_bought",
+        "shares": 6.12164933,
+        "stop": 221.9528,
+        "ticker": "DDOG"
+      },
+      {
+        "allocation": 1514.19,
+        "entry_date": "2026-05-29",
+        "entry_price": 114.68,
+        "highest_high_since_entry": 126.64,
+        "last_signal": "bot_only_bought",
+        "shares": 13.20361001,
+        "stop": 100.9184,
+        "ticker": "INTC"
+      }
+    ],
     "realized_pnl": 0.0,
-    "return": 0.0,
+    "return": -0.0,
     "value": 3028.38
   },
   "capital_mode": "TQQQ-out swing mode",
   "cash": 3028.38,
-  "last_action": "reset_bot_benchmark",
-  "last_action_at": "2026-05-29T15:09:00.570657+00:00",
+  "last_action": "weekly_scan",
+  "last_action_at": "2026-05-29T21:31:16.173799+00:00",
   "last_scan_date": "2026-05-29",
   "latest_candidates": [
-    "MU",
-    "MRVL"
+    "DDOG",
+    "INTC"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -41,7 +87,7 @@
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "AMD"
+      "ticker": "MU"
     }
   ],
   "latest_unrealized_pnl": 0.0,
