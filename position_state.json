@@ -5,37 +5,35 @@
     "cash": 0.0,
     "initial_cash": 3028.38,
     "last_actions": [
-      "bought DDOG",
-      "bought INTC"
+      "held"
     ],
-    "last_scan_date": "2026-05-29",
+    "last_scan_date": "2026-06-01",
     "last_trade_messages": [
-      "BOT BUY DDOG: $1,514.19 at $247.35 = 6.1216 shares. Initial stop $221.95.",
-      "BOT BUY INTC: $1,514.19 at $114.68 = 13.2036 shares. Initial stop $100.92."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 247.35,
+        "current_price": 259.825,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "return": 0.0,
+        "return": 0.050435,
         "shares": 6.12164933,
         "status": "HOLD",
-        "stop": 221.9528,
+        "stop": 223.7553,
         "ticker": "DDOG",
-        "value": 1514.19
+        "value": 1590.56
       },
       {
-        "current_price": 114.68,
+        "current_price": 110.055,
         "entry_date": "2026-05-29",
         "entry_price": 114.68,
-        "return": 0.0,
+        "return": -0.04033,
         "shares": 13.20361001,
         "status": "HOLD",
-        "stop": 100.9184,
+        "stop": 103.8448,
         "ticker": "INTC",
-        "value": 1514.19
+        "value": 1453.12
       }
     ],
     "positions": [
@@ -43,10 +41,10 @@
         "allocation": 1514.19,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "highest_high_since_entry": 249.8071,
+        "highest_high_since_entry": 259.825,
         "last_signal": "bot_only_bought",
         "shares": 6.12164933,
-        "stop": 221.9528,
+        "stop": 223.7553,
         "ticker": "DDOG"
       },
       {
@@ -56,22 +54,22 @@
         "highest_high_since_entry": 126.64,
         "last_signal": "bot_only_bought",
         "shares": 13.20361001,
-        "stop": 100.9184,
+        "stop": 103.8448,
         "ticker": "INTC"
       }
     ],
     "realized_pnl": 0.0,
-    "return": -0.0,
-    "value": 3028.38
+    "return": 0.005053,
+    "value": 3043.68
   },
   "capital_mode": "TQQQ-out swing mode",
   "cash": 3028.38,
-  "last_action": "weekly_scan",
-  "last_action_at": "2026-05-29T21:31:16.173799+00:00",
-  "last_scan_date": "2026-05-29",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-01T13:46:23.255098+00:00",
+  "last_scan_date": "2026-06-01",
   "latest_candidates": [
-    "DDOG",
-    "INTC"
+    "AMD",
+    "MRVL"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
