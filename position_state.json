@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 259.825,
+        "current_price": 277.49,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "return": 0.050435,
+        "return": 0.121852,
         "shares": 6.12164933,
         "status": "HOLD",
-        "stop": 223.7553,
+        "stop": 237.9152,
         "ticker": "DDOG",
-        "value": 1590.56
+        "value": 1698.7
       },
       {
-        "current_price": 110.055,
+        "current_price": 109.33,
         "entry_date": "2026-05-29",
         "entry_price": 114.68,
-        "return": -0.04033,
+        "return": -0.046652,
         "shares": 13.20361001,
         "status": "HOLD",
         "stop": 103.8448,
         "ticker": "INTC",
-        "value": 1453.12
+        "value": 1443.55
       }
     ],
     "positions": [
@@ -41,10 +41,10 @@
         "allocation": 1514.19,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "highest_high_since_entry": 259.825,
+        "highest_high_since_entry": 278.705,
         "last_signal": "bot_only_bought",
         "shares": 6.12164933,
-        "stop": 223.7553,
+        "stop": 237.9152,
         "ticker": "DDOG"
       },
       {
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": 0.005053,
-    "value": 3043.68
+    "return": 0.0376,
+    "value": 3142.25
   },
   "capital_mode": "TQQQ-out swing mode",
   "cash": 3028.38,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-01T13:46:23.255098+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-01T21:31:15.582061+00:00",
   "last_scan_date": "2026-06-01",
   "latest_candidates": [
-    "AMD",
-    "MRVL"
+    "DDOG",
+    "CRWD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
