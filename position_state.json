@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-06-01",
+    "last_scan_date": "2026-06-02",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 277.49,
+        "current_price": 267.02,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "return": 0.121852,
+        "return": 0.079523,
         "shares": 6.12164933,
         "status": "HOLD",
         "stop": 237.9152,
         "ticker": "DDOG",
-        "value": 1698.7
+        "value": 1634.6
       },
       {
-        "current_price": 109.33,
+        "current_price": 105.46,
         "entry_date": "2026-05-29",
         "entry_price": 114.68,
-        "return": -0.046652,
+        "return": -0.080398,
         "shares": 13.20361001,
         "status": "HOLD",
         "stop": 103.8448,
         "ticker": "INTC",
-        "value": 1443.55
+        "value": 1392.45
       }
     ],
     "positions": [
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": 0.0376,
-    "value": 3142.25
+    "return": -0.000437,
+    "value": 3027.06
   },
   "capital_mode": "TQQQ-out swing mode",
   "cash": 3028.38,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-01T21:31:15.582061+00:00",
-  "last_scan_date": "2026-06-01",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-02T13:46:21.728642+00:00",
+  "last_scan_date": "2026-06-02",
   "latest_candidates": [
-    "DDOG",
-    "CRWD"
+    "MRVL",
+    "AMD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
