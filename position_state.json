@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 267.02,
+        "current_price": 269.13,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "return": 0.079523,
+        "return": 0.088053,
         "shares": 6.12164933,
         "status": "HOLD",
         "stop": 237.9152,
         "ticker": "DDOG",
-        "value": 1634.6
+        "value": 1647.52
       },
       {
-        "current_price": 105.46,
+        "current_price": 107.93,
         "entry_date": "2026-05-29",
         "entry_price": 114.68,
-        "return": -0.080398,
+        "return": -0.058859,
         "shares": 13.20361001,
         "status": "HOLD",
         "stop": 103.8448,
         "ticker": "INTC",
-        "value": 1392.45
+        "value": 1425.07
       }
     ],
     "positions": [
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": -0.000437,
-    "value": 3027.06
+    "return": 0.014597,
+    "value": 3072.59
   },
   "capital_mode": "TQQQ-out swing mode",
   "cash": 3028.38,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-02T13:46:21.728642+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-02T21:31:07.070865+00:00",
   "last_scan_date": "2026-06-02",
   "latest_candidates": [
-    "MRVL",
-    "AMD"
+    "DDOG",
+    "CRWD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -81,11 +81,11 @@
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",
-      "ticker": "ARM"
+      "ticker": "MRVL"
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "MU"
+      "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,

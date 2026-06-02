@@ -1,19 +1,19 @@
-📊 Real Stock Opening Report — 02/06/2026
+📊 Real Stock Daily Report — 02/06/2026
 ──────────────────────────────
 Action: 🟢 REVIEW BUYS — Candidates available
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  TQQQ-out swing mode
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $741.14
-SMA200:        $618.46
+QQQ:           $746.16
+SMA200:        $618.49
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -46,9 +46,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $3,028.38
-Bot Value:     $3,027.06 (-0.0%)
+Bot Value:     $3,072.59 (1.5%)
 Real Bucket:   $3,028.38
-Vs Bot-Only:   $1.32 (0.0%)
+Vs Bot-Only:   $-44.21 (-1.4%)
 Bot Cash:      $0.00
 Bot Holding:   DDOG, INTC
 Bot Actions:   held
@@ -61,19 +61,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 DDOG
 Shares:        6.1216
 Entry:         $247.35
-Current:       $267.02
+Current:       $269.13
 Stop:          $237.92
-Value:         $1,634.60
-Return:        8.0%
+Value:         $1,647.52
+Return:        8.8%
 Status:        HOLD
 
 INTC
 Shares:        13.2036
 Entry:         $114.68
-Current:       $105.46
+Current:       $107.93
 Stop:          $103.84
-Value:         $1,392.45
-Return:        -8.0%
+Value:         $1,425.07
+Return:        -5.9%
 Status:        HOLD
 
 ──────────────────────────────
@@ -81,36 +81,36 @@ Status:        HOLD
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: DDOG, CRWD, ARM, MU
+Repeat Memory: MRVL, AMD, ARM, MU
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 82, 88% above SMA50).
-MU: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 78% above SMA50).
+MRVL: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 87, 90% above SMA50, 33% above prior close).
+ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 84, 92% above SMA50).
 
-🥇 MRVL
-Price:         $272.88
-Score:         288.94 — higher means stronger momentum rank
-Suggested Buy: $1,514.19 (5.5489 shares)
+🥇 DDOG
+Price:         $269.13
+Score:         191.72 — higher means stronger momentum rank
+Suggested Buy: $1,514.19 (5.6262 shares)
 Normal Slot:   $1,514.19
-Initial Stop:  $240.13
-63d RS:        228.9%
-20d Return:    66.7%
-Stretch:       HOT BUT STRETCHED: RSI14 85, 78% above SMA50, 24% above prior close
+Initial Stop:  $238.37
+63d RS:        116.6%
+20d Return:    83.5%
+Stretch:       HOT BUT STRETCHED: RSI14 84, 69% above SMA50
 
-🥈 AMD
-Price:         $508.01
-Score:         186.56 — higher means stronger momentum rank
-Suggested Buy: $1,514.19 (2.9806 shares)
+🥈 CRWD
+Price:         $768.95
+Score:         129.75 — higher means stronger momentum rank
+Suggested Buy: $1,514.19 (1.9692 shares)
 Normal Slot:   $1,514.19
-Initial Stop:  $447.05
-63d RS:        142.7%
-20d Return:    48.7%
-Stretch:       HOT BUT STRETCHED: 49% above SMA50
+Initial Stop:  $681.83
+63d RS:        72.3%
+20d Return:    63.9%
+Stretch:       HOT BUT STRETCHED: RSI14 86, 55% above SMA50
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-MRVL: HOT BUT STRETCHED: RSI14 85, 78% above SMA50, 24% above prior close
-AMD: HOT BUT STRETCHED: 49% above SMA50
+DDOG: HOT BUT STRETCHED: RSI14 84, 69% above SMA50
+CRWD: HOT BUT STRETCHED: RSI14 86, 55% above SMA50
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.
