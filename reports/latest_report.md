@@ -1,19 +1,19 @@
-📊 Real Stock Opening Report — 04/06/2026
+📊 Real Stock Daily Report — 04/06/2026
 ──────────────────────────────
 Action: 🟢 REVIEW BUYS — Candidates available
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  TQQQ-out swing mode
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $733.67
-SMA200:        $620.13
+QQQ:           $740.61
+SMA200:        $620.16
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -46,9 +46,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $3,028.38
-Bot Value:     $2,938.66 (-3.0%)
+Bot Value:     $2,967.13 (-2.0%)
 Real Bucket:   $3,028.38
-Vs Bot-Only:   $89.72 (3.1%)
+Vs Bot-Only:   $61.25 (2.1%)
 Bot Cash:      $0.00
 Bot Holding:   DDOG, INTC
 Bot Actions:   held
@@ -61,19 +61,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 DDOG
 Shares:        6.1216
 Entry:         $247.35
-Current:       $244.60
+Current:       $243.60
 Stop:          $237.92
-Value:         $1,497.36
-Return:        -1.1%
+Value:         $1,491.23
+Return:        -1.5%
 Status:        HOLD
 
 INTC
 Shares:        13.2036
 Entry:         $114.68
-Current:       $109.16
+Current:       $111.78
 Stop:          $103.84
-Value:         $1,441.31
-Return:        -4.8%
+Value:         $1,475.90
+Return:        -2.5%
 Status:        HOLD
 
 ──────────────────────────────
@@ -81,36 +81,36 @@ Status:        HOLD
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: DDOG, INTC, MRVL, ARM
+Repeat Memory: MU, AMD, MRVL, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-MRVL: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 74% above SMA50).
-ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 72% above SMA50).
+MRVL: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 87, 95% above SMA50).
+ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 79% above SMA50).
 
-🥇 MU
-Price:         $989.06
-Score:         172.10 — higher means stronger momentum rank
-Suggested Buy: $1,514.19 (1.5309 shares)
+🥇 DDOG
+Price:         $243.60
+Score:         139.86 — higher means stronger momentum rank
+Suggested Buy: $1,514.19 (6.2159 shares)
 Normal Slot:   $1,514.19
-Initial Stop:  $870.37
-63d RS:        128.6%
-20d Return:    48.4%
-Stretch:       HOT BUT STRETCHED: 63% above SMA50
+Initial Stop:  $214.37
+63d RS:        77.3%
+20d Return:    69.5%
+Stretch:       HOT BUT STRETCHED: 49% above SMA50
 
-🥈 AMD
-Price:         $504.63
-Score:         150.15 — higher means stronger momentum rank
-Suggested Buy: $1,514.19 (3.0006 shares)
+🥈 PANW
+Price:         $279.25
+Score:         96.20 — higher means stronger momentum rank
+Suggested Buy: $1,514.19 (5.4223 shares)
 Normal Slot:   $1,514.19
-Initial Stop:  $444.07
-63d RS:        132.4%
-20d Return:    19.8%
-Stretch:       HOT BUT STRETCHED: 43% above SMA50
+Initial Stop:  $245.74
+63d RS:        49.4%
+20d Return:    52.0%
+Stretch:       HOT BUT STRETCHED: 39% above SMA50
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-MU: HOT BUT STRETCHED: 63% above SMA50
-AMD: HOT BUT STRETCHED: 43% above SMA50
+DDOG: HOT BUT STRETCHED: 49% above SMA50
+PANW: HOT BUT STRETCHED: 39% above SMA50
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.

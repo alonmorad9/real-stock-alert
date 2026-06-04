@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 244.6,
+        "current_price": 243.6,
         "entry_date": "2026-05-29",
         "entry_price": 247.35,
-        "return": -0.011118,
+        "return": -0.015161,
         "shares": 6.12164933,
         "status": "HOLD",
         "stop": 237.9152,
         "ticker": "DDOG",
-        "value": 1497.36
+        "value": 1491.23
       },
       {
-        "current_price": 109.16,
+        "current_price": 111.78,
         "entry_date": "2026-05-29",
         "entry_price": 114.68,
-        "return": -0.048134,
+        "return": -0.025288,
         "shares": 13.20361001,
         "status": "HOLD",
         "stop": 103.8448,
         "ticker": "INTC",
-        "value": 1441.31
+        "value": 1475.9
       }
     ],
     "positions": [
@@ -59,17 +59,17 @@
       }
     ],
     "realized_pnl": 0.0,
-    "return": -0.029626,
-    "value": 2938.66
+    "return": -0.020224,
+    "value": 2967.13
   },
   "capital_mode": "TQQQ-out swing mode",
   "cash": 3028.38,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-04T13:46:09.338515+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-04T21:31:06.009936+00:00",
   "last_scan_date": "2026-06-04",
   "latest_candidates": [
-    "MU",
-    "AMD"
+    "DDOG",
+    "PANW"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
