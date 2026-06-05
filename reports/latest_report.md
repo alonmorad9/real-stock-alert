@@ -1,29 +1,29 @@
-📊 Real Stock Opening Report — 05/06/2026
+📊 Real Stock Weekly Report — 05/06/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          weekly
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $726.97
-SMA200:        $620.96
+QQQ:           $705.06
+SMA200:        $620.85
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
 Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
 What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
-Risk Level:    NORMAL
-Risk Score:    1
-Buy Size:      100.0% of normal
-Reasons:       QQQ below SMA10
-Action:        Use normal suggested allocation.
+Risk Level:    DEFENSIVE
+Risk Score:    5
+Buy Size:      50.0% of normal
+Reasons:       QQQ below SMA20, QQQ below SMA10, QQQ 5d drop, 20d drawdown
+Action:        Use half-size only for new buys. Do not auto-sell from this overlay.
 ──────────────────────────────
 ⚙️ Strategy Settings
 Meaning: these rules decide which stocks appear in the candidate list.
@@ -46,34 +46,34 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $3,028.38
-Bot Value:     $2,855.87 (-5.7%)
+Bot Value:     $2,668.13 (-11.9%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,855.87 (-100.0%)
-Bot Cash:      $0.00
-Bot Holding:   INTC, MU
-Bot Actions:   sold DDOG, bought MU
+Vs Bot-Only:   $-2,668.13 (-100.0%)
+Bot Cash:      $654.70
+Bot Holding:   MU, DDOG
+Bot Actions:   sold INTC, bought DDOG
 ──────────────────────────────
 🤖 Bot-Only Trade Log
 Meaning: simulated paper events only. These show what the bot path did, not what happened in your broker.
-- BOT SELL DDOG: 6.1216 shares at $239.79; proceeds $1,467.91; P&L $-46.28 (-3.1%). Reason: trailing stop hit.
-- BOT BUY MU: $1,467.91 at $933.44 = 1.5726 shares. Initial stop $821.43.
+- BOT SELL INTC: 13.2036 shares at $99.17; proceeds $1,309.40; P&L $-204.79 (-13.5%). Reason: trailing stop hit.
+- BOT BUY DDOG: $654.70 at $234.11 = 2.7966 shares. Initial stop $206.02.
 ──────────────────────────────
 📌 Bot-Only Holdings
-INTC
-Shares:        13.2036
-Entry:         $114.68
-Current:       $105.12
-Stop:          $103.84
-Value:         $1,387.96
-Return:        -8.3%
-Status:        HOLD
-
 MU
 Shares:        1.5726
 Entry:         $933.44
-Current:       $933.44
+Current:       $864.01
 Stop:          $821.43
-Value:         $1,467.91
+Value:         $1,358.73
+Return:        -7.4%
+Status:        HOLD
+
+DDOG
+Shares:        2.7966
+Entry:         $234.11
+Current:       $234.11
+Stop:          $206.02
+Value:         $654.70
 Return:        0.0%
 Status:        HOLD
 
@@ -82,36 +82,36 @@ Status:        HOLD
 No confirmed real stock positions are currently tracked.
 ──────────────────────────────
 🧾 Buy Candidates
-Repeat Memory: DDOG, PANW, MRVL, ARM
+Repeat Memory: MU, AMD, MRVL, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-MRVL: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 76% above SMA50).
-ARM: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 60% above SMA50).
+ARM: skipped because ATR14 is 10.5%, above the 10.0% fresh-buy cap.
+MRVL: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: 59% above SMA50).
 
-🥇 MU
-Price:         $933.44
-Score:         170.74 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (1.4463 shares)
+🥇 DDOG
+Price:         $234.11
+Score:         90.10 — higher means stronger momentum rank
+Suggested Buy: $675.00 (2.8832 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $821.43
-63d RS:        130.8%
-20d Return:    44.4%
-Stretch:       HOT BUT STRETCHED: 51% above SMA50
+Initial Stop:  $206.02
+63d RS:        68.5%
+20d Return:    24.0%
+Stretch:       HOT BUT STRETCHED: 41% above SMA50
 
-🥈 AMD
-Price:         $493.14
-Score:         153.56 — higher means stronger momentum rank
-Suggested Buy: $1,349.99 (2.7375 shares)
+🥈 PANW
+Price:         $272.05
+Score:         81.71 — higher means stronger momentum rank
+Suggested Buy: $675.00 (2.4812 shares)
 Normal Slot:   $1,349.99
-Initial Stop:  $433.96
-63d RS:        134.9%
-20d Return:    20.7%
-Stretch:       HOT BUT STRETCHED: 37% above SMA50
+Initial Stop:  $239.40
+63d RS:        47.1%
+20d Return:    38.4%
+Stretch:       HOT BUT STRETCHED: 33% above SMA50
 
 ⚠️ Overextension Warnings
 Meaning: these are hot names. The signal can still be valid, but avoid chasing a live price far above the report price.
-MU: HOT BUT STRETCHED: 51% above SMA50
-AMD: HOT BUT STRETCHED: 37% above SMA50
+DDOG: HOT BUT STRETCHED: 41% above SMA50
+PANW: HOT BUT STRETCHED: 33% above SMA50
 ──────────────────────────────
 These are instructions only. The repo does not mark a buy as real until manual_bought is run with the actual fill.

@@ -2,53 +2,43 @@
   "active_profile": "turbo",
   "allocated_cash": 0.0,
   "bot_only_benchmark": {
-    "cash": 0.0,
+    "cash": 654.7,
     "initial_cash": 3028.38,
     "last_actions": [
-      "sold DDOG",
-      "bought MU"
+      "sold INTC",
+      "bought DDOG"
     ],
     "last_scan_date": "2026-06-05",
     "last_trade_messages": [
-      "BOT SELL DDOG: 6.1216 shares at $239.79; proceeds $1,467.91; P&L $-46.28 (-3.1%). Reason: trailing stop hit.",
-      "BOT BUY MU: $1,467.91 at $933.44 = 1.5726 shares. Initial stop $821.43."
+      "BOT SELL INTC: 13.2036 shares at $99.17; proceeds $1,309.40; P&L $-204.79 (-13.5%). Reason: trailing stop hit.",
+      "BOT BUY DDOG: $654.70 at $234.11 = 2.7966 shares. Initial stop $206.02."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 105.12,
-        "entry_date": "2026-05-29",
-        "entry_price": 114.68,
-        "return": -0.083362,
-        "shares": 13.20361001,
-        "status": "HOLD",
-        "stop": 103.8448,
-        "ticker": "INTC",
-        "value": 1387.96
-      },
-      {
-        "current_price": 933.44,
+        "current_price": 864.01,
         "entry_date": "2026-06-05",
         "entry_price": 933.44,
-        "return": 0.0,
+        "return": -0.074381,
         "shares": 1.57258126,
         "status": "HOLD",
         "stop": 821.4272,
         "ticker": "MU",
-        "value": 1467.91
+        "value": 1358.73
+      },
+      {
+        "current_price": 234.11,
+        "entry_date": "2026-06-05",
+        "entry_price": 234.11,
+        "return": 0.0,
+        "shares": 2.79655285,
+        "status": "HOLD",
+        "stop": 206.0168,
+        "ticker": "DDOG",
+        "value": 654.7
       }
     ],
     "positions": [
-      {
-        "allocation": 1514.19,
-        "entry_date": "2026-05-29",
-        "entry_price": 114.68,
-        "highest_high_since_entry": 126.64,
-        "last_signal": "bot_only_bought",
-        "shares": 13.20361001,
-        "stop": 103.8448,
-        "ticker": "INTC"
-      },
       {
         "allocation": 1467.91,
         "entry_date": "2026-06-05",
@@ -58,38 +48,51 @@
         "shares": 1.57258126,
         "stop": 821.4272,
         "ticker": "MU"
+      },
+      {
+        "allocation": 654.7,
+        "entry_date": "2026-06-05",
+        "entry_price": 234.11,
+        "highest_high_since_entry": 241.61,
+        "last_signal": "bot_only_bought",
+        "shares": 2.79655285,
+        "stop": 206.0168,
+        "ticker": "DDOG"
       }
     ],
-    "realized_pnl": -46.28,
-    "return": -0.056963,
-    "value": 2855.87
+    "realized_pnl": -251.07,
+    "return": -0.118959,
+    "value": 2668.13
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-05T13:46:12.071469+00:00",
+  "last_action": "weekly_scan",
+  "last_action_at": "2026-06-05T21:30:39.612324+00:00",
   "last_scan_date": "2026-06-05",
   "latest_candidates": [
-    "MU",
-    "AMD"
+    "DDOG",
+    "PANW"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
+    "allocation_multiplier": 0.5,
+    "level": "DEFENSIVE",
     "reasons": [
-      "QQQ below SMA10"
+      "QQQ below SMA20",
+      "QQQ below SMA10",
+      "QQQ 5d drop",
+      "20d drawdown"
     ],
-    "score": 1
+    "score": 5
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
     {
-      "reason": "repeat stretched candidate",
-      "ticker": "MRVL"
+      "reason": "ATR14 above 10% cap",
+      "ticker": "ARM"
     },
     {
       "reason": "repeat stretched candidate",
-      "ticker": "ARM"
+      "ticker": "MRVL"
     }
   ],
   "latest_unrealized_pnl": 0.0,
