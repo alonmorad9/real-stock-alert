@@ -15,14 +15,14 @@ Reports also include a bot-only benchmark. That is a paper path showing what thi
 
 Active live profile: `turbo` max 2.
 
-Current capital mode: **active TQQQ-out swing bucket**.
+Current capital mode: **inactive while TQQQ position is open**.
 
 This means the TQQQ repo is the master controller:
 
 - When `tqqq-alert` says TQQQ is out/waiting, this repo can manage the freed cash in top-2 real swing stocks.
 - When `tqqq-alert` sends a TQQQ buy/re-buy signal, TQQQ takes priority. Sell all real-stock positions, confirm the sales here with `manual_sold`, then use the cash to buy TQQQ and confirm that buy in `tqqq-alert`.
 - The stock bot's normal sell rules still apply while TQQQ is waiting. If a stock sell fires and TQQQ still says wait, sell that stock and follow the next real-stock candidate/cash instruction.
-- As of the current 2026-05-29 alignment, TQQQ is out in manual safety cash mode, so this repo tracks the freed `$3,028.38` as the optional stock swing bucket until a future TQQQ re-buy signal.
+- As of the current 2026-06-05 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync, so this repo should show `$0` deployable real-stock cash until a future TQQQ exit.
 
 - Trade liquid large-cap and growth stocks.
 - Hold at most 2 stocks.

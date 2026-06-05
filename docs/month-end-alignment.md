@@ -1,14 +1,14 @@
 # Month-End Alignment
 
-Last updated: 2026-05-29
+Last updated: 2026-06-05
 
-Latest decision: `tqqq-alert` is the master controller and is currently out of TQQQ in manual safety cash mode. `real-stock-alert` is the active stock-swing engine and bot-only stock benchmark, and it can deploy the freed TQQQ cash only while `tqqq-alert` says TQQQ is out/waiting. If `tqqq-alert` sends a TQQQ re-buy signal, sell/move the real-stock bucket back to TQQQ first.
+Latest decision: `tqqq-alert` is the master controller and is currently back in an open TQQQ position. `real-stock-alert` remains the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash.
 
 ## Current Repo Meanings
 
 | Repo | Meaning | Money Mode | Source of Truth |
 | --- | --- | --- | --- |
-| `tqqq-alert` | Real TQQQ strategy, currently out in manual safety cash mode | Real | `position_state.json` |
+| `tqqq-alert` | Real TQQQ strategy, currently open TQQQ position | Real | `position_state.json` |
 | `real-stock-alert` | Real stock-buying turbo swing pilot plus bot-only stock benchmark | Real + benchmark | `position_state.json` |
 | `swing-stock-alert` | Paused old demo stock swing archive | Historical paper/demo only | `pilot_state.json` and `reports/` |
 
@@ -17,24 +17,24 @@ Latest decision: `tqqq-alert` is the master controller and is currently out of T
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-05-29:
-  - `position_open`: `false`
-  - `shares`: `0.0`
-  - `avg_cost`: `null`
-  - `entry_date`: `null`
-  - `cash`: `$3,028.38`
-  - `last_action`: `manual_broker_sell_sync`
-  - `last_report_key`: `2026-05-29:open`
-  - `manual_exit_mode`: `true`
-  - `manual_exit_price`: `$84.91`
-  - `manual_exit_date`: `2026-05-29`
+- Current state inspected locally on 2026-06-05:
+  - `position_open`: `true`
+  - `shares`: `35.3032`
+  - `avg_cost`: `$83.84`
+  - `entry_date`: `2026-06-04`
+  - `cash`: `$4.80`
+  - `last_action`: `manual_broker_buy_sync`
+  - `last_report_key`: `2026-06-04:close`
+  - `manual_exit_mode`: `false`
+  - `manual_exit_price`: `null`
+  - `manual_exit_date`: `null`
   - `manual_exit_saw_below_sma`: `false`
   - `early_exit_price`: `null`
   - `early_exit_date`: `null`
   - `waiting_for_early_reentry`: `false`
-- Meaning: the bot assumes the real TQQQ position was manually sold and is now waiting in cash.
-- Meaning of cash state: the TQQQ bucket is currently cash. No XLK parking asset is part of the selected TQQQ strategy.
-- Manual safety re-buy rules require the correct pullback/reset/timeout trigger plus `RSI14 <= 70`.
+- Meaning: the bot assumes a real TQQQ position is open. TQQQ is using the active position sell/risk rules, not manual-safety re-entry mode.
+- Meaning of cash state: the TQQQ bucket is currently deployed into TQQQ, with only residual cash tracked. No XLK parking asset is part of the selected TQQQ strategy.
+- If TQQQ exits later, manual safety re-buy rules require the correct pullback/reset/timeout trigger plus `RSI14 <= 70`.
 - Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, +20% profit target, -5% re-buy pullback, 15-trading-day profit re-buy timeout, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash as the waiting state.
 - Current early-warning inputs are advisory only, with no automatic sell: VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, and TQQQ RSI falling from 70+.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
@@ -54,12 +54,12 @@ Latest decision: `tqqq-alert` is the master controller and is currently out of T
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-05-29:
+- Current state inspected locally on 2026-06-05:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
-  - allocated cash: `$3,028.38`
-  - cash: `$3,028.38`
+  - allocated cash: `$0.00`
+  - cash: `$0.00`
   - positions: `[]`
   - latest candidates: `MU`, `MRVL`
   - latest skipped repeat-stretched candidates: `ARM`, `AMD`
@@ -83,7 +83,7 @@ Latest decision: `tqqq-alert` is the master controller and is currently out of T
   - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
   - Rank-based sell rotation is disabled after the 2026-05-27 rotation-buffer research. Rankings choose fresh buys for empty slots, but holdings are kept until SMA50, stop, QQQ SMA200, or TQQQ-priority rules break.
   - Scheduled opening/daily/weekly reports now skip US market holidays, matching the TQQQ repo behavior.
-- Meaning: no real stock position exists yet, and the freed TQQQ cash can be used only while TQQQ is still out/waiting.
+- Meaning: no real stock position exists, and no real-stock cash should be deployed while TQQQ is open.
 
 ## Month-End Review Plan
 
@@ -112,7 +112,8 @@ At month end, compare the two active systems first, and use the old swing demo o
 
 ## Known Alignment Notes
 
-- `tqqq-alert` is currently out of TQQQ and in manual safety cash/re-entry mode as of the inspected state.
+- `tqqq-alert` is currently in an open TQQQ trade as of the inspected state.
+- `tqqq-alert` is not currently in manual safety cash/re-entry mode.
 - Some older `tqqq-alert` history may describe previous XLK/early-warning states. Read current `script.py`, current docs, and `position_state.json` as the source of truth.
 - `swing-stock-alert` is paused as of 2026-05-23. Its Cloudflare cron is disabled and the Worker has a pause guard.
 - Strategy choices are currently aligned as:
@@ -120,7 +121,7 @@ At month end, compare the two active systems first, and use the old swing demo o
   - TQQQ warning layer: early-warning signals are advisory only and no longer auto-sell. Current warning inputs are VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, RSI falling from 70+.
   - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, `hold_unless_broken` position management, and the stock bot-only benchmark in reports.
   - Swing repo: keep paused as old paper/demo archive only.
-- Real-stock has been reset with the current freed TQQQ cash amount, `$3,028.38`, for the TQQQ-out waiting period.
+- Real-stock has been handed back to TQQQ-open mode with `$0.00` deployable real-stock cash. Before using real-stock as the TQQQ-out engine again, reset its cash bucket with `set_cash <actual freed cash amount>` after a future TQQQ exit.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:
   - swing repo: paper/demo assumed positions,
   - real-stock repo: real candidates only until manually confirmed.

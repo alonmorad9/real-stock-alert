@@ -1,6 +1,6 @@
 {
   "active_profile": "turbo",
-  "allocated_cash": 3028.38,
+  "allocated_cash": 0.0,
   "bot_only_benchmark": {
     "cash": 0.0,
     "initial_cash": 3028.38,
@@ -62,10 +62,10 @@
     "return": -0.020224,
     "value": 2967.13
   },
-  "capital_mode": "TQQQ-out swing mode",
-  "cash": 3028.38,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-04T21:31:06.009936+00:00",
+  "capital_mode": "inactive while TQQQ position is open",
+  "cash": 0.0,
+  "last_action": "capital_handoff_to_tqqq",
+  "last_action_at": "2026-06-05T12:28:02.210096+00:00",
   "last_scan_date": "2026-06-04",
   "latest_candidates": [
     "DDOG",
@@ -77,7 +77,7 @@
     "reasons": [],
     "score": 0
   },
-  "latest_portfolio_value": 3028.38,
+  "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
     {
       "reason": "repeat stretched candidate",
