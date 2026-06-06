@@ -1,6 +1,6 @@
 # Real Stock Strategy
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 
 ## Purpose
 
@@ -10,7 +10,7 @@ Current role: **inactive while TQQQ position is open**.
 
 The TQQQ repo is the master controller. This repo manages real swing stocks only while `tqqq-alert` says the TQQQ strategy is out/waiting. If `tqqq-alert` sends a TQQQ buy or re-buy signal, sell all real-stock positions, confirm the sales here, then move the bucket back to TQQQ.
 
-As of the current 2026-06-05 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync. This repo should have no deployable real-stock cash until a future TQQQ exit and fresh `set_cash <actual freed cash amount>`.
+As of the current 2026-06-06 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync. This repo should have no deployable real-stock cash until a future TQQQ exit and fresh `set_cash <actual freed cash amount>`.
 
 ## Universe
 
@@ -130,6 +130,6 @@ The benchmark does not change the confirmed real account state. It exists only t
 
 The Telegram report shows the benchmark like a small paper account: current bot-only holdings, shares, entry price, current price, stop, value, return, and the latest simulated `BOT BUY`, `BOT SELL`, or `BOT HOLD` message. Those messages are only benchmark events, not real broker confirmations.
 
-While TQQQ is open and this repo has `$0` deployable stock cash, the benchmark can still show the stock-bot paper path for comparison. If TQQQ later exits, reset the real cash bucket with `set_cash <actual freed cash amount>` before treating stock candidates as deployable real-money instructions.
+While TQQQ is open and this repo has `$0` deployable stock cash, the benchmark can still show the stock-bot paper path for comparison. Buy candidates should be shown as watchlist-only with `$0.00` real buy size in this state. If TQQQ later exits, reset the real cash bucket with `set_cash <actual freed cash amount>` before treating stock candidates as deployable real-money instructions.
 
 If the benchmark needs a clean restart after a strategy-behavior fix, run `python3 script.py reset_bot_benchmark`. This clears only the paper benchmark; it does not touch real positions, real cash, or manual trade confirmations.

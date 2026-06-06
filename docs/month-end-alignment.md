@@ -1,8 +1,8 @@
 # Month-End Alignment
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 
-Latest decision: `tqqq-alert` is the master controller and is currently back in an open TQQQ position. `real-stock-alert` remains the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash.
+Latest decision: `tqqq-alert` is the master controller and is currently back in an open TQQQ position. `real-stock-alert` remains the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash, and stock candidates should be treated as watchlist-only.
 
 ## Current Repo Meanings
 
@@ -17,14 +17,15 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-06-05:
+- Current state inspected locally on 2026-06-06:
   - `position_open`: `true`
   - `shares`: `35.3032`
   - `avg_cost`: `$83.84`
   - `entry_date`: `2026-06-04`
+  - `highest_high_since_entry`: `$86.25`
   - `cash`: `$4.80`
   - `last_action`: `manual_broker_buy_sync`
-  - `last_report_key`: `2026-06-04:close`
+  - `last_report_key`: `2026-06-05:close`
   - `manual_exit_mode`: `false`
   - `manual_exit_price`: `null`
   - `manual_exit_date`: `null`
@@ -35,7 +36,7 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
 - Meaning: the bot assumes a real TQQQ position is open. TQQQ is using the active position sell/risk rules, not manual-safety re-entry mode.
 - Meaning of cash state: the TQQQ bucket is currently deployed into TQQQ, with only residual cash tracked. No XLK parking asset is part of the selected TQQQ strategy.
 - If TQQQ exits later, manual safety re-buy rules require the correct pullback/reset/timeout trigger plus `RSI14 <= 70`.
-- Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, +20% profit target, -5% re-buy pullback, 15-trading-day profit re-buy timeout, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash as the waiting state.
+- Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, a 10% fresh-entry guard for the first 2 trading days after a buy, +20% profit target, -5% re-buy pullback, 15-trading-day profit re-buy timeout, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash as the waiting state.
 - Current early-warning inputs are advisory only, with no automatic sell: VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, and TQQQ RSI falling from 70+.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
 
@@ -54,22 +55,22 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
 ### `real-stock-alert`
 
 - Real stock pilot repo.
-- Current state inspected locally on 2026-06-05:
+- Current state inspected locally on 2026-06-06:
   - strategy: `turbo_top_2_real_stock_momentum`
   - active profile: `turbo`
   - max positions: `2`
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `MU`, `MRVL`
-  - latest skipped repeat-stretched candidates: `ARM`, `AMD`
+  - latest candidates: `DDOG`, `PANW`
+  - latest skipped repeat-stretched candidates: `MRVL`, `ARM`
   - latest market risk: `NORMAL`, score `0`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
   - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
-  - bot-only benchmark holdings: none, reset to cash
-  - bot-only benchmark value: `$3,028.38`
-  - bot-only benchmark action: `reset`
+  - bot-only benchmark holdings: `DDOG`, `INTC`
+  - bot-only benchmark value: `$2,967.13`
+  - bot-only benchmark action: `held`
 - latest research decision:
   - Turbo remains the live stock strategy.
   - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.
@@ -117,9 +118,9 @@ At month end, compare the two active systems first, and use the old swing demo o
 - Some older `tqqq-alert` history may describe previous XLK/early-warning states. Read current `script.py`, current docs, and `position_state.json` as the source of truth.
 - `swing-stock-alert` is paused as of 2026-05-23. Its Cloudflare cron is disabled and the Worker has a pause guard.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, RSI14 <= 70 re-entry cap, -5% re-buy pullback, 15-trading-day profit re-buy timeout, +20% profit target, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash/no-XLK as the waiting state.
+  - TQQQ repo: current selected strategy is 25% TQQQ ratchet, 10% fresh-entry guard for the first 2 trading days, RSI14 <= 70 re-entry cap, -5% re-buy pullback, 15-trading-day profit re-buy timeout, +20% profit target, 5-day >= 25% profitable parabolic auto-exit, advisory early-warning signals, and cash/no-XLK as the waiting state.
   - TQQQ warning layer: early-warning signals are advisory only and no longer auto-sell. Current warning inputs are VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, RSI falling from 70+.
-  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, `hold_unless_broken` position management, and the stock bot-only benchmark in reports.
+  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, `hold_unless_broken` position management, watchlist-only real buy wording while TQQQ is open, and the stock bot-only benchmark in reports.
   - Swing repo: keep paused as old paper/demo archive only.
 - Real-stock has been handed back to TQQQ-open mode with `$0.00` deployable real-stock cash. Before using real-stock as the TQQQ-out engine again, reset its cash bucket with `set_cash <actual freed cash amount>` after a future TQQQ exit.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:

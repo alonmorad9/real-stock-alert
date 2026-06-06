@@ -716,6 +716,48 @@ def build_report(mode):
         lines.append("No new buys. QQQ is below SMA200.")
     elif slots <= 0:
         lines.append("No new buys. Max confirmed positions are already filled.")
+    elif tracked_cash <= 0:
+        buy_candidates = [candidate for candidate in candidates if candidate["ticker"] not in open_tickers][:slots]
+        visible_skips = [candidate for candidate in skipped_candidates if candidate["ticker"] not in open_tickers]
+        lines.append("Watchlist only. No real stock cash is allocated while TQQQ is open.")
+        lines.append("Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.")
+        lines.append("")
+        if rank_policy == "skip_repeat_stretched" and previous_targets:
+            lines.append(f"Repeat Memory: {', '.join(previous_targets)}")
+            lines.append("Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.")
+            lines.append("")
+        if visible_skips:
+            lines.extend(["Skipped Candidates"])
+            for candidate in visible_skips[:max_positions]:
+                if candidate.get("skip_reason", "").startswith("ATR14"):
+                    atr_pct = candidate["atr14"] / candidate["close"] if candidate["close"] else 0.0
+                    lines.append(
+                        f"{candidate['ticker']}: skipped because ATR14 is {pct(atr_pct)}, above the "
+                        f"{pct(max_atr_pct)} fresh-buy cap."
+                    )
+                else:
+                    lines.append(
+                        f"{candidate['ticker']}: skipped because it was already a recent target and is still stretched "
+                        f"({candidate['extension_warning']})."
+                    )
+            lines.append("")
+        if not buy_candidates:
+            lines.append("No qualified watchlist candidates.")
+        else:
+            lines.append("Watchlist Candidates")
+            for idx, candidate in enumerate(buy_candidates, start=1):
+                medal = "🥇" if idx == 1 else "🥈" if idx == 2 else f"{idx}."
+                lines.extend([
+                    f"{medal} {candidate['ticker']}",
+                    f"Price:         {money(candidate['close'])}",
+                    f"Score:         {candidate['score']:.2f} — higher means stronger momentum rank",
+                    f"Real Buy:      $0.00 while TQQQ is open",
+                    f"Initial Stop:  {money(candidate['initial_stop'])}",
+                    f"63d RS:        {pct(candidate['rs63'])}",
+                    f"20d Return:    {pct(candidate['ret20'])}",
+                    f"Stretch:       {candidate['extension_warning']}",
+                    "",
+                ])
     else:
         buy_candidates = [candidate for candidate in candidates if candidate["ticker"] not in open_tickers][:slots]
         visible_skips = [candidate for candidate in skipped_candidates if candidate["ticker"] not in open_tickers]
