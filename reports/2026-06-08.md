@@ -12,7 +12,7 @@ Data Source:   daily Yahoo bars
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $715.24
+QQQ:           $715.94
 SMA200:        $621.61
 Status:        ON
 ──────────────────────────────
@@ -47,9 +47,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $3,028.38
-Bot Value:     $2,764.16 (-8.7%)
+Bot Value:     $2,768.95 (-8.6%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,764.16 (-100.0%)
+Vs Bot-Only:   $-2,768.95 (-100.0%)
 Bot Cash:      $654.70
 Bot Holding:   MU, DDOG
 Bot Actions:   held
@@ -62,19 +62,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 MU
 Shares:        1.5726
 Entry:         $933.44
-Current:       $930.50
+Current:       $934.63
 Stop:          $821.43
-Value:         $1,463.29
-Return:        -0.3%
+Value:         $1,469.78
+Return:        0.1%
 Status:        HOLD
 
 DDOG
 Shares:        2.7966
 Entry:         $234.11
-Current:       $231.06
+Current:       $230.45
 Stop:          $206.02
-Value:         $646.17
-Return:        -1.3%
+Value:         $644.47
+Return:        -1.6%
 Status:        HOLD
 
 ──────────────────────────────
@@ -85,7 +85,7 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: MU, AMD, MRVL, ARM
+Repeat Memory: DDOG, CSCO, MRVL, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
@@ -93,20 +93,20 @@ MRVL: skipped because ATR14 is 9.6%, above the 8.0% fresh-buy cap.
 ARM: skipped because ATR14 is 10.7%, above the 8.0% fresh-buy cap.
 
 Watchlist Candidates
-🥇 DDOG
-Price:         $231.06
-Score:         88.96 — higher means stronger momentum rank
+🥇 MU
+Price:         $934.63
+Score:         172.72 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $203.33
-63d RS:        61.9%
-20d Return:    15.4%
-Stretch:       HOT BUT STRETCHED: 37% above SMA50
+Initial Stop:  $822.47
+63d RS:        122.2%
+20d Return:    25.1%
+Stretch:       HOT BUT STRETCHED: 49% above SMA50, 8% above prior close
 
-🥈 CSCO
-Price:         $124.73
-Score:         76.77 — higher means stronger momentum rank
+🥈 AMD
+Price:         $487.68
+Score:         163.40 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $113.25
-63d RS:        46.7%
-20d Return:    29.2%
-Stretch:       OK
+Initial Stop:  $429.16
+63d RS:        122.7%
+20d Return:    7.1%
+Stretch:       HOT BUT STRETCHED: 34% above SMA50
