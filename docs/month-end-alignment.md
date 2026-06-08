@@ -63,16 +63,16 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `DDOG`, `PANW`
-  - latest skipped candidates: `ARM` from ATR cap, `MRVL` from repeat-stretched rule
-  - latest market risk: `DEFENSIVE`, score `5`
-  - latest market risk reasons: `QQQ below SMA20`, `QQQ below SMA10`, `QQQ 5d drop`, `20d drawdown`
+  - latest candidates: `DDOG`, `CSCO`
+  - latest skipped candidates: `MRVL`, `ARM` from ATR cap
+  - latest market risk: `ELEVATED`, score `4`
+  - latest market risk reasons: `QQQ below SMA20`, `QQQ below SMA10`, `QQQ 5d drop`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
   - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
   - bot-only benchmark holdings: `MU`, `DDOG`
-  - bot-only benchmark value: `$2,668.13`
-  - bot-only benchmark action: sold `INTC`, bought `DDOG`
+  - bot-only benchmark value: `$2,764.16`
+  - bot-only benchmark action: held
 - latest research decision:
   - Turbo remains the live stock strategy.
   - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.
@@ -81,10 +81,11 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - Best dip variant: `14.46x`, `37.8%` CAGR, `-34.9%` max drawdown.
   - Turbo baseline in the same dip test: `43.59x`, `57.2%` CAGR, `-35.8%` max drawdown.
   - The 2026-05-12 strategy-idea test selected `score_no_extension`: `45.21x`, `57.8%` CAGR, `-31.2%` max drawdown versus `baseline_live` `32.84x`, `51.9%` CAGR, `-32.7%` max drawdown.
-  - The latest 2026-05-27 strategy-idea test keeps `atr_cap_10pct` / `hold_unless_broken` as best: `50.67x`, `59.6%` CAGR, `-31.2%` max drawdown.
-  - Live Turbo scoring now uses 63-day relative strength plus 20-day momentum only; extra distance above SMA50 is not rewarded. Fresh buy candidates with ATR14 above 10% of price are skipped.
+  - The latest 2026-06-08 combined strategy test selected the max-revenue real-stock setup: RS63-heavy scoring, ATR cap `8%`, two-week rank confirmation, and no fixed timeout.
+  - Test result for that selected setup: `66.91x`, `64.6%` CAGR, `-30.3%` max drawdown.
+  - Live Turbo scoring now weights 63-day relative strength heavily and 20-day momentum second; extra distance above SMA50 is not rewarded. Fresh buy candidates with ATR14 above 8% of price are skipped.
   - Opening, daily, and weekly messages now use consistent repeat-stretch memory: prior recommended candidates plus prior skipped repeat-stretched candidates.
-  - Rank-based sell rotation is disabled after the 2026-05-27 rotation-buffer research. Rankings choose fresh buys for empty slots, but holdings are kept until SMA50, stop, QQQ SMA200, or TQQQ-priority rules break.
+  - Rank-based sell rotation now uses two-week confirmation: a stock must fail the weekly top-rank check twice before rank rotation becomes a sell reason.
   - Scheduled opening/daily/weekly reports now skip US market holidays, matching the TQQQ repo behavior.
 - Meaning: no real stock position exists, and no real-stock cash should be deployed while TQQQ is open.
 
@@ -122,7 +123,7 @@ At month end, compare the two active systems first, and use the old swing demo o
 - Strategy choices are currently aligned as:
   - TQQQ repo: current selected strategy is Best Calmar high-return: 25% TQQQ ratchet, 10% fresh-entry guard for the first 2 trading days, same-day cooldown after fresh-entry guard exits, no bot-generated buys during the first 30 market minutes, no RSI re-entry gate, -7.5% re-buy pullback, 10-trading-day profit re-buy timeout, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, advisory early-warning signals, and cash/no-XLK as the waiting state.
   - TQQQ warning layer: early-warning signals are advisory only and no longer auto-sell. Current warning inputs are VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, RSI falling from 70+.
-  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, `score_no_extension`, the tested `atr_cap_10pct` fresh-buy volatility filter, `hold_unless_broken` position management, watchlist-only real buy wording while TQQQ is open, and the stock bot-only benchmark in reports.
+  - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, RS63-heavy scoring, the tested `atr_cap_8pct` fresh-buy volatility filter, two-week rank-confirmation rotation, watchlist-only real buy wording while TQQQ is open, and the stock bot-only benchmark in reports.
   - Swing repo: keep paused as old paper/demo archive only.
 - Real-stock has been handed back to TQQQ-open mode with `$0.00` deployable real-stock cash. Before using real-stock as the TQQQ-out engine again, reset its cash bucket with `set_cash <actual freed cash amount>` after a future TQQQ exit.
 - `swing-stock-alert` and `real-stock-alert` can show overlapping tickers, such as `INTC`, but they mean different things:

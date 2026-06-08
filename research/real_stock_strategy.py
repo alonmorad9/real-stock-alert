@@ -537,7 +537,7 @@ def score_candidate(row, qrow, variant):
     if variant == "aggressive":
         return rs63 * 120 + row["RET20"] * 55 + above_sma50 * 25
     if variant == "turbo":
-        return rs63 * 100 + row["RET20"] * 90
+        return rs63 * 130 + row["RET20"] * 55
     return rs63 * 100 + row["RET20"] * 35 + above_sma50 * 20
 
 
@@ -1485,7 +1485,7 @@ def write_variant_outputs(results, summary_name="aggressive_variant_summary.csv"
     return summary
 
 
-def position_exit_status(position, data, qqq, date, top_tickers, variant="base"):
+def position_exit_status(position, data, qqq, date, top_tickers, variant="base", rank_sell_tickers=None):
     ticker = position["ticker"]
     if ticker not in data or date not in data[ticker].index:
         return None
@@ -1503,7 +1503,10 @@ def position_exit_status(position, data, qqq, date, top_tickers, variant="base")
         reasons.append("close below SMA50")
     if row["Low"] <= new_stop:
         reasons.append("trailing stop hit")
-    if top_tickers and ticker not in top_tickers:
+    rank_sell_tickers = set(rank_sell_tickers or [])
+    if ticker in rank_sell_tickers:
+        reasons.append("out of confirmed top ranks for 2 weekly checks")
+    elif top_tickers and ticker not in top_tickers:
         reasons.append("dropped out of weekly top list")
 
     return {

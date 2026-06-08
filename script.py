@@ -217,7 +217,29 @@ def risk_guidance(qqq, asof):
     }
 
 
-def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, market, risk, max_positions, profile):
+def rank_confirm_sell_tickers(container, positions, top_tickers, enabled, confirm_weeks):
+    counts = container.get("rank_confirm_counts", {})
+    open_tickers = {position["ticker"] for position in positions}
+    counts = {ticker: int(count) for ticker, count in counts.items() if ticker in open_tickers}
+    if not enabled or not top_tickers:
+        container["rank_confirm_counts"] = counts
+        return []
+
+    top_set = set(top_tickers)
+    sell_tickers = []
+    for position in positions:
+        ticker = position["ticker"]
+        if ticker in top_set:
+            counts[ticker] = 0
+        else:
+            counts[ticker] = counts.get(ticker, 0) + 1
+            if counts[ticker] >= confirm_weeks:
+                sell_tickers.append(ticker)
+    container["rank_confirm_counts"] = counts
+    return sell_tickers
+
+
+def update_bot_only_benchmark(state, data, qqq, asof, candidates, rank_sell_tickers, market, risk, max_positions, profile):
     benchmark = state.get("bot_only_benchmark") or {}
     initial_cash = float(
         benchmark.get("initial_cash")
@@ -232,7 +254,7 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
 
     kept_positions = []
     for position in positions:
-        status = position_exit_status(position, data, qqq, asof, top_tickers, profile)
+        status = position_exit_status(position, data, qqq, asof, [], profile, rank_sell_tickers)
         if not status:
             kept_positions.append(position)
             continue
@@ -338,6 +360,11 @@ def update_bot_only_benchmark(state, data, qqq, asof, candidates, top_tickers, m
             "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
         }
     )
+    benchmark["rank_confirm_counts"] = {
+        ticker: count
+        for ticker, count in benchmark.get("rank_confirm_counts", {}).items()
+        if ticker in {position["ticker"] for position in positions}
+    }
     state["bot_only_benchmark"] = benchmark
     return benchmark
 
@@ -498,7 +525,13 @@ def build_report(mode):
     )
     rank_policy = settings.get("rank_policy", "skip_repeat_stretched")
     max_atr_pct = settings.get("max_atr_pct")
+    rotation_policy = settings.get("rotation_policy", "two_week_confirm")
+    rotation_confirm_weeks = int(settings.get("rotation_confirm_weeks", 2))
     raw_candidates = scan_candidates(data, qqq, asof, max_positions, profile)
+    weekly_rank_tickers = [
+        candidate["ticker"]
+        for candidate in scan_candidates(data, qqq, asof, max_positions, profile)
+    ]
     candidates, skipped_candidates = scan_candidates(
         data,
         qqq,
@@ -511,14 +544,30 @@ def build_report(mode):
         max_atr_pct,
     )
     buy_scan_modes = {"weekly", "opening", "daily"}
-    top_tickers = []
     market = market_filter(qqq, asof)
     risk = risk_guidance(qqq, asof)
+    rank_rotation_enabled = mode == "weekly" and rotation_policy == "two_week_confirm"
+    real_rank_sell_tickers = rank_confirm_sell_tickers(
+        state,
+        state.get("positions", []),
+        weekly_rank_tickers,
+        rank_rotation_enabled,
+        rotation_confirm_weeks,
+    )
+    benchmark = state.get("bot_only_benchmark") or {}
+    benchmark_rank_sell_tickers = rank_confirm_sell_tickers(
+        benchmark,
+        benchmark.get("positions", []),
+        weekly_rank_tickers,
+        rank_rotation_enabled,
+        rotation_confirm_weeks,
+    )
+    state["bot_only_benchmark"] = benchmark
 
     exit_statuses = []
     portfolio_value = float(state.get("cash", 0.0))
     for position in state.get("positions", []):
-        status = position_exit_status(position, data, qqq, asof, top_tickers, profile)
+        status = position_exit_status(position, data, qqq, asof, [], profile, real_rank_sell_tickers)
         if status:
             position["highest_high_since_entry"] = round(status["highest_high_since_entry"], 4)
             position["stop"] = round(status["stop"], 4)
@@ -548,7 +597,7 @@ def build_report(mode):
         qqq,
         asof,
         benchmark_candidates,
-        top_tickers,
+        benchmark_rank_sell_tickers,
         market,
         risk,
         max_positions,
@@ -623,8 +672,9 @@ def build_report(mode):
         "Meaning: these rules decide which stocks appear in the candidate list.",
         "What to do: use the score and warnings together; the highest score is not a guarantee.",
         f"Turbo:         ranks strong momentum leaders",
-        f"Score:         63d relative strength vs QQQ + 20d return",
+        f"Score:         RS63-heavy: 63d relative strength vs QQQ + 20d return",
         f"Rank Policy:   {rank_policy}",
+        f"Rotation:      {rotation_policy} ({rotation_confirm_weeks} weekly checks)",
         f"ATR Cap:       {atr_cap_text} max ATR14/price for fresh buys",
         "Repeat Rule:   recent stretched names are skipped so the list does not chase the same hot ticker forever",
         sep,

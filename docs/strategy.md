@@ -1,6 +1,6 @@
 # Real Stock Strategy
 
-Last updated: 2026-06-06
+Last updated: 2026-06-08
 
 ## Purpose
 
@@ -72,12 +72,12 @@ The overlay scores QQQ using short-term trend, recent drops, distribution days, 
 
 Ranking favors:
 
-- 63-day relative strength,
-- 20-day momentum.
+- 63-day relative strength heavily,
+- 20-day momentum second.
 
-The current Turbo score does not give extra points for being far above SMA50. SMA50 extension is still used for filters and overextension warnings, but the 2026-05-12 research found that removing it from the score improved the historical result and reduced drawdown.
+The current Turbo score uses the 2026-06-08 max-revenue test weights: 63-day relative strength versus QQQ at `130`, and 20-day momentum at `55`. It does not give extra points for being far above SMA50. SMA50 extension is still used for filters and overextension warnings, but it is not rewarded in the score.
 
-Fresh buy candidates also use the tested `atr_cap_10pct` filter. If ATR14 is above 10% of price, the candidate is skipped as too volatile for a fresh buy. The 2026-05-21 research found this beat `score_no_extension` while keeping max drawdown about the same.
+Fresh buy candidates also use the tested `atr_cap_8pct` filter. If ATR14 is above 8% of price, the candidate is skipped as too volatile for a fresh buy. The 2026-06-08 combined test favored this cap inside the max-revenue setup.
 
 Opening, daily, and weekly scheduled reports skip US market holidays so this repo stays quiet on non-trading weekdays, matching the TQQQ repo behavior.
 
@@ -99,9 +99,10 @@ Positions are flagged for sale if:
 - `tqqq-alert` sends a TQQQ re-entry signal,
 - QQQ closes below SMA200,
 - the stock closes below SMA50,
-- the trailing stop is hit.
+- the trailing stop is hit,
+- the stock is outside the top ranks for 2 weekly checks.
 
-Opening, daily, and weekly reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher. This matches the best-tested `hold_unless_broken` behavior: rankings choose new buys for empty slots, while existing holdings are kept until risk/trend rules break.
+Opening, daily, and weekly reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher once. The selected 2026-06-08 max-revenue setup uses `two_week_confirm`: a position must fail the weekly top-rank check twice before rank rotation becomes a sell reason.
 
 ## Stops
 

@@ -1,6 +1,6 @@
 # Strategy Idea Research
 
-Last updated: 2026-05-27
+Last updated: 2026-06-08
 
 ## Purpose
 
@@ -66,7 +66,7 @@ The best tested idea was `score_no_extension`.
 
 | Idea | Final multiple | CAGR | Max drawdown | Decision |
 | --- | ---: | ---: | ---: | --- |
-| `score_no_extension` | 45.21x | 57.8% | -31.2% | Implement live |
+| `score_no_extension` | 45.21x | 57.8% | -31.2% | Implemented then; superseded 2026-06-08 |
 | `score_20d_heavy` | 39.24x | 55.1% | -37.6% | Reject |
 | `score_rs63_heavy` | 37.00x | 54.1% | -31.4% | Reject |
 | `baseline_live` | 32.84x | 51.9% | -32.7% | Replaced |
@@ -93,14 +93,14 @@ The best volatility idea was `atr_cap_10pct`.
 
 | Idea | Final multiple | CAGR | Max drawdown | Decision |
 | --- | ---: | ---: | ---: | --- |
-| `atr_cap_10pct` | 47.12x | 58.4% | -31.2% | Implement live |
+| `atr_cap_10pct` | 47.12x | 58.4% | -31.2% | Implemented then; superseded 2026-06-08 |
 | `atr_cap_8pct` | 47.02x | 58.3% | -31.2% | Reject, slightly lower return |
 | `score_no_extension` | 45.10x | 57.6% | -31.2% | Replaced |
 | `score_vol_penalty_100` | 44.02x | 57.1% | -32.4% | Reject |
 | `score_vol_penalty_50` | 41.90x | 56.2% | -32.4% | Reject |
 | `score_vol_penalty_150` | 37.08x | 53.9% | -32.4% | Reject |
 
-Decision: keep the current `score_no_extension` formula, but add a fresh-buy ATR cap. Live buy scans should skip candidates where ATR14 is above 10% of price.
+Historical decision at the time: keep the then-current `score_no_extension` formula, but add a fresh-buy ATR cap. This was superseded by the 2026-06-08 combined result.
 
 ## 2026-05-21 Stop Management Result
 
@@ -114,14 +114,14 @@ Tested proposed open-trade management changes against the current best `atr_cap_
 
 | Idea | Final multiple | CAGR | Max drawdown | Decision |
 | --- | ---: | ---: | ---: | --- |
-| `atr_cap_10pct` | 47.12x | 58.4% | -31.2% | Keep live |
+| `atr_cap_10pct` | 47.12x | 58.4% | -31.2% | Kept then; superseded 2026-06-08 |
 | `atr_cap_10pct_tight_recommended_stops` | 20.54x | 43.4% | -22.9% | Reject for high-risk/high-reward mode |
 | `atr_cap_10pct_breakeven_1_5atr` | 34.89x | 52.8% | -31.6% | Reject |
 | `atr_cap_10pct_adaptive_trail` | 5.66x | 23.0% | -30.3% | Reject |
 | `atr_cap_10pct_breakeven_adaptive` | 4.41x | 19.4% | -37.6% | Reject |
 | `atr_cap_10pct_all_tight_changes` | 4.34x | 19.2% | -22.8% | Reject |
 
-Decision: do not change live stop rules. Tighter stops reduce drawdown in some variants, but they cut the historical compounding too much. For the stated high-risk/high-reward goal, the current `atr_cap_10pct` setup remains the best tested live stock strategy.
+Historical decision at the time: do not change live stop rules. Tighter stops reduced drawdown in some variants, but they cut historical compounding too much. This stop-rule decision still stands, but the `atr_cap_10pct` setup itself was superseded by the 2026-06-08 combined result.
 
 ## 2026-05-27 Rank Rotation Result
 
@@ -129,10 +129,29 @@ Tested whether rank-based sell rotation improves the current best `atr_cap_10pct
 
 | Idea | Final multiple | CAGR | Max drawdown | Trades | Decision |
 | --- | ---: | ---: | ---: | ---: | --- |
-| `atr_cap_10pct` / `hold_unless_broken` | 50.67x | 59.6% | -31.2% | 277 | Keep live |
+| `atr_cap_10pct` / `hold_unless_broken` | 50.67x | 59.6% | -31.2% | 277 | Kept then; superseded 2026-06-08 |
 | `strict_weekly_top2_rotation` | 38.10x | 54.3% | -42.2% | 660 | Reject |
 | `two_week_rank_confirm` | 35.99x | 53.2% | -41.3% | 505 | Reject |
 | `weekly_top5_buffer` | 31.90x | 51.0% | -28.0% | 478 | Reject for high-risk/high-reward mode |
 | `weekly_top4_buffer` | 31.88x | 51.0% | -26.7% | 506 | Reject for high-risk/high-reward mode |
 
-Decision: do not force-sell a holding just because a different stock ranks higher. Rankings should choose fresh buys for empty slots. Existing holdings should be kept until a real risk/trend rule breaks: QQQ below SMA200, stock below SMA50, trailing stop, or TQQQ-priority exit.
+Historical decision at the time: do not force-sell a holding just because a different stock ranks higher. This was superseded by the 2026-06-08 combined grid, which selected a slower two-week rank confirmation instead of strict immediate rank rotation.
+
+## 2026-06-08 Combined Timeout / Rotation Result
+
+Ran a broader combined grid against the live real-stock universe from `2018-01-01`, including longer timeouts, no timeout, ATR caps, ranking weights, and rank-confirmation variants.
+
+| Idea | Final multiple | CAGR | Max drawdown | Trades | Decision |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `rs63_heavy_atr8_no_timeout_two_week_confirm` | 66.91x | 64.6% | -30.3% | 454 | Implement live |
+| `no_extension_atr10_90d_hold_unless_broken` | 65.73x | 64.3% | -31.2% | 287 | Backup/simple option |
+| `no_extension_atr10_no_timeout_hold_unless_broken` | 57.91x | 61.8% | -31.2% | 279 | Replaced |
+| `no_extension_atr10_60d_hold_unless_broken` | 57.64x | 61.8% | -29.0% | 311 | Lower-drawdown option |
+| `rs63_heavy_atr8_15d_two_week_confirm` | 39.68x | 54.8% | -25.1% | 638 | Reject: gives up too much return |
+
+Decision: switch live real-stock behavior to the max-revenue tested setup:
+
+- RS63-heavy scoring: 63-day relative strength versus QQQ weighted at `130`, 20-day momentum weighted at `55`.
+- Fresh-buy ATR cap: skip candidates where ATR14 is above `8%` of price.
+- Rank rotation: sell only after a position fails the weekly top-rank check for `2` weekly checks.
+- Timeout: no fixed timeout for live positions.

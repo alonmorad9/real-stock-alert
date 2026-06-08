@@ -28,14 +28,15 @@ This means the TQQQ repo is the master controller:
 - Trade liquid large-cap and growth stocks.
 - Hold at most 2 stocks.
 - Allow new buys only when `QQQ` is above SMA200.
-- Rank Turbo candidates by 63-day relative strength plus 20-day momentum; extra distance above SMA50 is not rewarded.
+- Rank Turbo candidates with RS63-heavy scoring: 63-day relative strength is weighted more than 20-day momentum, and extra distance above SMA50 is not rewarded.
 - Skip repeat stretched names as fresh buy candidates, using the tested `skip_repeat_stretched` rank policy.
+- Skip fresh buy candidates when ATR14 is above 8% of price.
 - If `QQQ` closes below SMA200, flag all open positions for sale.
 - Run an opening turbo candidate scan 15 minutes after US market open on market weekdays.
 - Run a daily close exit check for confirmed positions and include Turbo buy candidates.
 - Run a weekly full buy scan after Friday close.
-- Sell when price closes below SMA50, the trailing stop is hit, or QQQ falls below SMA200.
-- Rankings are used to choose fresh buys for empty slots, not to force-sell a holding that is still technically healthy.
+- Sell when price closes below SMA50, the trailing stop is hit, QQQ falls below SMA200, or a holding fails the weekly top-rank check twice.
+- Rankings choose fresh buys for empty slots, and a ranking sell needs two weekly confirmations.
 
 The old initial state used a small pilot allocation of `$1,000`. When TQQQ is out, reset the cash bucket to the actual freed TQQQ cash after TQQQ exits. The TQQQ repo itself waits in cash while out of TQQQ; this repo is the optional real-stock swing bucket during that waiting period.
 

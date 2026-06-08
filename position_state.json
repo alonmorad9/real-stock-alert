@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 944.62,
+        "current_price": 930.5,
         "entry_date": "2026-06-05",
         "entry_price": 933.44,
-        "return": 0.011977,
+        "return": -0.00315,
         "shares": 1.57258126,
         "status": "HOLD",
         "stop": 821.4272,
         "ticker": "MU",
-        "value": 1485.49
+        "value": 1463.29
       },
       {
-        "current_price": 235.85,
+        "current_price": 231.06,
         "entry_date": "2026-06-05",
         "entry_price": 234.11,
-        "return": 0.007432,
+        "return": -0.013028,
         "shares": 2.79655285,
         "status": "HOLD",
         "stop": 206.0168,
         "ticker": "DDOG",
-        "value": 659.57
+        "value": 646.17
       }
     ],
     "positions": [
@@ -41,7 +41,7 @@
         "allocation": 1467.91,
         "entry_date": "2026-06-05",
         "entry_price": 933.44,
-        "highest_high_since_entry": 961.89,
+        "highest_high_since_entry": 962.95,
         "last_signal": "bot_only_bought",
         "shares": 1.57258126,
         "stop": 821.4272,
@@ -58,18 +58,19 @@
         "ticker": "DDOG"
       }
     ],
+    "rank_confirm_counts": {},
     "realized_pnl": -251.07,
-    "return": -0.075493,
-    "value": 2799.76
+    "return": -0.087249,
+    "value": 2764.16
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-08T13:45:59.476406+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-08T19:36:25.541086+00:00",
   "last_scan_date": "2026-06-08",
   "latest_candidates": [
-    "MU",
-    "AMD"
+    "DDOG",
+    "CSCO"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
@@ -84,22 +85,23 @@
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
     {
-      "reason": "repeat stretched candidate",
+      "reason": "ATR14 above 8% cap",
       "ticker": "MRVL"
     },
     {
-      "reason": "ATR14 above 10% cap",
+      "reason": "ATR14 above 8% cap",
       "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,
   "master_rule": "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.",
   "positions": [],
+  "rank_confirm_counts": {},
   "realized_pnl": 0.0,
   "settings": {
     "daily_exit_check": true,
     "manual_trade_confirmation_required": true,
-    "max_atr_pct": 0.1,
+    "max_atr_pct": 0.08,
     "max_positions": 2,
     "profile": "turbo",
     "qqq_below_sma200_action": "sell_all",
@@ -110,6 +112,8 @@
       "enabled": true,
       "policy": "half_size_new_buys_only"
     },
+    "rotation_confirm_weeks": 2,
+    "rotation_policy": "two_week_confirm",
     "weekly_buy_scan": true
   },
   "strategy": "turbo_top_2_real_stock_momentum"
