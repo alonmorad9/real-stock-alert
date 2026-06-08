@@ -5,37 +5,35 @@
     "cash": 654.7,
     "initial_cash": 3028.38,
     "last_actions": [
-      "sold INTC",
-      "bought DDOG"
+      "held"
     ],
-    "last_scan_date": "2026-06-05",
+    "last_scan_date": "2026-06-08",
     "last_trade_messages": [
-      "BOT SELL INTC: 13.2036 shares at $99.17; proceeds $1,309.40; P&L $-204.79 (-13.5%). Reason: trailing stop hit.",
-      "BOT BUY DDOG: $654.70 at $234.11 = 2.7966 shares. Initial stop $206.02."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 864.01,
+        "current_price": 944.62,
         "entry_date": "2026-06-05",
         "entry_price": 933.44,
-        "return": -0.074381,
+        "return": 0.011977,
         "shares": 1.57258126,
         "status": "HOLD",
         "stop": 821.4272,
         "ticker": "MU",
-        "value": 1358.73
+        "value": 1485.49
       },
       {
-        "current_price": 234.11,
+        "current_price": 235.85,
         "entry_date": "2026-06-05",
         "entry_price": 234.11,
-        "return": 0.0,
+        "return": 0.007432,
         "shares": 2.79655285,
         "status": "HOLD",
         "stop": 206.0168,
         "ticker": "DDOG",
-        "value": 654.7
+        "value": 659.57
       }
     ],
     "positions": [
@@ -61,38 +59,37 @@
       }
     ],
     "realized_pnl": -251.07,
-    "return": -0.118959,
-    "value": 2668.13
+    "return": -0.075493,
+    "value": 2799.76
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "weekly_scan",
-  "last_action_at": "2026-06-05T21:30:39.612324+00:00",
-  "last_scan_date": "2026-06-05",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-08T13:45:59.476406+00:00",
+  "last_scan_date": "2026-06-08",
   "latest_candidates": [
-    "DDOG",
-    "PANW"
+    "MU",
+    "AMD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
-    "level": "DEFENSIVE",
+    "level": "ELEVATED",
     "reasons": [
       "QQQ below SMA20",
       "QQQ below SMA10",
-      "QQQ 5d drop",
-      "20d drawdown"
+      "QQQ 5d drop"
     ],
-    "score": 5
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
     {
-      "reason": "ATR14 above 10% cap",
-      "ticker": "ARM"
-    },
-    {
       "reason": "repeat stretched candidate",
       "ticker": "MRVL"
+    },
+    {
+      "reason": "ATR14 above 10% cap",
+      "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,
