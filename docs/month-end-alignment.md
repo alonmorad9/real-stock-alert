@@ -35,7 +35,8 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - `waiting_for_early_reentry`: `false`
 - Meaning: the bot assumes a real TQQQ position is open. TQQQ is using the active position sell/risk rules, not manual-safety re-entry mode.
 - Meaning of cash state: the TQQQ bucket is currently deployed into TQQQ, with only residual cash tracked. No XLK parking asset is part of the selected TQQQ strategy.
-- If TQQQ exits later, manual safety re-buy rules use the Best Calmar re-entry setup: 7.5% pullback from the actual sell price, 10-trading-day profit timeout, and no RSI re-entry gate.
+- If TQQQ exits later from an automated profit sell, the Best Calmar re-entry setup waits for a 7.5% pullback from the actual sell price or the 10-trading-day profit timeout, with no RSI re-entry gate.
+- If the user manually sells TQQQ, manual safety mode is intentionally faster: 7.5% pullback from the actual sell price, SMA200 reset, or 3-trading-day timeout while above SMA200.
 - Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, a 10% fresh-entry guard for the first 2 trading days after a buy, +20% profit target, -7.5% re-buy pullback, 10-trading-day profit re-buy timeout, parabolic profit exit on 5-day >= 25% or 10-day >= 30%, advisory early-warning signals, and cash as the waiting state.
 - Current TQQQ execution guardrails also delay bot-generated buys during the first 30 market minutes and use a same-day cooldown after fresh-entry guard exits.
 - Current early-warning inputs are advisory only, with no automatic sell: VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, and TQQQ RSI falling from 70+.
@@ -63,7 +64,7 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `DDOG`, `CSCO`
+  - latest candidates: `MU`, `AMD`
   - latest skipped candidates: `MRVL`, `ARM` from ATR cap
   - latest market risk: `ELEVATED`, score `4`
   - latest market risk reasons: `QQQ below SMA20`, `QQQ below SMA10`, `QQQ 5d drop`
@@ -71,7 +72,7 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - rank policy: `skip_repeat_stretched`
   - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
   - bot-only benchmark holdings: `MU`, `DDOG`
-  - bot-only benchmark value: `$2,764.16`
+  - bot-only benchmark value: `$2,768.95`
   - bot-only benchmark action: held
 - latest research decision:
   - Turbo remains the live stock strategy.

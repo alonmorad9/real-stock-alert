@@ -10,7 +10,7 @@ Current role: **inactive while TQQQ position is open**.
 
 The TQQQ repo is the master controller. This repo manages real swing stocks only while `tqqq-alert` says the TQQQ strategy is out/waiting. If `tqqq-alert` sends a TQQQ buy or re-buy signal, sell all real-stock positions, confirm the sales here, then move the bucket back to TQQQ.
 
-As of the current 2026-06-06 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync. This repo should have no deployable real-stock cash until a future TQQQ exit and fresh `set_cash <actual freed cash amount>`.
+As of the current 2026-06-08 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync. This repo should have no deployable real-stock cash until a future TQQQ exit and fresh `set_cash <actual freed cash amount>`.
 
 ## Universe
 

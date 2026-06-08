@@ -22,7 +22,7 @@ This means the TQQQ repo is the master controller:
 - When `tqqq-alert` says TQQQ is out/waiting, this repo can manage the freed cash in top-2 real swing stocks.
 - When `tqqq-alert` sends a TQQQ buy/re-buy signal, TQQQ takes priority. Sell all real-stock positions, confirm the sales here with `manual_sold`, then use the cash to buy TQQQ and confirm that buy in `tqqq-alert`.
 - The stock bot's normal sell rules still apply while TQQQ is waiting. If a stock sell fires and TQQQ still says wait, sell that stock and follow the next real-stock candidate/cash instruction.
-- As of the current 2026-06-05 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync, so this repo should show `$0` deployable real-stock cash until a future TQQQ exit.
+- As of the current 2026-06-08 alignment, TQQQ is open again after a 2026-06-04 manual broker buy sync, so this repo should show `$0` deployable real-stock cash until a future TQQQ exit.
 - While TQQQ is open, stock candidates are watchlist-only. The report should not show them as deployable real buy instructions.
 
 - Trade liquid large-cap and growth stocks.
