@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 934.63,
+        "current_price": 949.28,
         "entry_date": "2026-06-05",
         "entry_price": 933.44,
-        "return": 0.001275,
+        "return": 0.01697,
         "shares": 1.57258126,
         "status": "HOLD",
         "stop": 821.4272,
         "ticker": "MU",
-        "value": 1469.78
+        "value": 1492.82
       },
       {
-        "current_price": 230.45,
+        "current_price": 231.68,
         "entry_date": "2026-06-05",
         "entry_price": 234.11,
-        "return": -0.015634,
+        "return": -0.01038,
         "shares": 2.79655285,
         "status": "HOLD",
         "stop": 206.0168,
         "ticker": "DDOG",
-        "value": 644.47
+        "value": 647.91
       }
     ],
     "positions": [
@@ -60,17 +60,17 @@
     ],
     "rank_confirm_counts": {},
     "realized_pnl": -251.07,
-    "return": -0.085667,
-    "value": 2768.95
+    "return": -0.076924,
+    "value": 2795.43
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
   "last_action": "daily_scan",
-  "last_action_at": "2026-06-08T19:41:46.254369+00:00",
+  "last_action_at": "2026-06-08T21:30:43.309511+00:00",
   "last_scan_date": "2026-06-08",
   "latest_candidates": [
-    "MU",
-    "AMD"
+    "DDOG",
+    "CSCO"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
