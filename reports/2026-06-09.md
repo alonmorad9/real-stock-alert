@@ -1,29 +1,29 @@
-📊 Real Stock Opening Report — 09/06/2026
+📊 Real Stock Daily Report — 09/06/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $724.06
-SMA200:        $622.43
+QQQ:           $707.83
+SMA200:        $622.35
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
 Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
 What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
-Risk Level:    NORMAL
-Risk Score:    1
-Buy Size:      100.0% of normal
-Reasons:       QQQ below SMA10
-Action:        Use normal suggested allocation.
+Risk Level:    DEFENSIVE
+Risk Score:    6
+Buy Size:      50.0% of normal
+Reasons:       QQQ below SMA20, QQQ below SMA10, QQQ 5d drop, distribution days, 20d drawdown
+Action:        Use half-size only for new buys. Do not auto-sell from this overlay.
 ──────────────────────────────
 ⚙️ Strategy Settings
 Meaning: these rules decide which stocks appear in the candidate list.
@@ -47,35 +47,35 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,697.38 (0.0%)
+Bot Value:     $2,598.19 (-3.7%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,697.38 (-100.0%)
-Bot Cash:      $0.00
-Bot Holding:   MU, AMD
-Bot Actions:   bought MU, bought AMD
+Vs Bot-Only:   $-2,598.19 (-100.0%)
+Bot Cash:      $644.22
+Bot Holding:   AMD, DDOG
+Bot Actions:   sold MU, bought DDOG
 ──────────────────────────────
 🤖 Bot-Only Trade Log
 Meaning: simulated paper events only. These show what the bot path did, not what happened in your broker.
-- BOT BUY MU: $1,348.69 at $979.66 = 1.3767 shares. Initial stop $862.10.
-- BOT BUY AMD: $1,348.69 at $489.64 = 2.7545 shares. Initial stop $430.88.
+- BOT SELL MU: 1.3767 shares at $935.89; proceeds $1,288.44; P&L $-60.25 (-4.5%). Reason: trailing stop hit.
+- BOT BUY DDOG: $644.22 at $227.34 = 2.8337 shares. Initial stop $200.06.
 ──────────────────────────────
 📌 Bot-Only Holdings
-MU
-Shares:        1.3767
-Entry:         $979.65
-Current:       $979.65
-Stop:          $862.10
-Value:         $1,348.69
-Return:        0.0%
-Status:        HOLD
-
 AMD
 Shares:        2.7545
 Entry:         $489.64
-Current:       $489.64
+Current:       $475.50
 Stop:          $430.88
-Value:         $1,348.69
-Return:        0.0%
+Value:         $1,309.76
+Return:        -2.9%
+Status:        HOLD
+
+DDOG
+Shares:        2.8337
+Entry:         $227.34
+Current:       $227.34
+Stop:          $200.06
+Value:         $644.22
+Return:        -0.0%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,28 +86,28 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: DDOG, CSCO, MRVL, ARM
+Repeat Memory: MU, AMD, MRVL, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-MRVL: skipped because ATR14 is 9.7%, above the 8.0% fresh-buy cap.
-ARM: skipped because ATR14 is 10.8%, above the 8.0% fresh-buy cap.
+MRVL: skipped because ATR14 is 11.6%, above the 8.0% fresh-buy cap.
+ARM: skipped because ATR14 is 12.4%, above the 8.0% fresh-buy cap.
 
 Watchlist Candidates
-🥇 MU
-Price:         $979.66
-Score:         173.74 — higher means stronger momentum rank
+🥇 AMD
+Price:         $475.51
+Score:         154.58 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $862.10
-63d RS:        123.8%
-20d Return:    23.2%
-Stretch:       HOT BUT STRETCHED: 53% above SMA50
+Initial Stop:  $418.44
+63d RS:        117.4%
+20d Return:    3.6%
+Stretch:       OK
 
-🥈 AMD
-Price:         $489.64
-Score:         161.84 — higher means stronger momentum rank
+🥈 DDOG
+Price:         $227.34
+Score:         95.33 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $430.88
-63d RS:        121.6%
-20d Return:    6.7%
-Stretch:       HOT BUT STRETCHED: 32% above SMA50
+Initial Stop:  $200.06
+63d RS:        68.1%
+20d Return:    12.4%
+Stretch:       HOT BUT STRETCHED: 33% above SMA50

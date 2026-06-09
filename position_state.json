@@ -2,53 +2,43 @@
   "active_profile": "turbo",
   "allocated_cash": 0.0,
   "bot_only_benchmark": {
-    "cash": 0.0,
+    "cash": 644.22,
     "initial_cash": 2697.38,
     "last_actions": [
-      "bought MU",
-      "bought AMD"
+      "sold MU",
+      "bought DDOG"
     ],
     "last_scan_date": "2026-06-09",
     "last_trade_messages": [
-      "BOT BUY MU: $1,348.69 at $979.66 = 1.3767 shares. Initial stop $862.10.",
-      "BOT BUY AMD: $1,348.69 at $489.64 = 2.7545 shares. Initial stop $430.88."
+      "BOT SELL MU: 1.3767 shares at $935.89; proceeds $1,288.44; P&L $-60.25 (-4.5%). Reason: trailing stop hit.",
+      "BOT BUY DDOG: $644.22 at $227.34 = 2.8337 shares. Initial stop $200.06."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 979.655,
-        "entry_date": "2026-06-09",
-        "entry_price": 979.655,
-        "return": 0.0,
-        "shares": 1.3766989,
-        "status": "HOLD",
-        "stop": 862.0964,
-        "ticker": "MU",
-        "value": 1348.69
-      },
-      {
-        "current_price": 489.64,
+        "current_price": 475.505,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": 0.0,
+        "return": -0.028868,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 430.8832,
         "ticker": "AMD",
-        "value": 1348.69
+        "value": 1309.76
+      },
+      {
+        "current_price": 227.34,
+        "entry_date": "2026-06-09",
+        "entry_price": 227.34,
+        "return": -0.0,
+        "shares": 2.83372652,
+        "status": "HOLD",
+        "stop": 200.0592,
+        "ticker": "DDOG",
+        "value": 644.22
       }
     ],
     "positions": [
-      {
-        "allocation": 1348.69,
-        "entry_date": "2026-06-09",
-        "entry_price": 979.655,
-        "highest_high_since_entry": 989.15,
-        "last_signal": "bot_only_bought",
-        "shares": 1.3766989,
-        "stop": 862.0964,
-        "ticker": "MU"
-      },
       {
         "allocation": 1348.69,
         "entry_date": "2026-06-09",
@@ -58,29 +48,43 @@
         "shares": 2.75445217,
         "stop": 430.8832,
         "ticker": "AMD"
+      },
+      {
+        "allocation": 644.22,
+        "entry_date": "2026-06-09",
+        "entry_price": 227.34,
+        "highest_high_since_entry": 236.83,
+        "last_signal": "bot_only_bought",
+        "shares": 2.83372652,
+        "stop": 200.0592,
+        "ticker": "DDOG"
       }
     ],
     "rank_confirm_counts": {},
-    "realized_pnl": 0.0,
-    "return": 0.0,
-    "value": 2697.38
+    "realized_pnl": -60.25,
+    "return": -0.036771,
+    "value": 2598.19
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-09T13:45:49.750318+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-09T21:30:41.408963+00:00",
   "last_scan_date": "2026-06-09",
   "latest_candidates": [
-    "MU",
-    "AMD"
+    "AMD",
+    "DDOG"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
+    "allocation_multiplier": 0.5,
+    "level": "DEFENSIVE",
     "reasons": [
-      "QQQ below SMA10"
+      "QQQ below SMA20",
+      "QQQ below SMA10",
+      "QQQ 5d drop",
+      "distribution days",
+      "20d drawdown"
     ],
-    "score": 1
+    "score": 6
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
