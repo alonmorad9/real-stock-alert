@@ -38,7 +38,7 @@ Repeat Rule:   recent stretched names are skipped so the list does not chase the
 💼 Real Stock Bucket
 Allocated:     $0.00
 Tracked Cash:  $0.00
-Planning Cash: $2,699.99 — used only to size suggestions in this message
+Planning Cash: $2,697.38 — used only to size suggestions in this message
 Open:          0 confirmed positions
 Value Est.:    $0.00
 Realized P&L:  $0.00
@@ -46,37 +46,20 @@ Realized P&L:  $0.00
 🧪 Bot-Only Benchmark
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
-Start Cash:    $3,028.38
-Bot Value:     $2,795.43 (-7.7%)
+Start Cash:    $2,697.38
+Bot Value:     $2,697.38 (0.0%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,795.43 (-100.0%)
-Bot Cash:      $654.70
-Bot Holding:   MU, DDOG
-Bot Actions:   held
+Vs Bot-Only:   $-2,697.38 (-100.0%)
+Bot Cash:      $2,697.38
+Bot Holding:   cash
+Bot Actions:   reset
 ──────────────────────────────
 🤖 Bot-Only Trade Log
 Meaning: simulated paper events only. These show what the bot path did, not what happened in your broker.
-- BOT HOLD: no bot-only buy or sell this run.
+- BOT RESET: bot-only benchmark reset to cash.
 ──────────────────────────────
 📌 Bot-Only Holdings
-MU
-Shares:        1.5726
-Entry:         $933.44
-Current:       $949.28
-Stop:          $821.43
-Value:         $1,492.82
-Return:        1.7%
-Status:        HOLD
-
-DDOG
-Shares:        2.7966
-Entry:         $234.11
-Current:       $231.68
-Stop:          $206.02
-Value:         $647.91
-Return:        -1.0%
-Status:        HOLD
-
+Bot-only benchmark is in cash.
 ──────────────────────────────
 📦 Open Positions
 No confirmed real stock positions are currently tracked.

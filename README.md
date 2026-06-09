@@ -69,7 +69,7 @@ python3 script.py set_cash AMOUNT
 Example:
 
 ```bash
-python3 script.py set_cash 3028.38
+python3 script.py set_cash 2697.38
 ```
 
 Confirm a real buy after you manually buy:

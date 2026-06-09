@@ -17,7 +17,7 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
 ### `tqqq-alert`
 
 - Real TQQQ repo.
-- Current state inspected locally on 2026-06-08:
+- Current state inspected locally on 2026-06-09:
   - `position_open`: `true`
   - `shares`: `35.3032`
   - `avg_cost`: `$83.84`
@@ -64,16 +64,16 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - allocated cash: `$0.00`
   - cash: `$0.00`
   - positions: `[]`
-  - latest candidates: `MU`, `AMD`
+  - latest candidates: `DDOG`, `CSCO`
   - latest skipped candidates: `MRVL`, `ARM` from ATR cap
   - latest market risk: `ELEVATED`, score `4`
   - latest market risk reasons: `QQQ below SMA20`, `QQQ below SMA10`, `QQQ 5d drop`
   - risk overlay: `risk_balanced`, half-size new buys only when market risk is elevated/defensive
   - rank policy: `skip_repeat_stretched`
   - bot-only stock benchmark: included in Telegram/report state as the comparison path for this repo
-  - bot-only benchmark holdings: `MU`, `DDOG`
-  - bot-only benchmark value: `$2,768.95`
-  - bot-only benchmark action: held
+  - bot-only benchmark holdings: cash
+  - bot-only benchmark value: `$2,697.38`
+  - bot-only benchmark action: reset
 - latest research decision:
   - Turbo remains the live stock strategy.
   - Repeat-stretched candidates are skipped after the 2026-05-09 test improved both return and max drawdown versus baseline.

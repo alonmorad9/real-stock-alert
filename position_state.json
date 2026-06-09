@@ -2,71 +2,26 @@
   "active_profile": "turbo",
   "allocated_cash": 0.0,
   "bot_only_benchmark": {
-    "cash": 654.7,
-    "initial_cash": 3028.38,
+    "cash": 2697.38,
+    "initial_cash": 2697.38,
     "last_actions": [
-      "held"
+      "reset"
     ],
-    "last_scan_date": "2026-06-08",
+    "last_scan_date": null,
     "last_trade_messages": [
-      "BOT HOLD: no bot-only buy or sell this run."
+      "BOT RESET: bot-only benchmark reset to cash."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
-    "position_details": [
-      {
-        "current_price": 949.28,
-        "entry_date": "2026-06-05",
-        "entry_price": 933.44,
-        "return": 0.01697,
-        "shares": 1.57258126,
-        "status": "HOLD",
-        "stop": 821.4272,
-        "ticker": "MU",
-        "value": 1492.82
-      },
-      {
-        "current_price": 231.68,
-        "entry_date": "2026-06-05",
-        "entry_price": 234.11,
-        "return": -0.01038,
-        "shares": 2.79655285,
-        "status": "HOLD",
-        "stop": 206.0168,
-        "ticker": "DDOG",
-        "value": 647.91
-      }
-    ],
-    "positions": [
-      {
-        "allocation": 1467.91,
-        "entry_date": "2026-06-05",
-        "entry_price": 933.44,
-        "highest_high_since_entry": 962.95,
-        "last_signal": "bot_only_bought",
-        "shares": 1.57258126,
-        "stop": 821.4272,
-        "ticker": "MU"
-      },
-      {
-        "allocation": 654.7,
-        "entry_date": "2026-06-05",
-        "entry_price": 234.11,
-        "highest_high_since_entry": 241.61,
-        "last_signal": "bot_only_bought",
-        "shares": 2.79655285,
-        "stop": 206.0168,
-        "ticker": "DDOG"
-      }
-    ],
-    "rank_confirm_counts": {},
-    "realized_pnl": -251.07,
-    "return": -0.076924,
-    "value": 2795.43
+    "position_details": [],
+    "positions": [],
+    "realized_pnl": 0.0,
+    "return": 0.0,
+    "value": 2697.38
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-08T21:30:43.309511+00:00",
+  "last_action": "reset_bot_benchmark",
+  "last_action_at": "2026-06-09T10:40:45.497232+00:00",
   "last_scan_date": "2026-06-08",
   "latest_candidates": [
     "DDOG",

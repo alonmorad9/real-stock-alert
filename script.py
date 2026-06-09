@@ -30,7 +30,7 @@ LATEST_REPORT = REPORTS_DIR / "latest_report.md"
 SYSTEM_LABEL = "REAL STOCK SYSTEM"
 CAPITAL_MODE = "TQQQ-out swing mode"
 MASTER_RULE = "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ."
-REFERENCE_CASH = 2699.99
+REFERENCE_CASH = 2697.38
 MARKET_TZ = ZoneInfo("America/New_York")
 
 
