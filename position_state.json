@@ -2,40 +2,85 @@
   "active_profile": "turbo",
   "allocated_cash": 0.0,
   "bot_only_benchmark": {
-    "cash": 2697.38,
+    "cash": 0.0,
     "initial_cash": 2697.38,
     "last_actions": [
-      "reset"
+      "bought MU",
+      "bought AMD"
     ],
-    "last_scan_date": null,
+    "last_scan_date": "2026-06-09",
     "last_trade_messages": [
-      "BOT RESET: bot-only benchmark reset to cash."
+      "BOT BUY MU: $1,348.69 at $979.66 = 1.3767 shares. Initial stop $862.10.",
+      "BOT BUY AMD: $1,348.69 at $489.64 = 2.7545 shares. Initial stop $430.88."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
-    "position_details": [],
-    "positions": [],
+    "position_details": [
+      {
+        "current_price": 979.655,
+        "entry_date": "2026-06-09",
+        "entry_price": 979.655,
+        "return": 0.0,
+        "shares": 1.3766989,
+        "status": "HOLD",
+        "stop": 862.0964,
+        "ticker": "MU",
+        "value": 1348.69
+      },
+      {
+        "current_price": 489.64,
+        "entry_date": "2026-06-09",
+        "entry_price": 489.64,
+        "return": 0.0,
+        "shares": 2.75445217,
+        "status": "HOLD",
+        "stop": 430.8832,
+        "ticker": "AMD",
+        "value": 1348.69
+      }
+    ],
+    "positions": [
+      {
+        "allocation": 1348.69,
+        "entry_date": "2026-06-09",
+        "entry_price": 979.655,
+        "highest_high_since_entry": 989.15,
+        "last_signal": "bot_only_bought",
+        "shares": 1.3766989,
+        "stop": 862.0964,
+        "ticker": "MU"
+      },
+      {
+        "allocation": 1348.69,
+        "entry_date": "2026-06-09",
+        "entry_price": 489.64,
+        "highest_high_since_entry": 504.56,
+        "last_signal": "bot_only_bought",
+        "shares": 2.75445217,
+        "stop": 430.8832,
+        "ticker": "AMD"
+      }
+    ],
+    "rank_confirm_counts": {},
     "realized_pnl": 0.0,
     "return": 0.0,
     "value": 2697.38
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "reset_bot_benchmark",
-  "last_action_at": "2026-06-09T10:40:45.497232+00:00",
-  "last_scan_date": "2026-06-08",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-09T13:45:49.750318+00:00",
+  "last_scan_date": "2026-06-09",
   "latest_candidates": [
-    "DDOG",
-    "CSCO"
+    "MU",
+    "AMD"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 0.5,
-    "level": "ELEVATED",
+    "allocation_multiplier": 1.0,
+    "level": "NORMAL",
     "reasons": [
-      "QQQ below SMA20",
-      "QQQ below SMA10",
-      "QQQ 5d drop"
+      "QQQ below SMA10"
     ],
-    "score": 4
+    "score": 1
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
