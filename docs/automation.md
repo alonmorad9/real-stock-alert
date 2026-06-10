@@ -1,14 +1,14 @@
 # Automation
 
-Last updated: 2026-05-27
+Last updated: 2026-06-10
 
 ## Schedule
 
 Recommended first version:
 
-- Opening turbo candidate scan: 15 minutes after US market open on market weekdays.
-- Daily after-close run: check confirmed open positions for exits and include Turbo buy candidates.
-- Weekly buy scan: Friday after US market close.
+- Opening turbo candidate scan: 15 minutes after US market open on market weekdays. This still runs, saves state, and updates reports, but it stays silent on Telegram unless a real sell alert fires.
+- Daily after-close run: check confirmed open positions for exits and include Turbo buy candidates. This still runs, saves state, and updates reports, but it stays silent on Telegram unless a real sell alert fires.
+- Weekly buy scan: Friday after US market close. This sends the normal routine Telegram report.
 
 The Cloudflare Worker dispatches the GitHub Action with either `daily` or `weekly` mode. GitHub Actions can also be run manually.
 
@@ -32,6 +32,13 @@ The Worker maps the `21:30 UTC` after-close run to:
 
 The Worker and `script.py` both skip scheduled opening/daily/weekly reports on US market holidays. This matches the TQQQ repo behavior: if a weekday has no US trading session, no Telegram scan should be sent.
 
+Telegram policy:
+
+- weekly scheduled runs send the routine Telegram report,
+- opening and daily scheduled runs are quiet routine checks,
+- opening and daily still send Telegram if a confirmed real position gets a sell alert,
+- manual commands still send their confirmation messages as before.
+
 ## GitHub Action
 
 Workflow:
@@ -50,7 +57,7 @@ The workflow:
 
 - installs dependencies,
 - runs `script.py`,
-- sends Telegram if secrets exist,
+- sends Telegram only when the mode/policy allows it and secrets exist,
 - commits `position_state.json`,
 - commits `reports/latest_report.md`,
 - commits dated reports in `reports/`.

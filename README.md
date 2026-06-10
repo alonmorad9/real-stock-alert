@@ -32,9 +32,9 @@ This means the TQQQ repo is the master controller:
 - Skip repeat stretched names as fresh buy candidates, using the tested `skip_repeat_stretched` rank policy.
 - Skip fresh buy candidates when ATR14 is above 8% of price.
 - If `QQQ` closes below SMA200, flag all open positions for sale.
-- Run an opening turbo candidate scan 15 minutes after US market open on market weekdays.
-- Run a daily close exit check for confirmed positions and include Turbo buy candidates.
-- Run a weekly full buy scan after Friday close.
+- Run an opening turbo candidate scan 15 minutes after US market open on market weekdays, but keep it silent unless a real sell alert fires.
+- Run a daily close exit check for confirmed positions and include Turbo buy candidates, but keep it silent unless a real sell alert fires.
+- Run a weekly full buy scan after Friday close and send the normal Telegram report.
 - Sell when price closes below SMA50, the trailing stop is hit, QQQ falls below SMA200, or a holding fails the weekly top-rank check twice.
 - Rankings choose fresh buys for empty slots, and a ranking sell needs two weekly confirmations.
 
@@ -54,11 +54,15 @@ Opening scan:
 python3 script.py opening
 ```
 
+Scheduled opening runs save state/reports but do not send routine Telegram messages unless a real sell alert fires.
+
 Daily exit check:
 
 ```bash
 python3 script.py daily
 ```
+
+Scheduled daily runs save state/reports but do not send routine Telegram messages unless a real sell alert fires.
 
 Set the real-stock cash bucket after TQQQ exits:
 

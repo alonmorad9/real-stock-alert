@@ -175,6 +175,16 @@ def write_report(asof, lines):
     return content
 
 
+def should_send_scheduled_telegram(mode, sell_alerts):
+    if sell_alerts:
+        return True
+    if mode == "weekly":
+        return True
+    if mode in {"opening", "daily"}:
+        return False
+    return True
+
+
 def get_latest_price(ticker):
     df = load_prices(ticker)
     row = df.iloc[-1]
@@ -651,6 +661,7 @@ def build_report(mode):
         f"Profile:       {profile} — aggressive momentum leaders, not dip buys",
         f"Max Positions: {max_positions}",
         f"Data Source:   {data_source}",
+        "Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires",
         sep,
         "🧭 Market Filter",
         "Meaning: controls whether new stock buys are allowed.",
@@ -869,7 +880,10 @@ def build_report(mode):
             lines.append(f"- {item['ticker']}: {item['error']}")
 
     content = write_report(asof, lines)
-    send_telegram(content)
+    if should_send_scheduled_telegram(mode, sell_alerts):
+        send_telegram(content)
+    else:
+        print(f"[SILENT] {mode} checks completed and report saved; Telegram suppressed because there is no real sell alert.")
     print(content)
 
 

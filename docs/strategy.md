@@ -79,7 +79,7 @@ The current Turbo score uses the 2026-06-08 max-revenue test weights: 63-day rel
 
 Fresh buy candidates also use the tested `atr_cap_8pct` filter. If ATR14 is above 8% of price, the candidate is skipped as too volatile for a fresh buy. The 2026-06-08 combined test favored this cap inside the max-revenue setup.
 
-Opening, daily, and weekly scheduled reports skip US market holidays so this repo stays quiet on non-trading weekdays, matching the TQQQ repo behavior.
+Opening, daily, and weekly scheduled reports skip US market holidays so this repo stays quiet on non-trading weekdays, matching the TQQQ repo behavior. Routine Telegram messages are weekly-only now: opening and daily checks still run and save reports/state, but they stay silent unless a confirmed real position triggers a sell alert.
 
 ## Position Sizing
 
@@ -102,7 +102,7 @@ Positions are flagged for sale if:
 - the trailing stop is hit,
 - the stock is outside the top ranks for 2 weekly checks.
 
-Opening, daily, and weekly reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher once. The selected 2026-06-08 max-revenue setup uses `two_week_confirm`: a position must fail the weekly top-rank check twice before rank rotation becomes a sell reason.
+Opening, daily, and weekly reports can still show fresh buy candidates, but they do not force a rotation sale just because a different stock ranks higher once. The selected 2026-06-08 max-revenue setup uses `two_week_confirm`: a position must fail the weekly top-rank check twice before rank rotation becomes a sell reason. Only the weekly routine report is sent to Telegram; opening/daily report files are retained for the daily checks and only alert Telegram if there is a real sell instruction.
 
 ## Stops
 
