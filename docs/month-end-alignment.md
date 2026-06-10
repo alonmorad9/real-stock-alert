@@ -1,6 +1,6 @@
 # Month-End Alignment
 
-Last updated: 2026-06-08
+Last updated: 2026-06-10
 
 Latest decision: `tqqq-alert` is the master controller and is currently back in an open TQQQ position. `real-stock-alert` remains the active stock-swing engine and bot-only stock benchmark, but it should deploy real stock cash only while `tqqq-alert` says TQQQ is out/waiting. Because TQQQ is currently open, the real-stock bucket should be inactive with no deployable cash, and stock candidates should be treated as watchlist-only.
 
@@ -35,9 +35,9 @@ Latest decision: `tqqq-alert` is the master controller and is currently back in 
   - `waiting_for_early_reentry`: `false`
 - Meaning: the bot assumes a real TQQQ position is open. TQQQ is using the active position sell/risk rules, not manual-safety re-entry mode.
 - Meaning of cash state: the TQQQ bucket is currently deployed into TQQQ, with only residual cash tracked. No XLK parking asset is part of the selected TQQQ strategy.
-- If TQQQ exits later from an automated profit sell, the Best Calmar re-entry setup waits for a 7.5% pullback from the actual sell price or the 10-trading-day profit timeout, with no RSI re-entry gate.
+- If TQQQ exits later from an automated profit sell, the New Broad Max re-entry setup waits for a 7.5% pullback from the actual sell price or the 10-trading-day profit timeout, with RSI14 <= 70 as the re-entry cap.
 - If the user manually sells TQQQ, manual safety mode is intentionally faster: 7.5% pullback from the actual sell price, SMA200 reset, or 3-trading-day timeout while above SMA200.
-- Current selected TQQQ strategy uses a 25% TQQQ ratcheting trailing stop, a 10% fresh-entry guard for the first 2 trading days after a buy, +20% profit target, -7.5% re-buy pullback, 10-trading-day profit re-buy timeout, parabolic profit exit on 5-day >= 25% or 10-day >= 30%, advisory early-warning signals, and cash as the waiting state.
+- Current selected TQQQ strategy uses the New Broad Max / max-revenue profile: 25% TQQQ ratcheting trailing stop, a 10% fresh-entry guard for the first 2 trading days after a buy, +25% profit target, -7.5% re-buy pullback, 10-trading-day profit re-buy timeout, 3-trading-day manual safety timeout, RSI14 <= 70 re-entry cap, 3 confirmed SMA200 checks/days for entries and exits, parabolic stretch advisory only, early-warning signals advisory only, and cash as the waiting state.
 - Current TQQQ execution guardrails also delay bot-generated buys during the first 30 market minutes and use a same-day cooldown after fresh-entry guard exits.
 - Current early-warning inputs are advisory only, with no automatic sell: VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, and TQQQ RSI falling from 70+.
 - Bot-only benchmark state is separate and still tracks what would have happened if the original TQQQ bot path had stayed in the position.
@@ -123,7 +123,7 @@ At month end, compare the two active systems first, and use the old swing demo o
 - Some older `tqqq-alert` history may describe previous XLK/early-warning states. Read current `script.py`, current docs, and `position_state.json` as the source of truth.
 - `swing-stock-alert` is paused as of 2026-05-23. Its Cloudflare cron is disabled and the Worker has a pause guard.
 - Strategy choices are currently aligned as:
-  - TQQQ repo: current selected strategy is Best Calmar high-return: 25% TQQQ ratchet, 10% fresh-entry guard for the first 2 trading days, same-day cooldown after fresh-entry guard exits, no bot-generated buys during the first 30 market minutes, no RSI re-entry gate, -7.5% re-buy pullback, 10-trading-day profit re-buy timeout, +20% profit target, 5-day >= 25% or 10-day >= 30% profitable parabolic auto-exit, advisory early-warning signals, and cash/no-XLK as the waiting state.
+  - TQQQ repo: current selected strategy is New Broad Max / max-revenue: 25% TQQQ ratchet, 10% fresh-entry guard for the first 2 trading days, same-day cooldown after fresh-entry guard exits, no bot-generated buys during the first 30 market minutes, RSI14 <= 70 re-entry cap, -7.5% re-buy pullback, 10-trading-day profit re-buy timeout, 3-trading-day manual safety timeout, +25% profit target, 3 confirmed SMA200 checks/days, advisory parabolic stretch, advisory early-warning signals, and cash/no-XLK as the waiting state.
   - TQQQ warning layer: early-warning signals are advisory only and no longer auto-sell. Current warning inputs are VIX >= 25, VIX 5-day spike >= 25%, QQQ below EMA21, TQQQ below SMA20, RSI falling from 70+.
   - Real-stock repo: keep Turbo top-2 momentum as the active stock engine during TQQQ-out periods, using `skip_repeat_stretched`, consistent repeat-stretch memory across report modes, RS63-heavy scoring, the tested `atr_cap_8pct` fresh-buy volatility filter, two-week rank-confirmation rotation, watchlist-only real buy wording while TQQQ is open, weekly-only routine Telegram reports, silent opening/daily checks except real sell alerts, and the stock bot-only benchmark in reports.
   - Swing repo: keep paused as old paper/demo archive only.
