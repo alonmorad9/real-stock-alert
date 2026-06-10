@@ -5,37 +5,35 @@
     "cash": 644.22,
     "initial_cash": 2697.38,
     "last_actions": [
-      "sold MU",
-      "bought DDOG"
+      "held"
     ],
-    "last_scan_date": "2026-06-09",
+    "last_scan_date": "2026-06-10",
     "last_trade_messages": [
-      "BOT SELL MU: 1.3767 shares at $935.89; proceeds $1,288.44; P&L $-60.25 (-4.5%). Reason: trailing stop hit.",
-      "BOT BUY DDOG: $644.22 at $227.34 = 2.8337 shares. Initial stop $200.06."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 475.505,
+        "current_price": 471.0943,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": -0.028868,
+        "return": -0.037876,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 430.8832,
         "ticker": "AMD",
-        "value": 1309.76
+        "value": 1297.61
       },
       {
-        "current_price": 227.34,
+        "current_price": 232.71,
         "entry_date": "2026-06-09",
         "entry_price": 227.34,
-        "return": -0.0,
+        "return": 0.023621,
         "shares": 2.83372652,
         "status": "HOLD",
         "stop": 200.0592,
         "ticker": "DDOG",
-        "value": 644.22
+        "value": 659.44
       }
     ],
     "positions": [
@@ -62,17 +60,17 @@
     ],
     "rank_confirm_counts": {},
     "realized_pnl": -60.25,
-    "return": -0.036771,
-    "value": 2598.19
+    "return": -0.035633,
+    "value": 2601.26
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-09T21:30:41.408963+00:00",
-  "last_scan_date": "2026-06-09",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-10T13:46:27.859171+00:00",
+  "last_scan_date": "2026-06-10",
   "latest_candidates": [
     "AMD",
-    "DDOG"
+    "PANW"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
