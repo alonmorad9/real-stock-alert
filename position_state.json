@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-06-11",
+    "last_scan_date": "2026-06-12",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 488.45,
+        "current_price": 502.82,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": -0.00243,
+        "return": 0.026918,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 430.8832,
         "ticker": "AMD",
-        "value": 1345.41
+        "value": 1384.99
       },
       {
-        "current_price": 234.24,
+        "current_price": 231.94,
         "entry_date": "2026-06-09",
         "entry_price": 227.34,
-        "return": 0.030351,
+        "return": 0.020234,
         "shares": 2.83372652,
         "status": "HOLD",
         "stop": 200.0592,
         "ticker": "DDOG",
-        "value": 663.77
+        "value": 657.25
       }
     ],
     "positions": [
@@ -41,7 +41,7 @@
         "allocation": 1348.69,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "highest_high_since_entry": 504.56,
+        "highest_high_since_entry": 510.27,
         "last_signal": "bot_only_bought",
         "shares": 2.75445217,
         "stop": 430.8832,
@@ -60,28 +60,27 @@
     ],
     "rank_confirm_counts": {},
     "realized_pnl": -60.25,
-    "return": -0.016303,
-    "value": 2653.4
+    "return": -0.004045,
+    "value": 2686.47
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-11T21:31:06.493017+00:00",
-  "last_scan_date": "2026-06-11",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-12T13:46:23.818083+00:00",
+  "last_scan_date": "2026-06-12",
   "latest_candidates": [
-    "AMD",
-    "LRCX"
+    "INTC",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
-    "level": "DEFENSIVE",
+    "level": "ELEVATED",
     "reasons": [
       "QQQ below SMA20",
       "QQQ below SMA10",
-      "QQQ 5d drop",
       "distribution days"
     ],
-    "score": 5
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
