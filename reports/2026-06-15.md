@@ -1,20 +1,20 @@
-📊 Real Stock Opening Report — 15/06/2026
+📊 Real Stock Daily Report — 15/06/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $740.73
-SMA200:        $625.31
+QQQ:           $744.00
+SMA200:        $625.33
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,830.55 (4.9%)
+Bot Value:     $2,812.13 (4.3%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,830.55 (-100.0%)
+Vs Bot-Only:   $-2,812.13 (-100.0%)
 Bot Cash:      $644.22
 Bot Holding:   AMD, DDOG
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        2.7545
 Entry:         $489.64
-Current:       $556.49
-Stop:          $456.57
-Value:         $1,532.81
-Return:        13.7%
+Current:       $547.26
+Stop:          $457.86
+Value:         $1,507.40
+Return:        11.8%
 Status:        HOLD
 
 DDOG
 Shares:        2.8337
 Entry:         $227.34
-Current:       $230.62
+Current:       $233.09
 Stop:          $200.06
-Value:         $653.51
-Return:        1.4%
+Value:         $660.51
+Return:        2.5%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,28 +86,28 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: AMD, KLAC, ARM, MRVL
+Repeat Memory: INTC, MU, MRVL, ARM
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-MRVL: skipped because ATR14 is 11.4%, above the 8.0% fresh-buy cap.
-ARM: skipped because ATR14 is 10.5%, above the 8.0% fresh-buy cap.
+ARM: skipped because ATR14 is 10.2%, above the 8.0% fresh-buy cap.
+MRVL: skipped because ATR14 is 11.2%, above the 8.0% fresh-buy cap.
 
 Watchlist Candidates
-🥇 INTC
-Price:         $131.94
-Score:         225.95 — higher means stronger momentum rank
+🥇 AMD
+Price:         $547.26
+Score:         216.58 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $116.11
-63d RS:        164.8%
-20d Return:    21.3%
-Stretch:       HOT BUT STRETCHED: 36% above SMA50
+Initial Stop:  $481.59
+63d RS:        154.3%
+20d Return:    29.0%
+Stretch:       HOT BUT STRETCHED: 39% above SMA50
 
-🥈 MU
-Price:         $1,057.49
-Score:         175.97 — higher means stronger momentum rank
+🥈 KLAC
+Price:         $256.42
+Score:         94.03 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $930.59
-63d RS:        115.9%
-20d Return:    45.9%
-Stretch:       HOT BUT STRETCHED: 53% above SMA50
+Initial Stop:  $225.65
+63d RS:        54.4%
+20d Return:    42.3%
+Stretch:       HOT BUT STRETCHED: 36% above SMA50
