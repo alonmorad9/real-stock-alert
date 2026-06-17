@@ -1,29 +1,29 @@
-📊 Real Stock Opening Report — 17/06/2026
+📊 Real Stock Daily Report — 17/06/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $734.77
-SMA200:        $626.93
+QQQ:           $722.51
+SMA200:        $626.87
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
 Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
 What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
 Risk Level:    NORMAL
-Risk Score:    0
+Risk Score:    2
 Buy Size:      100.0% of normal
-Reasons:       none
+Reasons:       QQQ below SMA20
 Action:        Use normal suggested allocation.
 ──────────────────────────────
 ⚙️ Strategy Settings
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,732.81 (1.3%)
+Bot Value:     $2,698.03 (0.0%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,732.81 (-100.0%)
+Vs Bot-Only:   $-2,698.03 (-100.0%)
 Bot Cash:      $644.22
 Bot Holding:   AMD, DDOG
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        2.7545
 Entry:         $489.64
-Current:       $518.82
+Current:       $512.48
 Stop:          $457.86
-Value:         $1,429.06
-Return:        6.0%
+Value:         $1,411.60
+Return:        4.7%
 Status:        HOLD
 
 DDOG
 Shares:        2.8337
 Entry:         $227.34
-Current:       $232.74
+Current:       $226.63
 Stop:          $200.06
-Value:         $659.52
-Return:        2.4%
+Value:         $642.21
+Return:        -0.3%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,28 +86,28 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: AMD, DDOG, ARM, MRVL
+Repeat Memory: AMD, AMAT, ARM, MRVL
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-ARM: skipped because ATR14 is 9.8%, above the 8.0% fresh-buy cap.
-MRVL: skipped because ATR14 is 12.3%, above the 8.0% fresh-buy cap.
+ARM: skipped because ATR14 is 10.2%, above the 8.0% fresh-buy cap.
+MRVL: skipped because ATR14 is 12.7%, above the 8.0% fresh-buy cap.
 
 Watchlist Candidates
 🥇 AMD
-Price:         $518.82
-Score:         191.30 — higher means stronger momentum rank
+Price:         $512.48
+Score:         189.00 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $456.56
-63d RS:        136.4%
-20d Return:    25.3%
+Initial Stop:  $450.98
+63d RS:        135.3%
+20d Return:    23.8%
 Stretch:       OK
 
-🥈 AMAT
-Price:         $618.54
-Score:         98.32 — higher means stronger momentum rank
+🥈 LRCX
+Price:         $374.18
+Score:         78.67 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $544.32
-63d RS:        53.5%
-20d Return:    52.2%
-Stretch:       HOT BUT STRETCHED: 40% above SMA50, 9% above prior close
+Initial Stop:  $329.28
+63d RS:        44.9%
+20d Return:    36.9%
+Stretch:       OK
