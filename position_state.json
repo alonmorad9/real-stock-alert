@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 531.805,
+        "current_price": 537.37,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": 0.086114,
+        "return": 0.09748,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 457.8634,
         "ticker": "AMD",
-        "value": 1464.83
+        "value": 1480.16
       },
       {
-        "current_price": 220.695,
+        "current_price": 223.0,
         "entry_date": "2026-06-09",
         "entry_price": 227.34,
-        "return": -0.029229,
+        "return": -0.01909,
         "shares": 2.83372652,
         "status": "HOLD",
         "stop": 200.0592,
         "ticker": "DDOG",
-        "value": 625.39
+        "value": 631.92
       }
     ],
     "positions": [
@@ -63,17 +63,17 @@
       "DDOG": 1
     },
     "realized_pnl": -60.25,
-    "return": 0.01374,
-    "value": 2734.44
+    "return": 0.021844,
+    "value": 2756.3
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-18T13:45:53.023565+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-18T21:30:43.843203+00:00",
   "last_scan_date": "2026-06-18",
   "latest_candidates": [
-    "INTC",
-    "AMD"
+    "AMAT",
+    "KLAC"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -85,11 +85,11 @@
   "latest_skipped_candidates": [
     {
       "reason": "ATR14 above 8% cap",
-      "ticker": "ARM"
+      "ticker": "MRVL"
     },
     {
       "reason": "ATR14 above 8% cap",
-      "ticker": "MRVL"
+      "ticker": "ARM"
     }
   ],
   "latest_unrealized_pnl": 0.0,
