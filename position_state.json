@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-06-17",
+    "last_scan_date": "2026-06-18",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 512.48,
+        "current_price": 531.805,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": 0.046646,
+        "return": 0.086114,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 457.8634,
         "ticker": "AMD",
-        "value": 1411.6
+        "value": 1464.83
       },
       {
-        "current_price": 226.63,
+        "current_price": 220.695,
         "entry_date": "2026-06-09",
         "entry_price": 227.34,
-        "return": -0.003123,
+        "return": -0.029229,
         "shares": 2.83372652,
         "status": "HOLD",
         "stop": 200.0592,
         "ticker": "DDOG",
-        "value": 642.21
+        "value": 625.39
       }
     ],
     "positions": [
@@ -63,25 +63,23 @@
       "DDOG": 1
     },
     "realized_pnl": -60.25,
-    "return": 0.000241,
-    "value": 2698.03
+    "return": 0.01374,
+    "value": 2734.44
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-17T21:30:49.639582+00:00",
-  "last_scan_date": "2026-06-17",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-18T13:45:53.023565+00:00",
+  "last_scan_date": "2026-06-18",
   "latest_candidates": [
-    "AMD",
-    "LRCX"
+    "INTC",
+    "AMD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [
-      "QQQ below SMA20"
-    ],
-    "score": 2
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
