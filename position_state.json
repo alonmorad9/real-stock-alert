@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-06-22",
+    "last_scan_date": "2026-06-23",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 551.63,
+        "current_price": 512.8,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": 0.126603,
+        "return": 0.0473,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 461.6517,
         "ticker": "AMD",
-        "value": 1519.44
+        "value": 1412.48
       },
       {
-        "current_price": 221.37,
+        "current_price": 222.98,
         "entry_date": "2026-06-09",
         "entry_price": 227.34,
-        "return": -0.02626,
+        "return": -0.019178,
         "shares": 2.83372652,
         "status": "HOLD",
         "stop": 200.0592,
         "ticker": "DDOG",
-        "value": 627.3
+        "value": 631.86
       }
     ],
     "positions": [
@@ -63,23 +63,27 @@
       "DDOG": 1
     },
     "realized_pnl": -60.25,
-    "return": 0.034693,
-    "value": 2790.96
+    "return": -0.003267,
+    "value": 2688.57
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-22T21:30:59.481653+00:00",
-  "last_scan_date": "2026-06-22",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-23T13:46:18.097328+00:00",
+  "last_scan_date": "2026-06-23",
   "latest_candidates": [
     "AMD",
-    "AMAT"
+    "PANW"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
-    "reasons": [],
-    "score": 0
+    "allocation_multiplier": 0.5,
+    "level": "ELEVATED",
+    "reasons": [
+      "QQQ below SMA20",
+      "QQQ below SMA10",
+      "QQQ 5d drop"
+    ],
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
@@ -88,7 +92,7 @@
       "ticker": "MRVL"
     },
     {
-      "reason": "repeat stretched candidate",
+      "reason": "ATR14 above 8% cap",
       "ticker": "INTC"
     }
   ],
