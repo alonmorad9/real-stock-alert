@@ -1,20 +1,20 @@
-📊 Real Stock Opening Report — 24/06/2026
+📊 Real Stock Daily Report — 24/06/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $714.28
-SMA200:        $629.33
+QQQ:           $710.62
+SMA200:        $629.31
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,692.28 (-0.2%)
+Bot Value:     $2,706.75 (0.3%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,692.28 (-100.0%)
+Vs Bot-Only:   $-2,706.75 (-100.0%)
 Bot Cash:      $644.22
 Bot Holding:   AMD, DDOG
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        2.7545
 Entry:         $489.64
-Current:       $513.90
+Current:       $519.74
 Stop:          $461.65
-Value:         $1,415.51
-Return:        5.0%
+Value:         $1,431.60
+Return:        6.1%
 Status:        HOLD
 
 DDOG
 Shares:        2.8337
 Entry:         $227.34
-Current:       $223.22
+Current:       $222.65
 Stop:          $200.06
-Value:         $632.54
-Return:        -1.8%
+Value:         $630.93
+Return:        -2.1%
 Status:        HOLD
 
 ──────────────────────────────
@@ -90,24 +90,24 @@ Repeat Memory: AMD, PANW, MRVL, INTC
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-MRVL: skipped because ATR14 is 12.4%, above the 8.0% fresh-buy cap.
-INTC: skipped because ATR14 is 8.0%, above the 8.0% fresh-buy cap.
+MRVL: skipped because ATR14 is 12.3%, above the 8.0% fresh-buy cap.
+INTC: skipped because ATR14 is 8.1%, above the 8.0% fresh-buy cap.
 
 Watchlist Candidates
 🥇 AMD
-Price:         $513.90
-Score:         167.21 — higher means stronger momentum rank
+Price:         $519.74
+Score:         172.36 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $452.23
-63d RS:        127.8%
-20d Return:    2.0%
+Initial Stop:  $457.37
+63d RS:        131.3%
+20d Return:    3.1%
 Stretch:       OK
 
 🥈 PANW
-Price:         $289.14
-Score:         86.85 — higher means stronger momentum rank
+Price:         $285.26
+Score:         83.63 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $260.88
-63d RS:        61.5%
-20d Return:    12.6%
+Initial Stop:  $256.75
+63d RS:        59.6%
+20d Return:    11.1%
 Stretch:       OK
