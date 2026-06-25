@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-06-24",
+    "last_scan_date": "2026-06-25",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 519.74,
+        "current_price": 524.15,
         "entry_date": "2026-06-09",
         "entry_price": 489.64,
-        "return": 0.061474,
+        "return": 0.07048,
         "shares": 2.75445217,
         "status": "HOLD",
         "stop": 461.6517,
         "ticker": "AMD",
-        "value": 1431.6
+        "value": 1443.75
       },
       {
-        "current_price": 222.65,
+        "current_price": 215.0,
         "entry_date": "2026-06-09",
         "entry_price": 227.34,
-        "return": -0.02063,
+        "return": -0.05428,
         "shares": 2.83372652,
         "status": "HOLD",
-        "stop": 200.0592,
+        "stop": 200.1713,
         "ticker": "DDOG",
-        "value": 630.93
+        "value": 609.25
       }
     ],
     "positions": [
@@ -54,7 +54,7 @@
         "highest_high_since_entry": 238.67,
         "last_signal": "bot_only_bought",
         "shares": 2.83372652,
-        "stop": 200.0592,
+        "stop": 200.1713,
         "ticker": "DDOG"
       }
     ],
@@ -63,14 +63,14 @@
       "DDOG": 1
     },
     "realized_pnl": -60.25,
-    "return": 0.003473,
-    "value": 2706.75
+    "return": -6e-05,
+    "value": 2697.22
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-24T21:30:59.258136+00:00",
-  "last_scan_date": "2026-06-24",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-25T13:46:31.548740+00:00",
+  "last_scan_date": "2026-06-25",
   "latest_candidates": [
     "AMD",
     "PANW"
@@ -89,7 +89,7 @@
   "latest_skipped_candidates": [
     {
       "reason": "ATR14 above 8% cap",
-      "ticker": "MRVL"
+      "ticker": "MU"
     },
     {
       "reason": "ATR14 above 8% cap",
