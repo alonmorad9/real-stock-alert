@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 526.9828,
+        "current_price": 539.49,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.010359,
+        "return": 0.034338,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 458.9904,
         "ticker": "AMD",
-        "value": 697.23
+        "value": 713.78
       },
       {
-        "current_price": 319.85,
+        "current_price": 332.0,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.051446,
+        "return": 0.091387,
         "shares": 3.40277332,
         "status": "HOLD",
-        "stop": 278.3442,
+        "stop": 286.9925,
         "ticker": "PANW",
-        "value": 1088.38
+        "value": 1129.72
       }
     ],
     "positions": [
@@ -41,7 +41,7 @@
         "allocation": 690.08,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "highest_high_since_entry": 535.155,
+        "highest_high_since_entry": 542.19,
         "last_signal": "bot_only_bought",
         "shares": 1.32306153,
         "stop": 458.9904,
@@ -51,10 +51,10 @@
         "allocation": 1035.12,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "highest_high_since_entry": 321.249,
+        "highest_high_since_entry": 332.78,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
-        "stop": 278.3442,
+        "stop": 286.9925,
         "ticker": "PANW"
       }
     ],
@@ -62,27 +62,26 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.045729,
-    "value": 2820.73
+    "return": 0.067191,
+    "value": 2878.62
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-29T13:46:36.679279+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-29T21:31:27.132664+00:00",
   "last_scan_date": "2026-06-29",
   "latest_candidates": [
     "AMD",
-    "DDOG"
+    "PANW"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 0.5,
-    "level": "ELEVATED",
+    "allocation_multiplier": 1.0,
+    "level": "NORMAL",
     "reasons": [
-      "QQQ below SMA20",
       "QQQ below SMA10",
       "distribution days"
     ],
-    "score": 4
+    "score": 2
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
@@ -92,7 +91,7 @@
     },
     {
       "reason": "ATR14 above 8% cap",
-      "ticker": "MRVL"
+      "ticker": "INTC"
     }
   ],
   "latest_unrealized_pnl": 0.0,
