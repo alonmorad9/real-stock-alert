@@ -5,41 +5,35 @@
     "cash": 1035.12,
     "initial_cash": 2697.38,
     "last_actions": [
-      "sold AMD",
-      "sold DDOG",
-      "bought AMD",
-      "bought PANW"
+      "held"
     ],
-    "last_scan_date": "2026-06-26",
+    "last_scan_date": "2026-06-29",
     "last_trade_messages": [
-      "BOT SELL AMD: 2.7545 shares at $521.58; proceeds $1,436.67; P&L $87.98 (6.5%). Reason: out of confirmed top ranks for 2 weekly checks.",
-      "BOT SELL DDOG: 2.8337 shares at $239.77; proceeds $679.44; P&L $35.22 (5.5%). Reason: out of confirmed top ranks for 2 weekly checks.",
-      "BOT BUY AMD: $690.08 at $521.58 = 1.3231 shares. Initial stop $458.99.",
-      "BOT BUY PANW: $1,035.12 at $304.20 = 3.4028 shares. Initial stop $275.06."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 521.58,
+        "current_price": 526.9828,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.0,
+        "return": 0.010359,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 458.9904,
         "ticker": "AMD",
-        "value": 690.08
+        "value": 697.23
       },
       {
-        "current_price": 304.2,
+        "current_price": 319.85,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.0,
+        "return": 0.051446,
         "shares": 3.40277332,
         "status": "HOLD",
-        "stop": 275.0571,
+        "stop": 278.3442,
         "ticker": "PANW",
-        "value": 1035.12
+        "value": 1088.38
       }
     ],
     "positions": [
@@ -47,7 +41,7 @@
         "allocation": 690.08,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "highest_high_since_entry": 525.11,
+        "highest_high_since_entry": 535.155,
         "last_signal": "bot_only_bought",
         "shares": 1.32306153,
         "stop": 458.9904,
@@ -57,10 +51,10 @@
         "allocation": 1035.12,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "highest_high_since_entry": 306.24,
+        "highest_high_since_entry": 321.249,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
-        "stop": 275.0571,
+        "stop": 278.3442,
         "ticker": "PANW"
       }
     ],
@@ -68,29 +62,27 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.023337,
-    "value": 2760.33
+    "return": 0.045729,
+    "value": 2820.73
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "weekly_scan",
-  "last_action_at": "2026-06-26T21:30:58.923089+00:00",
-  "last_scan_date": "2026-06-26",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-06-29T13:46:36.679279+00:00",
+  "last_scan_date": "2026-06-29",
   "latest_candidates": [
     "AMD",
-    "PANW"
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
-    "level": "DEFENSIVE",
+    "level": "ELEVATED",
     "reasons": [
       "QQQ below SMA20",
       "QQQ below SMA10",
-      "QQQ 5d drop",
-      "distribution days",
-      "20d drawdown"
+      "distribution days"
     ],
-    "score": 6
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
@@ -100,7 +92,7 @@
     },
     {
       "reason": "ATR14 above 8% cap",
-      "ticker": "INTC"
+      "ticker": "MRVL"
     }
   ],
   "latest_unrealized_pnl": 0.0,
