@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 551.965,
+        "current_price": 580.91,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.058256,
+        "return": 0.11375,
         "shares": 1.32306153,
         "status": "HOLD",
-        "stop": 463.1032,
+        "stop": 479.4786,
         "ticker": "AMD",
-        "value": 730.28
+        "value": 768.58
       },
       {
-        "current_price": 338.86,
+        "current_price": 341.02,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.113938,
+        "return": 0.121039,
         "shares": 3.40277332,
         "status": "HOLD",
-        "stop": 294.2887,
+        "stop": 296.7075,
         "ticker": "PANW",
-        "value": 1153.06
+        "value": 1160.41
       }
     ],
     "positions": [
@@ -41,20 +41,20 @@
         "allocation": 690.08,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "highest_high_since_entry": 564.76,
+        "highest_high_since_entry": 584.73,
         "last_signal": "bot_only_bought",
         "shares": 1.32306153,
-        "stop": 463.1032,
+        "stop": 479.4786,
         "ticker": "AMD"
       },
       {
         "allocation": 1035.12,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "highest_high_since_entry": 339.255,
+        "highest_high_since_entry": 342.48,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
-        "stop": 294.2887,
+        "stop": 296.7075,
         "ticker": "PANW"
       }
     ],
@@ -62,13 +62,13 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.081964,
-    "value": 2918.47
+    "return": 0.098886,
+    "value": 2964.11
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-06-30T13:46:05.196242+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-06-30T21:30:45.441574+00:00",
   "last_scan_date": "2026-06-30",
   "latest_candidates": [
     "INTC",
