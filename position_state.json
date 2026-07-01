@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-06-30",
+    "last_scan_date": "2026-07-01",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 580.91,
+        "current_price": 555.774,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.11375,
+        "return": 0.065558,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 768.58
+        "value": 735.32
       },
       {
-        "current_price": 341.02,
+        "current_price": 346.095,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.121039,
+        "return": 0.137722,
         "shares": 3.40277332,
         "status": "HOLD",
-        "stop": 296.7075,
+        "stop": 304.1425,
         "ticker": "PANW",
-        "value": 1160.41
+        "value": 1177.68
       }
     ],
     "positions": [
@@ -51,10 +51,10 @@
         "allocation": 1035.12,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "highest_high_since_entry": 342.48,
+        "highest_high_since_entry": 348.79,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
-        "stop": 296.7075,
+        "stop": 304.1425,
         "ticker": "PANW"
       }
     ],
@@ -62,14 +62,14 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.098886,
-    "value": 2964.11
+    "return": 0.092959,
+    "value": 2948.13
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-06-30T21:30:45.441574+00:00",
-  "last_scan_date": "2026-06-30",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-01T13:45:55.874808+00:00",
+  "last_scan_date": "2026-07-01",
   "latest_candidates": [
     "INTC",
     "AMD"
@@ -85,10 +85,6 @@
     {
       "reason": "ATR14 above 8% cap",
       "ticker": "MU"
-    },
-    {
-      "reason": "ATR14 above 8% cap",
-      "ticker": "MRVL"
     }
   ],
   "latest_unrealized_pnl": 0.0,
