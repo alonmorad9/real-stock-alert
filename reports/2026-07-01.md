@@ -1,20 +1,20 @@
-📊 Real Stock Opening Report — 01/07/2026
+📊 Real Stock Daily Report — 01/07/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $727.34
-SMA200:        $632.88
+QQQ:           $725.17
+SMA200:        $632.87
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,948.13 (9.3%)
+Bot Value:     $2,948.65 (9.3%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,948.13 (-100.0%)
+Vs Bot-Only:   $-2,948.65 (-100.0%)
 Bot Cash:      $1,035.12
 Bot Holding:   AMD, PANW
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        1.3231
 Entry:         $521.58
-Current:       $555.77
+Current:       $540.88
 Stop:          $479.48
-Value:         $735.32
-Return:        6.6%
+Value:         $715.62
+Return:        3.7%
 Status:        HOLD
 
 PANW
 Shares:        3.4028
 Entry:         $304.20
-Current:       $346.10
-Stop:          $304.14
-Value:         $1,177.68
-Return:        13.8%
+Current:       $352.04
+Stop:          $311.12
+Value:         $1,197.91
+Return:        15.7%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,27 +86,27 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: INTC, AMD, MU, MRVL
+Repeat Memory: INTC, AMD, MU
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-MU: skipped because ATR14 is 9.5%, above the 8.0% fresh-buy cap.
+INTC: skipped because ATR14 is 8.8%, above the 8.0% fresh-buy cap.
 
 Watchlist Candidates
-🥇 INTC
-Price:         $134.33
-Score:         245.17 — higher means stronger momentum rank
+🥇 AMD
+Price:         $540.88
+Score:         184.17 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $118.21
-63d RS:        178.2%
-20d Return:    24.5%
+Initial Stop:  $475.97
+63d RS:        140.1%
+20d Return:    3.7%
 Stretch:       OK
 
-🥈 AMD
-Price:         $555.77
-Score:         194.77 — higher means stronger momentum rank
+🥈 PANW
+Price:         $352.04
+Score:         132.10 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $489.08
-63d RS:        147.0%
-20d Return:    6.6%
-Stretch:       OK
+Initial Stop:  $318.49
+63d RS:        93.8%
+20d Return:    18.5%
+Stretch:       HOT BUT STRETCHED: RSI14 90, 42% above SMA50

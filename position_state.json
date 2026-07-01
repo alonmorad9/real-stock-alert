@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 555.774,
+        "current_price": 540.88,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.065558,
+        "return": 0.037003,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 735.32
+        "value": 715.62
       },
       {
-        "current_price": 346.095,
+        "current_price": 352.04,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.137722,
+        "return": 0.157265,
         "shares": 3.40277332,
         "status": "HOLD",
-        "stop": 304.1425,
+        "stop": 311.1175,
         "ticker": "PANW",
-        "value": 1177.68
+        "value": 1197.91
       }
     ],
     "positions": [
@@ -51,10 +51,10 @@
         "allocation": 1035.12,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "highest_high_since_entry": 348.79,
+        "highest_high_since_entry": 358.09,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
-        "stop": 304.1425,
+        "stop": 311.1175,
         "ticker": "PANW"
       }
     ],
@@ -62,17 +62,17 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.092959,
-    "value": 2948.13
+    "return": 0.093153,
+    "value": 2948.65
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-01T13:45:55.874808+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-07-01T21:30:47.140385+00:00",
   "last_scan_date": "2026-07-01",
   "latest_candidates": [
-    "INTC",
-    "AMD"
+    "AMD",
+    "PANW"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -84,7 +84,7 @@
   "latest_skipped_candidates": [
     {
       "reason": "ATR14 above 8% cap",
-      "ticker": "MU"
+      "ticker": "INTC"
     }
   ],
   "latest_unrealized_pnl": 0.0,
