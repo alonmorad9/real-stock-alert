@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-01",
+    "last_scan_date": "2026-07-02",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 540.88,
+        "current_price": 534.06,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.037003,
+        "return": 0.023927,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 715.62
+        "value": 706.59
       },
       {
-        "current_price": 352.04,
+        "current_price": 352.32,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.157265,
+        "return": 0.158185,
         "shares": 3.40277332,
         "status": "HOLD",
-        "stop": 311.1175,
+        "stop": 315.42,
         "ticker": "PANW",
-        "value": 1197.91
+        "value": 1198.87
       }
     ],
     "positions": [
@@ -54,7 +54,7 @@
         "highest_high_since_entry": 358.09,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
-        "stop": 311.1175,
+        "stop": 315.42,
         "ticker": "PANW"
       }
     ],
@@ -62,17 +62,17 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.093153,
-    "value": 2948.65
+    "return": 0.090161,
+    "value": 2940.58
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-01T21:30:47.140385+00:00",
-  "last_scan_date": "2026-07-01",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-02T13:46:02.615886+00:00",
+  "last_scan_date": "2026-07-02",
   "latest_candidates": [
-    "AMD",
-    "PANW"
+    "DDOG",
+    "CRWD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
@@ -85,6 +85,10 @@
     {
       "reason": "ATR14 above 8% cap",
       "ticker": "INTC"
+    },
+    {
+      "reason": "repeat stretched candidate",
+      "ticker": "PANW"
     }
   ],
   "latest_unrealized_pnl": 0.0,
