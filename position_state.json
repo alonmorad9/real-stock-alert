@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 534.06,
+        "current_price": 517.82,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.023927,
+        "return": -0.007209,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 706.59
+        "value": 685.11
       },
       {
-        "current_price": 352.32,
+        "current_price": 348.06,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.158185,
+        "return": 0.144181,
         "shares": 3.40277332,
         "status": "HOLD",
         "stop": 315.42,
         "ticker": "PANW",
-        "value": 1198.87
+        "value": 1184.37
       }
     ],
     "positions": [
@@ -62,30 +62,29 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.090161,
-    "value": 2940.58
+    "return": 0.076822,
+    "value": 2904.6
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-02T13:46:02.615886+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-07-02T21:31:27.121701+00:00",
   "last_scan_date": "2026-07-02",
   "latest_candidates": [
     "DDOG",
     "CRWD"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
-    "reasons": [],
-    "score": 0
+    "allocation_multiplier": 0.5,
+    "level": "ELEVATED",
+    "reasons": [
+      "QQQ below SMA20",
+      "QQQ below SMA10"
+    ],
+    "score": 3
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
-    {
-      "reason": "ATR14 above 8% cap",
-      "ticker": "INTC"
-    },
     {
       "reason": "repeat stretched candidate",
       "ticker": "PANW"

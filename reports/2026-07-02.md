@@ -1,30 +1,30 @@
-📊 Real Stock Opening Report — 02/07/2026
+📊 Real Stock Daily Report — 02/07/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $727.19
-SMA200:        $633.57
+QQQ:           $712.60
+SMA200:        $633.49
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
 Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
 What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
-Risk Level:    NORMAL
-Risk Score:    0
-Buy Size:      100.0% of normal
-Reasons:       none
-Action:        Use normal suggested allocation.
+Risk Level:    ELEVATED
+Risk Score:    3
+Buy Size:      50.0% of normal
+Reasons:       QQQ below SMA20, QQQ below SMA10
+Action:        Use half-size for new buys.
 ──────────────────────────────
 ⚙️ Strategy Settings
 Meaning: these rules decide which stocks appear in the candidate list.
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,940.58 (9.0%)
+Bot Value:     $2,904.60 (7.7%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,940.58 (-100.0%)
+Vs Bot-Only:   $-2,904.60 (-100.0%)
 Bot Cash:      $1,035.12
 Bot Holding:   AMD, PANW
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        1.3231
 Entry:         $521.58
-Current:       $534.06
+Current:       $517.82
 Stop:          $479.48
-Value:         $706.59
-Return:        2.4%
+Value:         $685.11
+Return:        -0.7%
 Status:        HOLD
 
 PANW
 Shares:        3.4028
 Entry:         $304.20
-Current:       $352.32
+Current:       $348.06
 Stop:          $315.42
-Value:         $1,198.87
-Return:        15.8%
+Value:         $1,184.37
+Return:        14.4%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,28 +86,27 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: AMD, PANW, INTC
+Repeat Memory: DDOG, CRWD, INTC, PANW
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Skipped Candidates
-INTC: skipped because ATR14 is 8.4%, above the 8.0% fresh-buy cap.
-PANW: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 88, 40% above SMA50).
+PANW: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 84, 38% above SMA50).
 
 Watchlist Candidates
 🥇 DDOG
-Price:         $261.15
-Score:         126.50 — higher means stronger momentum rank
+Price:         $260.36
+Score:         128.70 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $233.22
-63d RS:        95.5%
-20d Return:    4.3%
+Initial Stop:  $231.92
+63d RS:        97.3%
+20d Return:    4.0%
 Stretch:       OK
 
 🥈 CRWD
-Price:         $194.84
-Score:         97.97 — higher means stronger momentum rank
+Price:         $193.98
+Score:         99.83 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $176.36
-63d RS:        73.6%
-20d Return:    4.2%
+Initial Stop:  $174.81
+63d RS:        75.2%
+20d Return:    3.8%
 Stretch:       OK
