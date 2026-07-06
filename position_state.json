@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-02",
+    "last_scan_date": "2026-07-06",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 517.82,
+        "current_price": 557.31,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": -0.007209,
+        "return": 0.068503,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 685.11
+        "value": 737.36
       },
       {
-        "current_price": 348.06,
+        "current_price": 360.95,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.144181,
+        "return": 0.186555,
         "shares": 3.40277332,
         "status": "HOLD",
         "stop": 315.42,
         "ticker": "PANW",
-        "value": 1184.37
+        "value": 1228.23
       }
     ],
     "positions": [
@@ -51,7 +51,7 @@
         "allocation": 1035.12,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "highest_high_since_entry": 358.09,
+        "highest_high_since_entry": 361.195,
         "last_signal": "bot_only_bought",
         "shares": 3.40277332,
         "stop": 315.42,
@@ -62,29 +62,30 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.076822,
-    "value": 2904.6
+    "return": 0.112452,
+    "value": 3000.71
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-02T21:31:27.121701+00:00",
-  "last_scan_date": "2026-07-02",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-06T13:46:24.273123+00:00",
+  "last_scan_date": "2026-07-06",
   "latest_candidates": [
-    "DDOG",
-    "CRWD"
+    "AMD",
+    "DDOG"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 0.5,
-    "level": "ELEVATED",
-    "reasons": [
-      "QQQ below SMA20",
-      "QQQ below SMA10"
-    ],
-    "score": 3
+    "allocation_multiplier": 1.0,
+    "level": "NORMAL",
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
+    {
+      "reason": "ATR14 above 8% cap",
+      "ticker": "INTC"
+    },
     {
       "reason": "repeat stretched candidate",
       "ticker": "PANW"
