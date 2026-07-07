@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-06",
+    "last_scan_date": "2026-07-07",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 552.05,
+        "current_price": 518.23,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.058419,
+        "return": -0.006423,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 730.4
+        "value": 685.65
       },
       {
-        "current_price": 357.53,
+        "current_price": 352.73,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.175312,
+        "return": 0.159533,
         "shares": 3.40277332,
         "status": "HOLD",
         "stop": 319.0405,
         "ticker": "PANW",
-        "value": 1216.59
+        "value": 1200.26
       }
     ],
     "positions": [
@@ -62,23 +62,26 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.105558,
-    "value": 2982.11
+    "return": 0.082914,
+    "value": 2921.03
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-06T21:31:10.281771+00:00",
-  "last_scan_date": "2026-07-06",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-07T13:45:50.189609+00:00",
+  "last_scan_date": "2026-07-07",
   "latest_candidates": [
-    "AMD",
-    "DDOG"
+    "DDOG",
+    "CRWD"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
-    "reasons": [],
-    "score": 0
+    "allocation_multiplier": 0.5,
+    "level": "ELEVATED",
+    "reasons": [
+      "QQQ below SMA20",
+      "QQQ below SMA10"
+    ],
+    "score": 3
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [
