@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 518.23,
+        "current_price": 516.11,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": -0.006423,
+        "return": -0.010487,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 685.65
+        "value": 682.85
       },
       {
-        "current_price": 352.73,
+        "current_price": 337.04,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.159533,
+        "return": 0.107955,
         "shares": 3.40277332,
         "status": "HOLD",
         "stop": 319.0405,
         "ticker": "PANW",
-        "value": 1200.26
+        "value": 1146.87
       }
     ],
     "positions": [
@@ -62,13 +62,13 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.082914,
-    "value": 2921.03
+    "return": 0.062081,
+    "value": 2864.84
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-07T13:45:50.189609+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-07-07T21:30:42.910873+00:00",
   "last_scan_date": "2026-07-07",
   "latest_candidates": [
     "DDOG",
