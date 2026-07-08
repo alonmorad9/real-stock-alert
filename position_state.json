@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-07",
+    "last_scan_date": "2026-07-08",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 516.11,
+        "current_price": 519.15,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": -0.010487,
+        "return": -0.004659,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 682.85
+        "value": 686.87
       },
       {
-        "current_price": 337.04,
+        "current_price": 333.2,
         "entry_date": "2026-06-26",
         "entry_price": 304.2,
-        "return": 0.107955,
+        "return": 0.095332,
         "shares": 3.40277332,
         "status": "HOLD",
         "stop": 319.0405,
         "ticker": "PANW",
-        "value": 1146.87
+        "value": 1133.8
       }
     ],
     "positions": [
@@ -62,34 +62,30 @@
       "AMD": 2
     },
     "realized_pnl": 62.95,
-    "return": 0.062081,
-    "value": 2864.84
+    "return": 0.058728,
+    "value": 2855.79
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-07T21:30:42.910873+00:00",
-  "last_scan_date": "2026-07-07",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-08T13:46:12.318066+00:00",
+  "last_scan_date": "2026-07-08",
   "latest_candidates": [
     "DDOG",
-    "CRWD"
+    "PANW"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
     "level": "ELEVATED",
     "reasons": [
       "QQQ below SMA20",
-      "QQQ below SMA10"
+      "QQQ below SMA10",
+      "QQQ 5d drop"
     ],
-    "score": 3
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
-  "latest_skipped_candidates": [
-    {
-      "reason": "repeat stretched candidate",
-      "ticker": "PANW"
-    }
-  ],
+  "latest_skipped_candidates": [],
   "latest_unrealized_pnl": 0.0,
   "master_rule": "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.",
   "positions": [],
