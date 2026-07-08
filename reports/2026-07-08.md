@@ -1,20 +1,20 @@
-📊 Real Stock Opening Report — 08/07/2026
+📊 Real Stock Daily Report — 08/07/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $709.33
-SMA200:        $635.36
+QQQ:           $711.44
+SMA200:        $635.37
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -48,34 +48,35 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,855.79 (5.9%)
+Bot Value:     $2,810.57 (4.2%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,855.79 (-100.0%)
-Bot Cash:      $1,035.12
-Bot Holding:   AMD, PANW
-Bot Actions:   held
+Vs Bot-Only:   $-2,810.57 (-100.0%)
+Bot Cash:      $1,063.01
+Bot Holding:   AMD, DDOG
+Bot Actions:   sold PANW, bought DDOG
 ──────────────────────────────
 🤖 Bot-Only Trade Log
 Meaning: simulated paper events only. These show what the bot path did, not what happened in your broker.
-- BOT HOLD: no bot-only buy or sell this run.
+- BOT SELL PANW: 3.4028 shares at $320.59; proceeds $1,090.90; P&L $55.77 (5.4%). Reason: trailing stop hit.
+- BOT BUY DDOG: $1,063.01 at $261.09 = 4.0714 shares. Initial stop $230.73.
 ──────────────────────────────
 📌 Bot-Only Holdings
 AMD
 Shares:        1.3231
 Entry:         $521.58
-Current:       $519.15
+Current:       $517.40
 Stop:          $479.48
-Value:         $686.87
-Return:        -0.5%
+Value:         $684.56
+Return:        -0.8%
 Status:        HOLD
 
-PANW
-Shares:        3.4028
-Entry:         $304.20
-Current:       $333.20
-Stop:          $319.04
-Value:         $1,133.80
-Return:        9.5%
+DDOG
+Shares:        4.0714
+Entry:         $261.09
+Current:       $261.09
+Stop:          $230.73
+Value:         $1,063.01
+Return:        -0.0%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,24 +87,24 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: DDOG, CRWD, PANW
+Repeat Memory: DDOG, PANW
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Watchlist Candidates
 🥇 DDOG
-Price:         $255.46
-Score:         133.77 — higher means stronger momentum rank
+Price:         $261.09
+Score:         140.92 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $225.71
-63d RS:        98.6%
-20d Return:    10.3%
+Initial Stop:  $230.73
+63d RS:        103.0%
+20d Return:    12.7%
 Stretch:       OK
 
 🥈 PANW
-Price:         $333.20
-Score:         111.96 — higher means stronger momentum rank
+Price:         $320.59
+Score:         99.24 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $295.71
-63d RS:        75.5%
-20d Return:    25.1%
+Initial Stop:  $282.12
+63d RS:        67.7%
+20d Return:    20.4%
 Stretch:       OK
