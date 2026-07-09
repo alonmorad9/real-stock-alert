@@ -5,37 +5,35 @@
     "cash": 1063.01,
     "initial_cash": 2697.38,
     "last_actions": [
-      "sold PANW",
-      "bought DDOG"
+      "held"
     ],
-    "last_scan_date": "2026-07-08",
+    "last_scan_date": "2026-07-09",
     "last_trade_messages": [
-      "BOT SELL PANW: 3.4028 shares at $320.59; proceeds $1,090.90; P&L $55.77 (5.4%). Reason: trailing stop hit.",
-      "BOT BUY DDOG: $1,063.01 at $261.09 = 4.0714 shares. Initial stop $230.73."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 517.405,
+        "current_price": 549.8,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": -0.008004,
+        "return": 0.054105,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 684.56
+        "value": 727.42
       },
       {
-        "current_price": 261.09,
+        "current_price": 268.35,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.0,
+        "return": 0.027807,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1063.01
+        "value": 1092.57
       }
     ],
     "positions": [
@@ -53,7 +51,7 @@
         "allocation": 1063.01,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "highest_high_since_entry": 261.89,
+        "highest_high_since_entry": 268.5449,
         "last_signal": "bot_only_bought",
         "shares": 4.07142195,
         "stop": 230.7345,
@@ -64,30 +62,31 @@
       "AMD": 2
     },
     "realized_pnl": 118.72,
-    "return": 0.041964,
-    "value": 2810.57
+    "return": 0.068813,
+    "value": 2883.0
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-08T21:30:54.315093+00:00",
-  "last_scan_date": "2026-07-08",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-09T13:46:05.764356+00:00",
+  "last_scan_date": "2026-07-09",
   "latest_candidates": [
-    "DDOG",
-    "PANW"
+    "AMD",
+    "DDOG"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 0.5,
-    "level": "ELEVATED",
-    "reasons": [
-      "QQQ below SMA20",
-      "QQQ below SMA10",
-      "QQQ 5d drop"
-    ],
-    "score": 4
+    "allocation_multiplier": 1.0,
+    "level": "NORMAL",
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 0.0,
-  "latest_skipped_candidates": [],
+  "latest_skipped_candidates": [
+    {
+      "reason": "ATR14 above 8% cap",
+      "ticker": "MU"
+    }
+  ],
   "latest_unrealized_pnl": 0.0,
   "master_rule": "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.",
   "positions": [],
