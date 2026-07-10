@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 549.67,
+        "current_price": 557.89,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.053856,
+        "return": 0.069615,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 727.25
+        "value": 738.12
       },
       {
-        "current_price": 264.35,
+        "current_price": 257.54,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": 0.012486,
+        "return": -0.013597,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1076.28
+        "value": 1048.55
       }
     ],
     "positions": [
@@ -59,28 +59,27 @@
       }
     ],
     "rank_confirm_counts": {
-      "AMD": 2
+      "AMD": 0,
+      "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.062712,
-    "value": 2866.54
+    "return": 0.056465,
+    "value": 2849.69
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-10T13:46:16.022014+00:00",
+  "last_action": "weekly_scan",
+  "last_action_at": "2026-07-10T21:31:07.822365+00:00",
   "last_scan_date": "2026-07-10",
   "latest_candidates": [
-    "DDOG",
-    "AMD"
+    "AMD",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 1.0,
     "level": "NORMAL",
-    "reasons": [
-      "QQQ below SMA20"
-    ],
-    "score": 2
+    "reasons": [],
+    "score": 0
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [],

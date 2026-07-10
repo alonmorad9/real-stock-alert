@@ -1,29 +1,29 @@
-📊 Real Stock Opening Report — 10/07/2026
+📊 Real Stock Weekly Report — 10/07/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          weekly
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $721.69
-SMA200:        $636.61
+QQQ:           $725.51
+SMA200:        $636.63
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
 Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
 What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
 Risk Level:    NORMAL
-Risk Score:    2
+Risk Score:    0
 Buy Size:      100.0% of normal
-Reasons:       QQQ below SMA20
+Reasons:       none
 Action:        Use normal suggested allocation.
 ──────────────────────────────
 ⚙️ Strategy Settings
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,866.54 (6.3%)
+Bot Value:     $2,849.69 (5.6%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,866.54 (-100.0%)
+Vs Bot-Only:   $-2,849.69 (-100.0%)
 Bot Cash:      $1,063.01
 Bot Holding:   AMD, DDOG
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        1.3231
 Entry:         $521.58
-Current:       $549.67
+Current:       $557.89
 Stop:          $479.48
-Value:         $727.25
-Return:        5.4%
+Value:         $738.12
+Return:        7.0%
 Status:        HOLD
 
 DDOG
 Shares:        4.0714
 Entry:         $261.09
-Current:       $264.35
+Current:       $257.54
 Stop:          $230.73
-Value:         $1,076.28
-Return:        1.2%
+Value:         $1,048.55
+Return:        -1.4%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,31 +86,28 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: AMD, DDOG
+Repeat Memory: DDOG, AMD
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
 
 Watchlist Candidates
-🥇 DDOG
-Price:         $264.35
-Score:         170.29 — higher means stronger momentum rank
+🥇 AMD
+Price:         $557.89
+Score:         164.57 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $233.61
-63d RS:        124.2%
-20d Return:    16.1%
+Initial Stop:  $490.94
+63d RS:        116.7%
+20d Return:    23.3%
 Stretch:       OK
 
-🥈 AMD
-Price:         $549.67
-Score:         159.87 — higher means stronger momentum rank
+🥈 DDOG
+Price:         $257.54
+Score:         159.70 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $483.71
-63d RS:        113.9%
-20d Return:    21.5%
+Initial Stop:  $226.64
+63d RS:        117.3%
+20d Return:    13.1%
 Stretch:       OK
 
 ──────────────────────────────
 ⚠️ Data Warnings
-- CRM: intraday snapshot failed: 400 Client Error: Bad Request for url: https://query2.finance.yahoo.com/v8/finance/chart/CRM?range=1d&interval=1m&includePrePost=false
-- TXN: intraday snapshot failed: 400 Client Error: Bad Request for url: https://query2.finance.yahoo.com/v8/finance/chart/TXN?range=1d&interval=1m&includePrePost=false
-- INTU: intraday snapshot failed: 400 Client Error: Bad Request for url: https://query2.finance.yahoo.com/v8/finance/chart/INTU?range=1d&interval=1m&includePrePost=false
-- PEP: intraday snapshot failed: 400 Client Error: Bad Request for url: https://query2.finance.yahoo.com/v8/finance/chart/PEP?range=1d&interval=1m&includePrePost=false
+- KLAC: 400 Client Error: Bad Request for url: https://query2.finance.yahoo.com/v8/finance/chart/KLAC?period1=1262304000&period2=4102444800&interval=1d&events=history&includeAdjustedClose=true
