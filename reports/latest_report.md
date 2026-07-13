@@ -1,20 +1,20 @@
-📊 Real Stock Opening Report — 13/07/2026
+📊 Real Stock Daily Report — 13/07/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $714.25
-SMA200:        $637.22
+QQQ:           $711.74
+SMA200:        $637.21
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,797.09 (3.7%)
+Bot Value:     $2,829.59 (4.9%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,797.09 (-100.0%)
+Vs Bot-Only:   $-2,829.59 (-100.0%)
 Bot Cash:      $1,063.01
 Bot Holding:   AMD, DDOG
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        1.3231
 Entry:         $521.58
-Current:       $527.96
+Current:       $534.39
 Stop:          $479.48
-Value:         $698.52
-Return:        1.2%
+Value:         $707.03
+Return:        2.5%
 Status:        HOLD
 
 DDOG
 Shares:        4.0714
 Entry:         $261.09
-Current:       $254.35
+Current:       $260.24
 Stop:          $230.73
-Value:         $1,035.57
-Return:        -2.6%
+Value:         $1,059.55
+Return:        -0.3%
 Status:        HOLD
 
 ──────────────────────────────
@@ -86,24 +86,27 @@ No confirmed real stock positions are currently tracked.
 Watchlist only. No real stock cash is allocated while TQQQ is open.
 Do not use these as real buy instructions unless the TQQQ bucket is later moved back here with set_cash.
 
-Repeat Memory: AMD, DDOG
+Repeat Memory: DDOG, SNOW
 Meaning: these tickers were recent candidates/skips and can be skipped if still stretched.
+
+Skipped Candidates
+SNOW: skipped because it was already a recent target and is still stretched (HOT BUT STRETCHED: RSI14 81).
 
 Watchlist Candidates
 🥇 DDOG
-Price:         $254.35
-Score:         166.41 — higher means stronger momentum rank
+Price:         $260.24
+Score:         175.59 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $223.83
-63d RS:        124.4%
-20d Return:    8.6%
+Initial Stop:  $229.01
+63d RS:        130.4%
+20d Return:    11.1%
 Stretch:       OK
 
-🥈 SNOW
-Price:         $266.75
-Score:         140.24 — higher means stronger momentum rank
+🥈 AMD
+Price:         $534.39
+Score:         137.10 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $236.42
-63d RS:        103.2%
-20d Return:    11.0%
-Stretch:       HOT BUT STRETCHED: RSI14 80
+Initial Stop:  $470.26
+63d RS:        101.5%
+20d Return:    9.4%
+Stretch:       OK

@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 527.955,
+        "current_price": 534.39,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.012223,
+        "return": 0.02456,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 698.52
+        "value": 707.03
       },
       {
-        "current_price": 254.35,
+        "current_price": 260.24,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.025815,
+        "return": -0.003256,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1035.57
+        "value": 1059.55
       }
     ],
     "positions": [
@@ -63,17 +63,17 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.036967,
-    "value": 2797.09
+    "return": 0.049013,
+    "value": 2829.59
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-13T13:46:15.574280+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-07-13T21:30:51.058917+00:00",
   "last_scan_date": "2026-07-13",
   "latest_candidates": [
     "DDOG",
-    "SNOW"
+    "AMD"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
@@ -85,7 +85,12 @@
     "score": 3
   },
   "latest_portfolio_value": 0.0,
-  "latest_skipped_candidates": [],
+  "latest_skipped_candidates": [
+    {
+      "reason": "repeat stretched candidate",
+      "ticker": "SNOW"
+    }
+  ],
   "latest_unrealized_pnl": 0.0,
   "master_rule": "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.",
   "positions": [],
