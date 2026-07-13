@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-10",
+    "last_scan_date": "2026-07-13",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 557.89,
+        "current_price": 527.955,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.069615,
+        "return": 0.012223,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 738.12
+        "value": 698.52
       },
       {
-        "current_price": 257.54,
+        "current_price": 254.35,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.013597,
+        "return": -0.025815,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1048.55
+        "value": 1035.57
       }
     ],
     "positions": [
@@ -63,23 +63,26 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.056465,
-    "value": 2849.69
+    "return": 0.036967,
+    "value": 2797.09
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "weekly_scan",
-  "last_action_at": "2026-07-10T21:31:07.822365+00:00",
-  "last_scan_date": "2026-07-10",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-13T13:46:15.574280+00:00",
+  "last_scan_date": "2026-07-13",
   "latest_candidates": [
-    "AMD",
-    "DDOG"
+    "DDOG",
+    "SNOW"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
-    "reasons": [],
-    "score": 0
+    "allocation_multiplier": 0.5,
+    "level": "ELEVATED",
+    "reasons": [
+      "QQQ below SMA20",
+      "QQQ below SMA10"
+    ],
+    "score": 3
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [],
