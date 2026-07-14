@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-13",
+    "last_scan_date": "2026-07-14",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 534.39,
+        "current_price": 559.05,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.02456,
+        "return": 0.071839,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 707.03
+        "value": 739.66
       },
       {
-        "current_price": 260.24,
+        "current_price": 267.5,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.003256,
+        "return": 0.024551,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1059.55
+        "value": 1089.11
       }
     ],
     "positions": [
@@ -63,34 +63,28 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.049013,
-    "value": 2829.59
+    "return": 0.072067,
+    "value": 2891.77
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-13T21:30:51.058917+00:00",
-  "last_scan_date": "2026-07-13",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-14T13:46:00.393193+00:00",
+  "last_scan_date": "2026-07-14",
   "latest_candidates": [
     "DDOG",
     "AMD"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 0.5,
-    "level": "ELEVATED",
+    "allocation_multiplier": 1.0,
+    "level": "NORMAL",
     "reasons": [
-      "QQQ below SMA20",
-      "QQQ below SMA10"
+      "QQQ below SMA20"
     ],
-    "score": 3
+    "score": 2
   },
   "latest_portfolio_value": 0.0,
-  "latest_skipped_candidates": [
-    {
-      "reason": "repeat stretched candidate",
-      "ticker": "SNOW"
-    }
-  ],
+  "latest_skipped_candidates": [],
   "latest_unrealized_pnl": 0.0,
   "master_rule": "TQQQ has priority: if tqqq-alert sends a TQQQ re-buy signal, sell real-stock positions and move the bucket back to TQQQ.",
   "positions": [],
