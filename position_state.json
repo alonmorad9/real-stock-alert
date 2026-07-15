@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-14",
+    "last_scan_date": "2026-07-15",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 548.13,
+        "current_price": 553.94,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.050903,
+        "return": 0.062042,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 725.21
+        "value": 732.9
       },
       {
-        "current_price": 270.73,
+        "current_price": 264.71,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": 0.036922,
+        "return": 0.013865,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1102.26
+        "value": 1077.75
       }
     ],
     "positions": [
@@ -51,7 +51,7 @@
         "allocation": 1063.01,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "highest_high_since_entry": 271.54,
+        "highest_high_since_entry": 276.7,
         "last_signal": "bot_only_bought",
         "shares": 4.07142195,
         "stop": 230.7345,
@@ -63,26 +63,25 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.071586,
-    "value": 2890.48
+    "return": 0.06535,
+    "value": 2873.65
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-14T21:30:31.075306+00:00",
-  "last_scan_date": "2026-07-14",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-15T13:45:52.490933+00:00",
+  "last_scan_date": "2026-07-15",
   "latest_candidates": [
     "DDOG",
     "PANW"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 0.5,
-    "level": "ELEVATED",
+    "allocation_multiplier": 1.0,
+    "level": "NORMAL",
     "reasons": [
-      "QQQ below SMA20",
-      "QQQ below SMA10"
+      "QQQ below SMA20"
     ],
-    "score": 3
+    "score": 2
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [],
