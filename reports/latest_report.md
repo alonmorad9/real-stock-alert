@@ -1,30 +1,30 @@
-📊 Real Stock Opening Report — 15/07/2026
+📊 Real Stock Daily Report — 15/07/2026
 ──────────────────────────────
 Action: 👀 WATCHLIST — Planning only while TQQQ is open
 Read first: TQQQ is the master system. Use these stock candidates only when the TQQQ bucket is available for stocks.
 ──────────────────────────────
-Mode:          opening
+Mode:          daily
 Capital Mode:  inactive while TQQQ position is open
 Profile:       turbo — aggressive momentum leaders, not dip buys
 Max Positions: 2
-Data Source:   daily Yahoo bars with intraday 1-minute opening snapshot
+Data Source:   daily Yahoo bars
 Telegram:      weekly routine message; opening/daily stay silent unless a real sell alert fires
 ──────────────────────────────
 🧭 Market Filter
 Meaning: controls whether new stock buys are allowed.
 What to do: if this is OFF, do not start new stock positions.
-QQQ:           $720.92
-SMA200:        $637.85
+QQQ:           $717.74
+SMA200:        $638.47
 Status:        ON
 ──────────────────────────────
 🛡️ Market Risk Overlay
 Meaning: controls suggested buy size only; it does not choose tickers and does not auto-sell.
 What to do: NORMAL means use the full suggested buy amount; ELEVATED/DEFENSIVE means size down.
-Risk Level:    NORMAL
-Risk Score:    2
-Buy Size:      100.0% of normal
-Reasons:       QQQ below SMA20
-Action:        Use normal suggested allocation.
+Risk Level:    ELEVATED
+Risk Score:    3
+Buy Size:      50.0% of normal
+Reasons:       QQQ below SMA20, QQQ below SMA10
+Action:        Use half-size for new buys.
 ──────────────────────────────
 ⚙️ Strategy Settings
 Meaning: these rules decide which stocks appear in the candidate list.
@@ -48,9 +48,9 @@ Realized P&L:  $0.00
 Meaning: paper path showing what this stock bot would do if its own buy/sell instructions were followed automatically.
 What to do: use this to compare your confirmed real-stock bucket against the bot path; it is not a trade instruction.
 Start Cash:    $2,697.38
-Bot Value:     $2,873.65 (6.5%)
+Bot Value:     $2,839.82 (5.3%)
 Real Bucket:   $0.00
-Vs Bot-Only:   $-2,873.65 (-100.0%)
+Vs Bot-Only:   $-2,839.82 (-100.0%)
 Bot Cash:      $1,063.01
 Bot Holding:   AMD, DDOG
 Bot Actions:   held
@@ -63,19 +63,19 @@ Meaning: simulated paper events only. These show what the bot path did, not what
 AMD
 Shares:        1.3231
 Entry:         $521.58
-Current:       $553.94
+Current:       $529.14
 Stop:          $479.48
-Value:         $732.90
-Return:        6.2%
+Value:         $700.08
+Return:        1.4%
 Status:        HOLD
 
 DDOG
 Shares:        4.0714
 Entry:         $261.09
-Current:       $264.71
+Current:       $264.46
 Stop:          $230.73
-Value:         $1,077.75
-Return:        1.4%
+Value:         $1,076.73
+Return:        1.3%
 Status:        HOLD
 
 ──────────────────────────────
@@ -91,23 +91,19 @@ Meaning: these tickers were recent candidates/skips and can be skipped if still 
 
 Watchlist Candidates
 🥇 DDOG
-Price:         $264.71
-Score:         166.72 — higher means stronger momentum rank
+Price:         $264.46
+Score:         169.74 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $232.94
-63d RS:        122.5%
-20d Return:    13.6%
+Initial Stop:  $232.72
+63d RS:        124.9%
+20d Return:    13.5%
 Stretch:       OK
 
 🥈 PANW
-Price:         $354.95
-Score:         147.20 — higher means stronger momentum rank
+Price:         $354.02
+Score:         149.64 — higher means stronger momentum rank
 Real Buy:      $0.00 while TQQQ is open
-Initial Stop:  $312.36
-63d RS:        102.8%
-20d Return:    24.7%
+Initial Stop:  $311.54
+63d RS:        104.8%
+20d Return:    24.4%
 Stretch:       OK
-
-──────────────────────────────
-⚠️ Data Warnings
-- MAR: 400 Client Error: Bad Request for url: https://query2.finance.yahoo.com/v8/finance/chart/MAR?period1=1262304000&period2=4102444800&interval=1d&events=history&includeAdjustedClose=true

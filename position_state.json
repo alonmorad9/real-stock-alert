@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 553.94,
+        "current_price": 529.14,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.062042,
+        "return": 0.014494,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 732.9
+        "value": 700.08
       },
       {
-        "current_price": 264.71,
+        "current_price": 264.46,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": 0.013865,
+        "return": 0.012907,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1077.75
+        "value": 1076.73
       }
     ],
     "positions": [
@@ -63,25 +63,26 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.06535,
-    "value": 2873.65
+    "return": 0.052808,
+    "value": 2839.82
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-15T13:45:52.490933+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-07-15T21:30:46.989858+00:00",
   "last_scan_date": "2026-07-15",
   "latest_candidates": [
     "DDOG",
     "PANW"
   ],
   "latest_market_risk": {
-    "allocation_multiplier": 1.0,
-    "level": "NORMAL",
+    "allocation_multiplier": 0.5,
+    "level": "ELEVATED",
     "reasons": [
-      "QQQ below SMA20"
+      "QQQ below SMA20",
+      "QQQ below SMA10"
     ],
-    "score": 2
+    "score": 3
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [],
