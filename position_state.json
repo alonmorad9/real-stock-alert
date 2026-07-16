@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-15",
+    "last_scan_date": "2026-07-16",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 529.14,
+        "current_price": 509.41,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": 0.014494,
+        "return": -0.023333,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 700.08
+        "value": 673.98
       },
       {
-        "current_price": 264.46,
+        "current_price": 260.7,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": 0.012907,
+        "return": -0.001494,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1076.73
+        "value": 1061.42
       }
     ],
     "positions": [
@@ -63,17 +63,17 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.052808,
-    "value": 2839.82
+    "return": 0.037455,
+    "value": 2798.41
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "daily_scan",
-  "last_action_at": "2026-07-15T21:30:46.989858+00:00",
-  "last_scan_date": "2026-07-15",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-16T13:45:49.512045+00:00",
+  "last_scan_date": "2026-07-16",
   "latest_candidates": [
-    "DDOG",
-    "PANW"
+    "PANW",
+    "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
