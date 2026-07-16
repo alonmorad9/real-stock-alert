@@ -14,26 +14,26 @@
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 509.41,
+        "current_price": 500.94,
         "entry_date": "2026-06-26",
         "entry_price": 521.58,
-        "return": -0.023333,
+        "return": -0.039572,
         "shares": 1.32306153,
         "status": "HOLD",
         "stop": 479.4786,
         "ticker": "AMD",
-        "value": 673.98
+        "value": 662.77
       },
       {
-        "current_price": 260.7,
+        "current_price": 262.32,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.001494,
+        "return": 0.004711,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1061.42
+        "value": 1068.02
       }
     ],
     "positions": [
@@ -63,13 +63,13 @@
       "DDOG": 0
     },
     "realized_pnl": 118.72,
-    "return": 0.037455,
-    "value": 2798.41
+    "return": 0.035746,
+    "value": 2793.8
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-16T13:45:49.512045+00:00",
+  "last_action": "daily_scan",
+  "last_action_at": "2026-07-16T21:30:46.716108+00:00",
   "last_scan_date": "2026-07-16",
   "latest_candidates": [
     "PANW",
@@ -80,9 +80,10 @@
     "level": "ELEVATED",
     "reasons": [
       "QQQ below SMA20",
-      "QQQ below SMA10"
+      "QQQ below SMA10",
+      "20d drawdown"
     ],
-    "score": 3
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [],
