@@ -5,37 +5,35 @@
     "cash": 838.46,
     "initial_cash": 2697.38,
     "last_actions": [
-      "sold AMD",
-      "bought PANW"
+      "held"
     ],
     "last_scan_date": "2026-07-17",
     "last_trade_messages": [
-      "BOT SELL AMD: 1.3231 shares at $464.01; proceeds $613.91; P&L $-76.17 (-11.0%). Reason: close below SMA50, trailing stop hit.",
-      "BOT BUY PANW: $838.46 at $358.05 = 2.3418 shares. Initial stop $315.08."
+      "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 252.53,
+        "current_price": 258.69,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.032786,
+        "return": -0.009192,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1028.16
+        "value": 1053.24
       },
       {
-        "current_price": 358.0475,
+        "current_price": 358.68,
         "entry_date": "2026-07-17",
         "entry_price": 358.0475,
-        "return": -0.0,
+        "return": 0.001767,
         "shares": 2.34176189,
         "status": "HOLD",
         "stop": 315.0818,
         "ticker": "PANW",
-        "value": 838.46
+        "value": 839.94
       }
     ],
     "positions": [
@@ -53,7 +51,7 @@
         "allocation": 838.46,
         "entry_date": "2026-07-17",
         "entry_price": 358.0475,
-        "highest_high_since_entry": 364.27,
+        "highest_high_since_entry": 368.8,
         "last_signal": "bot_only_bought",
         "shares": 2.34176189,
         "stop": 315.0818,
@@ -61,16 +59,17 @@
       }
     ],
     "rank_confirm_counts": {
-      "DDOG": 0
+      "DDOG": 0,
+      "PANW": 0
     },
     "realized_pnl": 42.55,
-    "return": 0.002855,
-    "value": 2705.08
+    "return": 0.012701,
+    "value": 2731.64
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "opening_scan",
-  "last_action_at": "2026-07-17T13:46:30.823940+00:00",
+  "last_action": "weekly_scan",
+  "last_action_at": "2026-07-17T21:31:13.435687+00:00",
   "last_scan_date": "2026-07-17",
   "latest_candidates": [
     "PANW",
