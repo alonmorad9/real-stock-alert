@@ -7,33 +7,33 @@
     "last_actions": [
       "held"
     ],
-    "last_scan_date": "2026-07-17",
+    "last_scan_date": "2026-07-20",
     "last_trade_messages": [
       "BOT HOLD: no bot-only buy or sell this run."
     ],
     "meaning": "Paper benchmark: what the real-stock bot would track if its own buy/sell instructions were followed automatically.",
     "position_details": [
       {
-        "current_price": 258.69,
+        "current_price": 265.905,
         "entry_date": "2026-07-08",
         "entry_price": 261.09,
-        "return": -0.009192,
+        "return": 0.018442,
         "shares": 4.07142195,
         "status": "HOLD",
         "stop": 230.7345,
         "ticker": "DDOG",
-        "value": 1053.24
+        "value": 1082.61
       },
       {
-        "current_price": 358.68,
+        "current_price": 362.54,
         "entry_date": "2026-07-17",
         "entry_price": 358.0475,
-        "return": 0.001767,
+        "return": 0.012547,
         "shares": 2.34176189,
         "status": "HOLD",
         "stop": 315.0818,
         "ticker": "PANW",
-        "value": 839.94
+        "value": 848.98
       }
     ],
     "positions": [
@@ -63,28 +63,27 @@
       "PANW": 0
     },
     "realized_pnl": 42.55,
-    "return": 0.012701,
-    "value": 2731.64
+    "return": 0.026942,
+    "value": 2770.05
   },
   "capital_mode": "inactive while TQQQ position is open",
   "cash": 0.0,
-  "last_action": "weekly_scan",
-  "last_action_at": "2026-07-17T21:31:13.435687+00:00",
-  "last_scan_date": "2026-07-17",
+  "last_action": "opening_scan",
+  "last_action_at": "2026-07-20T13:46:44.297056+00:00",
+  "last_scan_date": "2026-07-20",
   "latest_candidates": [
     "PANW",
     "DDOG"
   ],
   "latest_market_risk": {
     "allocation_multiplier": 0.5,
-    "level": "DEFENSIVE",
+    "level": "ELEVATED",
     "reasons": [
       "QQQ below SMA20",
       "QQQ below SMA10",
-      "QQQ 5d drop",
       "20d drawdown"
     ],
-    "score": 5
+    "score": 4
   },
   "latest_portfolio_value": 0.0,
   "latest_skipped_candidates": [],
